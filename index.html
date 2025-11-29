@@ -1,1197 +1,606 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Tokenization Value-Add Calculator (TVAC)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta
-    name="description"
-    content="The Tokenization Value-Add Calculator (TVAC) is an AI-driven evaluation engine that measures whether a given tokenization project actually creates added value compared to traditional solutions – including a one-off case report for asset owners."
-  />
-  <style>
-    :root {
-      --bg: #050816;
-      --bg-elevated: #0b1020;
-      --bg-soft: #111827;
-      /* Blue accent kept only for the score graph */
-      --accent: #38bdf8;
-      --accent-soft: rgba(56, 189, 248, 0.12);
-      --accent-strong: #06b6d4;
-      /* Orange accent for main UI */
-      --accent-ui: #fb923c;
-      --accent-ui-soft: rgba(251, 146, 60, 0.16);
-      --accent-ui-strong: #f97316;
-      --text-main: #e5e7eb;
-      --text-muted: #9ca3af;
-      --border-subtle: #1f2937;
-      --danger: #f97373;
-      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-        "Helvetica Neue", Arial, sans-serif;
-      --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.45);
-      --radius-xl: 18px;
-      --radius-2xl: 26px;
-      --transition-fast: 180ms ease-out;
-      --max-width: 1120px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at top, #111827 0, #020617 48%, #000 100%);
-      color: var(--text-main);
-      font-family: var(--font-sans);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .nav {
-      border-bottom: 1px solid rgba(15, 23, 42, 0.9);
-      backdrop-filter: blur(22px);
-      background: linear-gradient(
-        to bottom,
-        rgba(15, 23, 42, 0.92),
-        rgba(15, 23, 42, 0.75),
-        rgba(15, 23, 42, 0)
-      );
-      position: sticky;
-      top: 0;
-      z-index: 40;
-    }
-
-    .nav-inner {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0.9rem 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-
-    .logo {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.12rem;
-    }
-
-    /* TVAC-logo med optisk justering */
-    .logo-title {
-      display: flex;
-      font-weight: 800;
-      font-size: 3rem;
-      text-transform: uppercase;
-      color: var(--accent-ui);
-      line-height: 1;
-    }
-
-    .logo-letter {
-      display: inline-block;
-      margin-right: 0.20em;      /* generel afstand */
-    }
-
-    .logo-letter:last-child {
-      margin-right: 0;
-    }
-
-    /* V -> A lidt tættere */
-    .logo-title .logo-letter:nth-child(2) {
-      margin-right: 0.08em;
-    }
-
-    /* C lidt ind mod A */
-    .logo-letter-tight {
-      margin-left: -0.06em;
-    }
-
-    .logo-subtitle {
-      font-size: 0.78rem;
-      color: #f9fafb;
-      opacity: 0.94;
-    }
-
-    @media (max-width: 640px) {
-      .logo-title {
-        font-size: 2rem;
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tokenization Value-Add Calculator (TVAC)</title>
+    <meta
+      name="description"
+      content="TVAC is a deep assessment engine for real-world asset tokenization cases. This public landing page includes an open demo based on a single fictional STO case."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --brand: #ff7a00;
+        --brand-soft: #fff2e6;
+        --bg: #fafafa;
+        --card: #ffffff;
+        --text: #222222;
+        --muted: #666666;
+        --border: #e4e4e4;
       }
 
-      .logo-letter {
-        margin-right: 0.18em;
+      * {
+        box-sizing: border-box;
       }
 
-      .logo-title .logo-letter:nth-child(2) {
-        margin-right: 0.10em;
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: var(--bg);
+        color: var(--text);
       }
 
-      .logo-letter-tight {
-        margin-left: -0.05em;
+      a {
+        color: var(--brand);
+        text-decoration: none;
       }
-    }
 
-    .nav-cta {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.85rem;
-    }
+      a:hover {
+        text-decoration: underline;
+      }
 
-    .pill {
-      padding: 0.18rem 0.7rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      color: var(--text-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      background: rgba(15, 23, 42, 0.85);
-    }
+      header {
+        border-bottom: 1px solid var(--border);
+        background: #ffffff;
+      }
 
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #22c55e 0, #16a34a 55%, #052e16 100%);
-      box-shadow: 0 0 0 1px rgba(22, 163, 74, 0.45);
-    }
+      .nav {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
 
-    .btn {
-      border-radius: 999px;
-      padding: 0.5rem 1rem;
-      font-size: 0.86rem;
-      font-weight: 500;
-      border: 1px solid transparent;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      white-space: nowrap;
-      background: none;
-      color: inherit;
-      transition: transform var(--transition-fast), box-shadow var(--transition-fast),
-        background var(--transition-fast), border-color var(--transition-fast),
-        color var(--transition-fast);
-    }
+      .logo {
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        color: var(--brand);
+      }
 
-    .btn-primary {
-      background: radial-gradient(circle at top left, #fed7aa 0, #fb923c 30%, #f97316 100%);
-      color: #0b1120;
-      box-shadow: 0 14px 35px rgba(124, 45, 18, 0.65);
-    }
+      .nav-links {
+        display: flex;
+        gap: 16px;
+        font-size: 0.9rem;
+      }
 
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 20px 45px rgba(124, 45, 18, 0.85);
-    }
+      .nav-links a {
+        color: var(--muted);
+      }
 
-    .btn-outline {
-      border-color: rgba(148, 163, 184, 0.6);
-      color: var(--text-muted);
-      background: rgba(15, 23, 42, 0.7);
-    }
+      .nav-links a:hover {
+        color: var(--text);
+      }
 
-    .btn-outline:hover {
-      border-color: rgba(248, 250, 252, 0.5);
-      color: #e5e7eb;
-      background: rgba(15, 23, 42, 0.9);
-    }
-
-    .btn-icon {
-      font-size: 1rem;
-      line-height: 1;
-    }
-
-    main {
-      flex: 1;
-    }
-
-    .hero {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 2.8rem 1.2rem 2.4rem;
-      display: grid;
-      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.6fr);
-      gap: 2.3rem;
-      align-items: center;
-    }
-
-    @media (max-width: 880px) {
       .hero {
-        grid-template-columns: minmax(0, 1fr);
-        padding-top: 2rem;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 32px 18px 28px;
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 2fr);
+        gap: 28px;
+        align-items: center;
       }
-      .hero-visual {
-        order: -1;
+
+      .hero-title {
+        font-size: 2.1rem;
+        margin: 0 0 8px;
+        color: var(--brand);
       }
-      .nav-inner {
-        padding-inline: 1rem;
+
+      .hero-tagline {
+        margin: 0 0 16px;
+        font-size: 1rem;
+        color: var(--muted);
       }
-    }
 
-    .hero-kicker {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: var(--accent-ui);
-      font-weight: 600;
-      margin-bottom: 0.8rem;
-    }
-
-    .hero-title {
-      font-size: clamp(2.1rem, 4vw, 2.7rem);
-      line-height: 1.06;
-      letter-spacing: 0.01em;
-      margin-bottom: 0.8rem;
-    }
-
-    .hero-highlight {
-      background: linear-gradient(120deg, #fed7aa, #fb923c, #facc15);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .hero-subtitle {
-      font-size: 0.98rem;
-      color: var(--text-muted);
-      max-width: 33rem;
-      line-height: 1.6;
-      margin-bottom: 1.3rem;
-    }
-
-    .hero-subtitle strong {
-      color: #e5e7eb;
-      font-weight: 500;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
-    }
-
-    .hero-note {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .dot-divider {
-      width: 4px;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.7);
-    }
-
-    .hero-visual {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .hero-card {
-      width: 100%;
-      max-width: 420px;
-      border-radius: var(--radius-2xl);
-      padding: 1.4rem 1.3rem;
-      background: radial-gradient(circle at top, #0f172a 0, #020617 65%, #000 100%);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: var(--shadow-soft);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: -120px;
-      background:
-        radial-gradient(circle at top right, rgba(251, 146, 60, 0.22) 0, transparent 55%),
-        radial-gradient(circle at bottom left, rgba(248, 113, 113, 0.18) 0, transparent 55%);
-      opacity: 0.9;
-      pointer-events: none;
-    }
-
-    .hero-card-inner {
-      position: relative;
-      z-index: 1;
-    }
-
-    .hero-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .hero-card-title {
-      font-size: 0.86rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--text-muted);
-    }
-
-    .hero-card-pill {
-      padding: 0.15rem 0.55rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.45);
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      background: rgba(15, 23, 42, 0.85);
-    }
-
-    .hero-score-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 0.1rem;
-    }
-
-    .hero-score-label {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .hero-score-main {
-      font-size: 1.6rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-    }
-
-    .hero-score-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      border-radius: 999px;
-      padding: 0.18rem 0.6rem;
-      font-size: 0.75rem;
-      background: rgba(22, 163, 74, 0.12);
-      color: #bbf7d0;
-      border: 1px solid rgba(22, 163, 74, 0.5);
-    }
-
-    .hero-score-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle at 30% 20%, #22c55e 0, #16a34a 60%, #052e16 100%);
-    }
-
-    .hero-factors {
-      margin-top: 1rem;
-      border-radius: 14px;
-      background: rgba(15, 23, 42, 0.92);
-      border: 1px solid rgba(31, 41, 55, 0.9);
-      padding: 0.85rem 0.9rem;
-    }
-
-    .hero-factors-title {
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      margin-bottom: 0.4rem;
-    }
-
-    .hero-factor-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.7rem;
-      padding: 0.2rem 0;
-    }
-
-    .hero-factor-name {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-
-    .hero-factor-bar {
-      flex: 1;
-      height: 6px;
-      border-radius: 999px;
-      background: #020617;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .hero-factor-fill {
-      position: absolute;
-      inset: 0;
-      width: var(--w, 50%);
-      background: linear-gradient(90deg, var(--accent), var(--accent-strong)); /* blå beholdt her */
-    }
-
-    .hero-factor-score {
-      font-size: 0.8rem;
-      color: #e5e7eb;
-      min-width: 28px;
-      text-align: right;
-    }
-
-    .hero-footnote {
-      margin-top: 0.8rem;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .hero-footnote strong {
-      color: #e5e7eb;
-      font-weight: 500;
-    }
-
-    .section {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0.6rem 1.2rem 2.7rem;
-    }
-
-    .section-header {
-      margin-bottom: 1.5rem;
-    }
-
-    .eyebrow {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--accent-ui);
-      margin-bottom: 0.4rem;
-    }
-
-    .section-title {
-      font-size: 1.45rem;
-      margin: 0;
-      margin-bottom: 0.35rem;
-    }
-
-    .section-lead {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      max-width: 36rem;
-      line-height: 1.6;
-    }
-
-    .grid-two {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-      gap: 1.8rem;
-    }
-
-    @media (max-width: 880px) {
-      .grid-two {
-        grid-template-columns: minmax(0, 1fr);
+      .hero-note {
+        font-size: 0.85rem;
+        color: var(--muted);
+        margin-top: 6px;
       }
-    }
 
-    .card {
-      background: var(--bg-elevated);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--border-subtle);
-      padding: 1.1rem 1.1rem;
-      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
-    }
-
-    .card + .card {
-      margin-top: 1rem;
-    }
-
-    .card-title {
-      font-size: 0.98rem;
-      margin: 0 0 0.3rem;
-    }
-
-    .card-body {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .list {
-      margin: 0.5rem 0 0;
-      padding-left: 1.2rem;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    .list li {
-      margin-bottom: 0.25rem;
-    }
-
-    .badges-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.7rem;
-    }
-
-    .badge {
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.6);
-      font-size: 0.78rem;
-      padding: 0.16rem 0.6rem;
-      color: var(--text-muted);
-    }
-
-    .badge-accent {
-      border-color: rgba(251, 146, 60, 0.9);
-      color: #fffbeb;
-      background: rgba(124, 45, 18, 0.85);
-    }
-
-    .pricing {
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 1.6rem;
-    }
-
-    @media (max-width: 880px) {
-      .pricing {
-        grid-template-columns: minmax(0, 1fr);
+      .badge-soft {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--brand-soft);
+        color: var(--brand);
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 8px;
       }
-    }
 
-    .pricing-plan {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), #020617);
-      border-radius: var(--radius-2xl);
-      border: 1px solid rgba(251, 146, 60, 0.7);
-      padding: 1.3rem 1.3rem 1.4rem;
-      box-shadow: 0 22px 50px rgba(124, 45, 18, 0.8);
-    }
-
-    .pricing-label {
-      font-size: 0.78rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent-ui);
-      margin-bottom: 0.3rem;
-    }
-
-    .pricing-price-row {
-      display: flex;
-      align-items: baseline;
-      gap: 0.4rem;
-      margin-bottom: 0.4rem;
-    }
-
-    .pricing-price {
-      font-size: 1.6rem;
-      font-weight: 600;
-    }
-
-    .pricing-price-suffix {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .pricing-note {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 0.7rem;
-    }
-
-    .pricing-list {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      padding-left: 1.1rem;
-      margin: 0 0 0.8rem;
-    }
-
-    .pricing-list li {
-      margin-bottom: 0.3rem;
-    }
-
-    .faq-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: 1.3rem;
-    }
-
-    @media (max-width: 880px) {
-      .faq-grid {
-        grid-template-columns: minmax(0, 1fr);
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
       }
-    }
 
-    .faq-item-title {
-      font-size: 0.96rem;
-      margin: 0 0 0.35rem;
-    }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 18px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        background: var(--brand);
+        color: #ffffff;
+        text-decoration: none;
+      }
 
-    .faq-item-body {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
+      .btn.secondary {
+        background: transparent;
+        color: var(--brand);
+        border-color: var(--brand);
+      }
 
-    .cta-strip {
-      max-width: var(--max-width);
-      margin: 0 auto 2.3rem;
-      padding: 1.3rem 1.2rem;
-    }
+      .btn:hover {
+        opacity: 0.9;
+        text-decoration: none;
+      }
 
-    .cta-inner {
-      border-radius: var(--radius-2xl);
-      padding: 1.05rem 1.2rem;
-      border: 1px solid rgba(148, 163, 184, 0.5);
-      background:
-        radial-gradient(circle at top left, rgba(251, 146, 60, 0.22) 0, transparent 55%),
-        radial-gradient(circle at bottom right, rgba(147, 51, 234, 0.18) 0, transparent 55%),
-        rgba(15, 23, 42, 0.96);
-      display: flex;
-      justify-content: space-between;
-      gap: 1.2rem;
-      align-items: center;
-      flex-wrap: wrap;
-    }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 18px 40px;
+      }
 
-    .cta-text-main {
-      font-size: 0.98rem;
-      font-weight: 500;
-      margin-bottom: 0.15rem;
-    }
+      .section {
+        margin-top: 24px;
+      }
 
-    .cta-text-sub {
-      font-size: 0.86rem;
-      color: var(--text-muted);
-    }
+      .section-title {
+        font-size: 1.25rem;
+        margin: 0 0 6px;
+      }
 
-    footer {
-      border-top: 1px solid rgba(15, 23, 42, 0.85);
-      padding: 1.6rem 1.2rem 2.2rem;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      background: #020617;
-    }
+      .section-sub {
+        margin: 0 0 12px;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
 
-    .footer-inner {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      align-items: center;
-      text-align: center;
-    }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.4fr);
+        gap: 22px;
+      }
 
-    .footer-contact {
-      line-height: 1.5;
-    }
+      .card {
+        background: var(--card);
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        padding: 16px 16px 14px;
+      }
 
-    .footer-contact-heading {
-      font-weight: 600;
-      color: #e5e7eb;
-      margin-bottom: 0.1rem;
-    }
+      .card-highlight {
+        border-color: var(--brand);
+        background: var(--brand-soft);
+      }
 
-    .footer-highlight {
-      color: var(--accent-ui);
-    }
+      ul {
+        padding-left: 18px;
+        margin: 6px 0 0;
+      }
 
-    .footer-highlight:hover,
-    .footer-link:hover {
-      text-decoration: underline;
-    }
+      li {
+        margin-bottom: 4px;
+        font-size: 0.9rem;
+      }
 
-    .footer-link {
-      color: var(--accent-ui);
-    }
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+      }
 
-    .footer-disclaimer {
-      max-width: 50rem;
-      line-height: 1.6;
-    }
+      .pill {
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
 
-    .footer-copy {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 0.1rem;
-    }
-  </style>
-</head>
-<body>
-<div class="page">
-  <header class="nav">
-    <div class="nav-inner">
-      <div class="logo">
-        <div class="logo-title">
-          <span class="logo-letter">T</span>
-          <span class="logo-letter">V</span>
-          <span class="logo-letter">A</span>
-          <span class="logo-letter logo-letter-tight">C</span>
-        </div>
-        <div class="logo-subtitle">The Tokenization Value-Add Calculator</div>
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 18px;
+      }
+
+      .price-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .small {
+        font-size: 0.85rem;
+      }
+
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 18px;
+        font-size: 0.8rem;
+        color: var(--muted);
+        background: #ffffff;
+      }
+
+      footer .wrap {
+        max-width: 980px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: space-between;
+      }
+
+      @media (max-width: 780px) {
+        .hero {
+          grid-template-columns: minmax(0, 1fr);
+          padding-top: 22px;
+        }
+        .grid-2 {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="nav">
+        <div class="logo">T V A C</div>
+        <nav class="nav-links">
+          <a href="#demo">Public demo</a>
+          <a href="#product">Product</a>
+          <a href="#pricing">Work with TVAC</a>
+          <a href="#contact">Contact</a>
+        </nav>
       </div>
-      <div class="nav-cta">
-        <div class="pill">
-          <span class="pill-dot"></span>
-          <span>Demo & one-off report available</span>
-        </div>
-        <a href="#how" class="btn btn-outline">
-          How TVAC works
-        </a>
-        <!-- One-off report CTA (scrolls to pricing / Stripe link) -->
-        <a href="#oneoff" class="btn btn-primary">
-          <span>Order one-off case report</span>
-          <span class="btn-icon">→</span>
-        </a>
-      </div>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <!-- Hero -->
     <section class="hero">
       <div>
-        <div class="hero-kicker">AI evaluation for tokenization</div>
-        <h1 class="hero-title">
-          Turn tokenization hype into a
-          <span class="hero-highlight">hard value-add verdict.</span>
-        </h1>
-        <p class="hero-subtitle">
-          The <strong>Tokenization Value-Add Calculator (TVAC)</strong> is an AI-driven evaluation
-          engine that measures whether your tokenization design actually creates new value –
-          or just adds cost, risk and complexity – compared to traditional solutions.
+        <div class="badge-soft">Public demo + early access</div>
+        <h1 class="hero-title">Tokenization Value-Add Calculator</h1>
+        <p class="hero-tagline">
+          A deep assessment engine for real-world asset tokenization cases.
+          TVAC analyses specific structures and tells you when tokenization
+          creates genuine added value – and when it doesn’t.
         </p>
 
-        <div class="hero-actions">
-          <!-- LINKED TO ANALYSIS APP (DEMO) -->
-          <a href="https://tokenlex-ai-2.onrender.com"
-             class="btn btn-primary">
-            <span>Try TVAC demo</span>
-            <span class="btn-icon">▶</span>
-          </a>
-          <!-- Scroll to one-off pricing / Stripe link -->
-          <a href="#oneoff" class="btn btn-outline">
-            <span>Order one-off case report</span>
-          </a>
+        <div class="cta-row">
+          <a
+            href="https://tvac-public-demo.onrender.com/"
+            class="btn"
+            target="_blank"
+            rel="noreferrer"
+            >Run public demo</a
+          >
+          <a href="#pricing" class="btn secondary">Work with TVAC on your cases</a>
         </div>
 
-        <div class="hero-note">
-          <span>Scores every case on opportunities, savings, risks and costs.</span>
-          <span class="dot-divider"></span>
-          <span>Built on a strict value-add formula – not vague narratives.</span>
-        </div>
+        <p class="hero-note">
+          The public demo runs a single fictional STO case. In the full version,
+          you can describe your own tokenization cases and receive unlimited
+          bespoke assessments.
+        </p>
       </div>
 
-      <div class="hero-visual">
-        <div class="hero-card">
-          <div class="hero-card-inner">
-            <div class="hero-card-header">
-              <div>
-                <div class="hero-card-title">Sample evaluation snapshot</div>
-              </div>
-              <div class="hero-card-pill">
-                <span>Private company STO</span>
-              </div>
-            </div>
-
-            <div class="hero-score-row">
-              <div class="hero-score-label">Overall value-add score</div>
-              <div style="display:flex; align-items:center; gap:0.6rem;">
-                <div class="hero-score-main">8.6</div>
-                <div class="hero-score-pill">
-                  <span class="hero-score-dot"></span>
-                  <span>Verdict: go</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="hero-factors">
-              <div class="hero-factors-title">Factor breakdown</div>
-
-              <div class="hero-factor-row">
-                <div class="hero-factor-name">New Opportunities</div>
-                <div class="hero-factor-bar">
-                  <div class="hero-factor-fill" style="--w:82%;"></div>
-                </div>
-                <div class="hero-factor-score">8.2</div>
-              </div>
-
-              <div class="hero-factor-row">
-                <div class="hero-factor-name">Cost Savings</div>
-                <div class="hero-factor-bar">
-                  <div class="hero-factor-fill" style="--w:64%;"></div>
-                </div>
-                <div class="hero-factor-score">6.4</div>
-              </div>
-
-              <div class="hero-factor-row">
-                <div class="hero-factor-name">Risk Reduction</div>
-                <div class="hero-factor-bar">
-                  <div class="hero-factor-fill" style="--w:58%;"></div>
-                </div>
-                <div class="hero-factor-score">5.8</div>
-              </div>
-
-              <div class="hero-factor-row">
-                <div class="hero-factor-name">Tokenization Costs</div>
-                <div class="hero-factor-bar">
-                  <div class="hero-factor-fill" style="--w:38%; background:linear-gradient(90deg,#f97373,#ef4444);"></div>
-                </div>
-                <div class="hero-factor-score">3.8</div>
-              </div>
-
-              <div class="hero-factor-row">
-                <div class="hero-factor-name">New Risks</div>
-                <div class="hero-factor-bar">
-                  <div class="hero-factor-fill" style="--w:31%; background:linear-gradient(90deg,#f97373,#ef4444);"></div>
-                </div>
-                <div class="hero-factor-score">3.1</div>
-              </div>
-            </div>
-
-            <div class="hero-footnote">
-              Built on the formula
-              <strong>(New Opportunities + Cost Savings + Risk Reduction) – (Tokenization Costs + New Risks)</strong>.
-            </div>
-          </div>
+      <div>
+        <div class="card card-highlight">
+          <h2 style="margin: 0 0 4px; font-size: 1.05rem;">
+            What TVAC does
+          </h2>
+          <p class="small muted" style="margin-top: 2px;">
+            TVAC combines structured inputs (jurisdictions, investor segments,
+            custody, venue, settlement, disclosure, tax notes) with a detailed
+            free-text case description.
+          </p>
+          <ul>
+            <li>
+              Scores <strong>New Opportunities</strong>,
+              <strong>Cost Savings</strong>, <strong>Risk Reduction</strong>,
+              <strong>Tokenization Costs</strong> and <strong>New Risks</strong>.
+            </li>
+            <li>
+              Produces a transparent <strong>Added Value</strong> score using
+              the formula: Plus (NO + CS + RR) minus Minus (TC + NR).
+            </li>
+            <li>
+              Delivers a multi-section written report: asset-class context,
+              factor breakdown, risk register, regulatory path, what-if
+              scenarios and implementation roadmap.
+            </li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <!-- What & How -->
-    <section class="section" id="how">
-      <div class="section-header">
-        <div class="eyebrow">What TVAC does</div>
-        <h2 class="section-title">A serious evaluation engine for tokenization – not just another chatbot.</h2>
-        <p class="section-lead">
-          TVAC takes a structured description of your asset, jurisdiction, structure and investor
-          target group and converts it into a consistent, transparent value-add assessment –
-          including a go / borderline / no-go verdict.
+    <main>
+      <!-- Public demo section -->
+      <section id="demo" class="section">
+        <h2 class="section-title">Public demo: one fictional STO case</h2>
+        <p class="section-sub">
+          This open demo is designed so anyone can see how a full TVAC report
+          looks and feels – without entering their own confidential case
+          information.
         </p>
-      </div>
 
-      <div class="grid-two">
-        <div>
+        <div class="grid-2">
           <div class="card">
-            <h3 class="card-title">What TVAC gives you</h3>
-            <p class="card-body">
-              For each project, TVAC returns:
-            </p>
-            <ul class="list">
-              <li>A <strong>verdict</strong>: go / borderline / no-go.</li>
-              <li>Scores for <strong>New Opportunities, Cost Savings, Risk Reduction,
-                Tokenization Costs and New Risks</strong>.</li>
-              <li>A consolidated <strong>value-add score</strong>.</li>
-              <li>A written explanation of <strong>why</strong> the project scores the way it does.</li>
-              <li>Early-stage suggestions on how to <strong>improve the design</strong> and value-add profile.</li>
+            <h3 style="margin-top: 0; font-size: 1rem;">
+              How the public demo works
+            </h3>
+            <ul>
+              <li>
+                The demo runs a <strong>single fictional European private-company STO</strong>.
+              </li>
+              <li>
+                All inputs are pre-filled; you simply click
+                <em>Run demo analysis</em>.
+              </li>
+              <li>
+                The underlying evaluation engine is the same as in the “real”
+                TVAC product.
+              </li>
+              <li>
+                You get a <strong>full deep assessment report</strong> based on
+                that fictional structure – including scores, verdict, risk
+                register and roadmap.
+              </li>
             </ul>
-            <div class="badges-row">
-              <span class="badge badge-accent">Framework-driven</span>
-              <span class="badge">JSON-structured output</span>
-              <span class="badge">Case-specific reasoning</span>
+            <p class="small muted" style="margin-top: 8px;">
+              In the product version, the same engine runs on <em>your</em>
+              structures, jurisdictions and constraints – and you can refine and
+              iterate as many times as you like.
+            </p>
+            <a
+              href="https://tvac-public-demo.onrender.com/"
+              class="btn"
+              target="_blank"
+              rel="noreferrer"
+              >Run public demo</a
+            >
+          </div>
+
+          <div class="card">
+            <h3 style="margin-top: 0; font-size: 1rem;">
+              Demo case: European private-company STO
+            </h3>
+            <ul>
+              <li>
+                <strong>Asset &amp; structure:</strong> Tokenized equity in a
+                mid-sized unlisted European company, structured through a
+                Luxembourg holding company.
+              </li>
+              <li>
+                <strong>Investors:</strong> Professional and other qualified
+                investors in selected EU countries; no direct retail marketing.
+              </li>
+              <li>
+                <strong>Liquidity:</strong> Quarterly auction windows on a
+                permissioned MTF / ATS; limited OTC between auctions.
+              </li>
+              <li>
+                <strong>Custody &amp; settlement:</strong> Regulated
+                investment-firm custodian, DVP on T+2, with a longer-term
+                pathway towards atomic T+0 for part of the flow.
+              </li>
+              <li>
+                <strong>Main objectives:</strong> Broader investor base,
+                smoother secondary transfers and a reusable tokenization
+                infrastructure for future offerings.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Product & report -->
+      <section id="product" class="section">
+        <h2 class="section-title">What you get from a full TVAC assessment</h2>
+        <p class="section-sub">
+          When we run TVAC on your own tokenization ideas, you receive a
+          structured written report – typically 2,000–3,000 words – that can be
+          used directly in internal decision-making and conversations with
+          advisers, partners and regulators.
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3 style="margin-top: 0; font-size: 1rem;">Core outputs</h3>
+            <ul>
+              <li>Clear verdict: Viable, Borderline or Non-viable.</li>
+              <li>
+                Transparent Added Value computation and factor scores (0–10 for
+                each component).
+              </li>
+              <li>
+                Asset-class and market context for your specific case type.
+              </li>
+              <li>Risk register with mitigations and ownership.</li>
+              <li>Regulatory path and likely disclosure requirements.</li>
+              <li>
+                Indicative implementation roadmap with milestones and owners.
+              </li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-top: 0; font-size: 1rem;">Typical use cases</h3>
+            <ul>
+              <li>
+                Tokenization platforms screening new issuer or asset-class
+                ideas.
+              </li>
+              <li>
+                Law firms and legal engineers stress-testing different
+                structuring options.
+              </li>
+              <li>
+                Exchanges, MTFs and ATS venues exploring new listings or
+                permissioned markets.
+              </li>
+              <li>
+                Asset managers and banks building internal business cases for
+                tokenized products.
+              </li>
+              <li>
+                Regulators and policy teams wanting a structured framework for
+                discussing feasibility.
+              </li>
+            </ul>
+            <div class="pill-row">
+              <div class="pill">Screening</div>
+              <div class="pill">Case design</div>
+              <div class="pill">Internal buy-in</div>
+              <div class="pill">Regulatory dialogue</div>
             </div>
           </div>
         </div>
+      </section>
 
-        <div>
+      <!-- Pricing / ways to work -->
+      <section id="pricing" class="section">
+        <h2 class="section-title">Ways to work with TVAC</h2>
+        <p class="section-sub">
+          TVAC is currently in an early-access phase. Pricing is indicative and
+          can be adapted for serious partners.
+        </p>
+
+        <div class="pricing-grid">
           <div class="card">
-            <h3 class="card-title">How it works in three steps</h3>
-            <ol class="list">
-              <li><strong>You describe your case.</strong> Asset type, jurisdiction, investor target group,
-                structure, goals and constraints – plus a short free-text explanation.</li>
-              <li><strong>TVAC evaluates the design.</strong> An AI model, guided by a strict instruction set,
-                scores the project against the five value-add factors and applies the core formula.</li>
-              <li><strong>You get a structured verdict.</strong> A clear go / borderline / no-go outcome,
-                factor scores, and a narrative explanation you can use internally or with clients.</li>
-            </ol>
-            <p class="card-body">
-              Under the hood, TVAC is a React frontend and a Node/Express API running on Render, with
-              the evaluation powered by an OpenAI model. You interact with a product – not a raw model.
+            <div class="price-label">Option 1</div>
+            <h3 style="margin-top: 0; font-size: 1rem;">Single-case report</h3>
+            <p class="small muted">
+              Ideal when you want a deep, written assessment of one specific
+              tokenization structure – for example as part of an internal
+              investment or product-approval process.
+            </p>
+            <ul>
+              <li>One full deep assessment report for a single case.</li>
+              <li>One follow-up clarification round by email.</li>
+              <li>PDF report suitable for internal circulation.</li>
+            </ul>
+            <p class="small muted" style="margin-top: 8px;">
+              Contact us to discuss pricing and scope for your first case.
             </p>
           </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Why not just ChatGPT -->
-    <section class="section">
-      <div class="section-header">
-        <div class="eyebrow">Why TVAC?</div>
-        <h2 class="section-title">Why pay for TVAC if it “just calls OpenAI”?</h2>
-        <p class="section-lead">
-          Because you are not paying for raw API access. You are paying for a domain-specific,
-          consistent evaluation machine that turns messy tokenization ideas into comparable,
-          structured verdicts.
-        </p>
-      </div>
-
-      <div class="grid-two">
-        <div class="card">
-          <h3 class="card-title">A fixed framework instead of prompt roulette</h3>
-          <p class="card-body">
-            Every TVAC run uses the same strict methodology:
-          </p>
-          <ul class="list">
-            <li>A defined value-add formula and five-factor structure.</li>
-            <li>Clear rules for how to derive a verdict.</li>
-            <li>Input completeness and confidence checks.</li>
-          </ul>
-          <p class="card-body">
-            Opening ChatGPT in a browser means reinventing that structure from scratch each time –
-            with no guarantee of consistency.
-          </p>
-        </div>
-
-        <div class="card">
-          <h3 class="card-title">Productized expertise, not just a model</h3>
-          <p class="card-body">
-            TVAC bakes in a lot of hard-won thinking about when tokenization actually adds value –
-            and when it does not. It also guarantees:
-          </p>
-          <ul class="list">
-            <li>Stable, machine-readable JSON output.</li>
-            <li>A dedicated UI for non-technical users.</li>
-            <li>A path to benchmarking, exports and integration into your workflows.</li>
-          </ul>
-          <p class="card-body">
-            You could approximate this by hand with ChatGPT – but it would be manual,
-            fragile and impossible to scale or compare over time.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Pricing / Access -->
-    <section class="section" id="pricing">
-      <div class="section-header">
-        <div class="eyebrow">Access & pricing</div>
-        <h2 class="section-title">From one-off case reports to enterprise pilots</h2>
-        <p class="section-lead">
-          TVAC is available both as a one-off deep-dive report for individual asset owners
-          and as an early-access engine for platforms, law firms and institutional users.
-        </p>
-      </div>
-
-      <div class="pricing">
-        <!-- ONE-OFF CASE REPORT -->
-        <div class="pricing-plan" id="oneoff">
-          <div class="pricing-label">TVAC One-Off Case Report</div>
-          <div class="pricing-price-row">
-            <div class="pricing-price">€395</div>
-            <div class="pricing-price-suffix">per case report (intro price, ex. VAT)</div>
-          </div>
-          <div class="pricing-note">
-            For asset owners, issuers and project teams who want a single, independent
-            assessment of whether tokenization adds real value for a specific asset or structure.
-          </div>
-          <ul class="pricing-list">
-            <li>One TVAC deep assessment of your specific case.</li>
-            <li>Full written report with verdict, factor scores and narrative explanation.</li>
-            <li>Concrete suggestions for how to improve the design and value-add profile.</li>
-            <li>Delivery as a shareable report you can use with internal stakeholders and advisers.</li>
-          </ul>
-          <div style="display:flex; gap:0.7rem; flex-wrap:wrap; margin-top:0.6rem;">
-            <!-- TODO: Replace href with your real Stripe Payment Link -->
-            <a href="https://buy.stripe.com/REPLACE_WITH_YOUR_LINK"
-               class="btn btn-primary">
-              <span>Order one-off case report</span>
-              <span class="btn-icon">→</span>
-            </a>
-            <a href="mailto:michael@thetokenizer.io?subject=TVAC%20one-off%20case%20questions"
-               class="btn btn-outline">
-              <span>Ask a question first</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- FOUNDING TESTER / ENTERPRISE -->
-        <div>
-          <div class="card">
-            <h3 class="card-title">Founding tester & enterprise pilot</h3>
-            <p class="card-body">
-              For serious tokenization platforms, law firms, exchanges and institutional players
-              who want TVAC as a recurring evaluation engine rather than a single report.
+          <div class="card card-highlight">
+            <div class="price-label">Option 2</div>
+            <h3 style="margin-top: 0; font-size: 1rem;">
+              Founding tester &amp; pilot partner
+            </h3>
+            <p class="small muted">
+              For platforms, law firms, exchanges and institutional players who
+              screen many tokenization ideas per year and need a consistent
+              framework across all of them.
             </p>
-            <ul class="list">
-              <li>Access to the TVAC evaluation engine for a defined pilot period.</li>
+            <ul>
+              <li>
+                Defined pilot period with access to the TVAC evaluation engine.
+              </li>
               <li>Multiple cases per month (volume agreed individually).</li>
-              <li>Direct feedback channel into the roadmap and feature set.</li>
-              <li>Preferential commercial terms for future enterprise use.</li>
+              <li>
+                Direct feedback channel into the roadmap and feature set.
+              </li>
+              <li>
+                Preferential commercial terms for future enterprise-level
+                usage.
+              </li>
             </ul>
-            <p class="card-body">
-              If you screen many tokenization ideas per year and need a consistent framework
-              across all of them, the enterprise pilot is likely a better fit than one-off reports.
+            <p class="small muted" style="margin-top: 8px;">
+              If you are considering TVAC as a recurring evaluation layer in
+              your organisation, this is likely the best starting point.
             </p>
-            <div style="display:flex; gap:0.7rem; flex-wrap:wrap; margin-top:0.6rem;">
-              <!-- Paid pilot via email for now -->
-              <a href="mailto:michael@thetokenizer.io?subject=TVAC%20paid%20pilot"
-                 class="btn btn-primary">
-                <span>Request paid pilot</span>
-                <span class="btn-icon">→</span>
-              </a>
-              <a href="mailto:michael@thetokenizer.io?subject=TVAC%20partnership"
-                 class="btn btn-outline">
-                <span>Talk about a partnership</span>
-              </a>
-            </div>
           </div>
 
-          <div class="card" style="margin-top:1rem;">
-            <h3 class="card-title">Who should use TVAC?</h3>
-            <p class="card-body">
-              TVAC is built for professionals who need to move beyond marketing buzzwords:
+          <div class="card">
+            <div class="price-label">Next steps</div>
+            <h3 style="margin-top: 0; font-size: 1rem;">Talk to Michael</h3>
+            <p class="small muted">
+              We are deliberately keeping the number of early partners small.
+              If TVAC looks relevant for your work, let’s have a short,
+              concrete conversation about fit, timing and scope.
             </p>
-            <ul class="list">
-              <li><strong>Tokenization platforms & exchanges</strong> wanting a consistent framework
-                to assess incoming projects.</li>
-              <li><strong>Law firms & advisory firms</strong> that need structured input for early project design.</li>
-              <li><strong>Issuers & asset owners</strong> considering whether tokenization is worth it for a specific asset.</li>
+            <ul>
+              <li>Discuss your tokenization pipeline and use cases.</li>
+              <li>Decide whether a single-case report or pilot is best.</li>
+              <li>
+                Agree practicalities around confidentiality, timelines and
+                deliverables.
+              </li>
             </ul>
-            <p class="card-body">
-              If you are looking for a “wizard” that just rubber-stamps every idea, TVAC is not for you.
-              If you want a critical, structured view on when tokenization actually adds value – it is.
+            <p class="small" style="margin-top: 8px;">
+              Email:
+              <a href="mailto:michael@thetokenizer.io"
+                >michael@thetokenizer.io</a
+              >
             </p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- FAQ snippet -->
-    <section class="section">
-      <div class="section-header">
-        <div class="eyebrow">FAQ</div>
-        <h2 class="section-title">A few common questions</h2>
-      </div>
-
-      <div class="faq-grid">
-        <div>
-          <div class="card">
-            <h3 class="faq-item-title">Is this legal, financial or investment advice?</h3>
-            <p class="faq-item-body">
-              No. TVAC is a decision-support tool, not a licensed adviser. It provides structured
-              evaluations and explanations based on your input and a defined framework. It is
-              meant to inform and sharpen internal discussions – not to replace professional advice.
-            </p>
-          </div>
+      <!-- Contact -->
+      <section id="contact" class="section">
+        <h2 class="section-title">Contact</h2>
+        <div class="card">
+          <p class="small">
+            <strong>Michael Juul Rugaard</strong><br />
+            Author of “Asset Tokenization – The Arrival of a Transformative
+            Trillion-Dollar Industry” and creator of TVAC.
+          </p>
+          <p class="small">
+            Email:
+            <a href="mailto:michael@thetokenizer.io">michael@thetokenizer.io</a
+            ><br />
+            Phone: <a href="tel:+4593993883">+45 93 99 38 83</a><br />
+            LinkedIn:
+            <a
+              href="https://www.linkedin.com/in/michaeljuulrugaard/"
+              target="_blank"
+              rel="noreferrer"
+              >linkedin.com/in/michaeljuulrugaard</a
+            >
+          </p>
         </div>
+      </section>
+    </main>
 
+    <footer>
+      <div class="wrap">
         <div>
-          <div class="card">
-            <h3 class="faq-item-title">Does TVAC use live market data?</h3>
-            <p class="faq-item-body">
-              Not in the current version. TVAC combines (1) what you tell it about your case, and
-              (2) the model’s general domain knowledge about tokenization, regulation, costs and
-              risk patterns. It does not connect to live pricing feeds, trading venues or on-chain analytics yet.
-            </p>
-          </div>
+          © 2025 Michael Juul Rugaard. All rights reserved.
         </div>
-
-        <div>
-          <div class="card">
-            <h3 class="faq-item-title">Will I get the same result every time?</h3>
-            <p class="faq-item-body">
-              TVAC aims for high consistency: similar cases should produce similar verdicts and
-              score patterns. Small variations in wording may change details of the explanation,
-              but the overall profile should remain stable for the same design.
-            </p>
-          </div>
-        </div>
-
-        <div>
-          <div class="card">
-            <h3 class="faq-item-title">Can we get a customized version?</h3>
-            <p class="faq-item-body">
-              In principle, yes. TVAC can be tuned to specific jurisdictions, asset types or
-              internal policies, and integrated via API into your existing tools. The current
-              early-access phase is the right moment to explore such collaborations.
-            </p>
-          </div>
+        <div class="small">
+          TVAC provides informational analysis only and does not constitute
+          legal, financial, investment or tax advice. Always consult qualified
+          professionals in the relevant jurisdictions before making decisions.
         </div>
       </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section class="cta-strip">
-      <div class="cta-inner">
-        <div>
-          <div class="cta-text-main">
-            Ready to see whether your next tokenization project actually adds value?
-          </div>
-          <div class="cta-text-sub">
-            Use TVAC as a critical, structured second opinion before you commit to design and execution.
-          </div>
-        </div>
-        <div style="display:flex; gap:0.7rem; flex-wrap:wrap;">
-          <!-- LINKED TO ANALYSIS APP -->
-          <a href="https://tokenlex-ai-2.onrender.com"
-             class="btn btn-primary">
-            <span>Run a demo case</span>
-            <span class="btn-icon">▶</span>
-          </a>
-          <a href="#oneoff"
-             class="btn btn-outline">
-            <span>Order a one-off report</span>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="footer-inner">
-      <div class="footer-contact">
-        <div class="footer-contact-heading">Contact</div>
-        <div>Michael Juul Rugaard</div>
-        <div>
-          <a href="mailto:michael@thetokenizer.io" class="footer-highlight">
-            michael@thetokenizer.io
-          </a>
-        </div>
-        <div>
-          <a href="tel:+4593993883" class="footer-highlight">
-            +45 93 99 38 83
-          </a>
-        </div>
-        <div>
-          <a href="https://www.linkedin.com/in/michaeljuulrugaard/"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="footer-link">
-            LinkedIn
-          </a>
-        </div>
-      </div>
-
-      <div class="footer-disclaimer">
-        <strong>Disclaimer.</strong>
-        This tool provides informational analysis based on the inputs you provide
-        and publicly available best-practice rubrics. It is not legal, financial,
-        investment or tax advice. Outcomes depend on jurisdiction-specific rules,
-        counterparty requirements, and implementation choices, which must be
-        verified with qualified professionals.
-      </div>
-
-      <div class="footer-copy">
-        © <span id="year">2025</span> Michael Juul Rugaard · All rights reserved.
-      </div>
-    </div>
-  </footer>
-</div>
-
-<script>
-  const yearSpan = document.getElementById("year");
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
-</script>
-</body>
+    </footer>
+  </body>
 </html>
