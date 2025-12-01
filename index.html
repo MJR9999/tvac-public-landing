@@ -970,6 +970,64 @@
       </div>
     </section>
 
+    <!-- Methodology & calibration -->
+    <section class="section" id="methodology">
+      <div class="section-header">
+        <div class="eyebrow">Trust & methodology</div>
+        <h2 class="section-title">How TVAC produces its verdicts – and why you can trust them.</h2>
+        <p class="section-lead">
+          TVAC is not a black box. It uses a fixed scoring framework and only the information you
+          provide in the case description and structured fields. No live web-scraping or hidden
+          external datasets are queried at runtime.
+        </p>
+      </div>
+
+      <div class="grid-two">
+        <div>
+          <div class="card">
+            <h3 class="card-title">Scoring framework at a glance</h3>
+            <p class="card-body">
+              For every case, the evaluator applies the same rubric:
+            </p>
+            <ul class="list">
+              <li>Each factor – <strong>New Opportunities, Cost Savings, Risk Reduction,
+                Tokenization Costs and New Risks</strong> – is scored on a 0–10 scale
+                against a predefined rubric.</li>
+              <li>The scores are combined into a single <strong>Added Value</strong> number
+                using the core formula: <em>(NO + CS + RR) – (TC + NR)</em>.</li>
+              <li>The verdict (Viable, Borderline, Non-viable) is mapped from the Added Value
+                band together with the qualitative consistency of the case across jurisdictions,
+                investor profiles, custody, venue and disclosure.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <h3 class="card-title">Calibration & conservatism</h3>
+            <p class="card-body">
+              The rubric is not arbitrary. It has been calibrated on a set of reference cases
+              across core asset types using independent evaluations from several modern language
+              models and human domain judgement, and then fixed for consistent use in TVAC.
+            </p>
+            <ul class="list">
+              <li>TVAC is intentionally <strong>slightly conservative</strong>: when a case sits
+                between two verdict bands, the more cautious interpretation is usually chosen.</li>
+              <li>Calibration results are monitored over time to keep the scoring grounded in
+                realistic market practice rather than hype.</li>
+            </ul>
+            <p class="card-body">
+              TVAC does not currently rely on a proprietary regulatory database or a
+              retrieval-augmented (RAG) layer in the background. Instead, the evaluator applies
+              the calibrated rubric directly to your case. The results should always be
+              complemented with dedicated legal, tax and regulatory advice in the relevant
+              jurisdictions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Pricing / Access -->
     <section class="section" id="pricing">
       <div class="section-header">
