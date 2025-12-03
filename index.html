@@ -58,15 +58,12 @@
       flex-direction: column;
     }
 
+    /* NAVBAR -------------------------------------------------- */
+
     .nav {
       border-bottom: 1px solid rgba(15, 23, 42, 0.9);
       backdrop-filter: blur(22px);
-      background: linear-gradient(
-        to bottom,
-        rgba(15, 23, 42, 0.92),
-        rgba(15, 23, 42, 0.75),
-        rgba(15, 23, 42, 0)
-      );
+      background: #050816;
       position: sticky;
       top: 0;
       z-index: 40;
@@ -82,54 +79,46 @@
       gap: 1.5rem;
     }
 
-    /* TVAC logo – matche analysator-sitet */
-    .logo {
+    .nav-left {
       display: flex;
       align-items: center;
-      gap: 0.9rem;
+      gap: 1rem;
+      min-width: 0;
     }
 
-    .logo-box {
-      padding: 0.32rem 1.2rem;
-      border: 1px solid var(--accent-ui);
-      background: #000000;          /* helt sort baggrund */
-      color: #f9fafb;
-      font-weight: 700;
-      font-size: 0.82rem;
-      letter-spacing: 0.26em;       /* tydelig afstand mellem bogstaverne */
-      text-transform: uppercase;
-      border-radius: 0;             /* skarpe hjørner */
+    /* TVAC logo-box – matcher app’en */
+    .nav-logo-box {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      line-height: 1.2;
+      height: 40px;
+      padding: 0 26px;
+      border: 2px solid var(--accent-ui);
+      background: #050816;          /* helt sort som app-headeren */
+      color: var(--accent-ui);
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      border-radius: 0;              /* SKARPE hjørner */
+      box-shadow: none;
     }
 
-    .logo-subtitle {
-      font-size: 0.82rem;
-      color: #e5e7eb;
-      opacity: 0.94;
+    .nav-title {
+      font-size: 0.98rem;
+      font-weight: 500;
+      color: #f9fafb;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     @media (max-width: 640px) {
       .nav-inner {
         padding-inline: 1rem;
       }
-
-      .logo {
-        gap: 0.6rem;
-      }
-
-      .logo-box {
-        padding: 0.28rem 0.9rem;
-        font-size: 0.78rem;
-        letter-spacing: 0.22em;
-      }
-
-      .logo-subtitle {
-        font-size: 0.78rem;
-        white-space: normal;
+      .nav-title {
+        display: none; /* på små skærme kun logo-boksen */
       }
     }
 
@@ -208,6 +197,8 @@
     main {
       flex: 1;
     }
+
+    /* HERO -------------------------------------------------- */
 
     .hero {
       max-width: var(--max-width);
@@ -446,6 +437,8 @@
       font-weight: 500;
     }
 
+    /* SECTIONS & CARDS ---------------------------------------- */
+
     .section {
       max-width: var(--max-width);
       margin: 0 auto;
@@ -661,6 +654,8 @@
       color: var(--text-muted);
     }
 
+    /* FOOTER -------------------------------------------------- */
+
     footer {
       border-top: 1px solid rgba(15, 23, 42, 0.85);
       padding: 1.6rem 1.2rem 2.2rem;
@@ -718,9 +713,9 @@
 <div class="page">
   <header class="nav">
     <div class="nav-inner">
-      <div class="logo">
-        <div class="logo-box">TVAC</div>
-        <div class="logo-subtitle">Tokenization Value-Add Calculator</div>
+      <div class="nav-left">
+        <div class="nav-logo-box">TVAC</div>
+        <div class="nav-title">Tokenization Value-Add Calculator</div>
       </div>
       <div class="nav-cta">
         <div class="pill">
