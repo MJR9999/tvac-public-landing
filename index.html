@@ -94,13 +94,13 @@
       height: 40px;
       padding: 0 26px;
       border: 2px solid var(--accent-ui);
-      background: #050816;          /* helt sort som app-headeren */
+      background: #050816;
       color: var(--accent-ui);
       font-size: 15px;
       font-weight: 600;
       letter-spacing: 0.32em;
       text-transform: uppercase;
-      border-radius: 0;              /* SKARPE hjørner */
+      border-radius: 0;
       box-shadow: none;
     }
 
@@ -118,7 +118,7 @@
         padding-inline: 1rem;
       }
       .nav-title {
-        display: none; /* på små skærme kun logo-boksen */
+        display: none;
       }
     }
 
@@ -416,7 +416,7 @@
       position: absolute;
       inset: 0;
       width: var(--w, 50%);
-      background: linear-gradient(90deg, var(--accent), var(--accent-strong)); /* blå beholdt her */
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
     }
 
     .hero-factor-score {
@@ -1010,10 +1010,10 @@
     <section class="section" id="pricing">
       <div class="section-header">
         <div class="eyebrow">Access & pricing</div>
-        <h2 class="section-title">From one-off case reports to enterprise pilots</h2>
+        <h2 class="section-title">From one-off case reports to recurring TVAC access</h2>
         <p class="section-lead">
           TVAC is available both as a one-off deep-dive report for individual asset owners
-          and as an early-access engine for platforms, law firms and institutional users.
+          and as a recurring evaluation engine for platforms, law firms and institutional users.
         </p>
       </div>
 
@@ -1036,47 +1036,55 @@
             <li>Delivery as a shareable report you can use with internal stakeholders and advisers.</li>
           </ul>
           <div style="display:flex; gap:0.7rem; flex-wrap:wrap; margin-top:0.6rem;">
-            <!-- TODO: Replace href with your real Stripe Payment Link -->
-            <a href="https://buy.stripe.com/REPLACE_WITH_YOUR_LINK"
+            <!-- Replace with your live Stripe Payment Link for the single report -->
+            <a href="STRIPE_ONE_OFF_LINK_HERE"
                class="btn btn-primary">
               <span>Order one-off case report</span>
               <span class="btn-icon">→</span>
             </a>
-            <a href="mailto:michael@thetokenizer.io?subject=TVAC%20one-off%20case%20questions"
+            <a href="mailto:michael@tvacai.com?subject=TVAC%20one-off%20case%20questions"
                class="btn btn-outline">
               <span>Ask a question first</span>
             </a>
           </div>
         </div>
 
-        <!-- FOUNDING TESTER / ENTERPRISE -->
+        <!-- TVAC PRO SUBSCRIPTIONS -->
         <div>
           <div class="card">
-            <h3 class="card-title">Founding tester & enterprise pilot</h3>
+            <h3 class="card-title">TVAC Pro subscription – unlimited under fair use</h3>
             <p class="card-body">
               For serious tokenization platforms, law firms, exchanges and institutional players
               who want TVAC as a recurring evaluation engine rather than a single report.
             </p>
             <ul class="list">
-              <li>Access to the TVAC evaluation engine for a defined pilot period.</li>
-              <li>Multiple cases per month (volume agreed individually).</li>
-              <li>Direct feedback channel into the roadmap and feature set.</li>
-              <li>Preferential commercial terms for future enterprise use.</li>
+              <li>Unlimited case runs under a fair-use policy (typically plenty for normal professional use).</li>
+              <li>Best suited for teams that screen multiple tokenization ideas per year.</li>
+              <li>Use TVAC in pre-sales, early structuring and as a second opinion with clients.</li>
             </ul>
+
             <p class="card-body">
-              If you screen many tokenization ideas per year and need a consistent framework
-              across all of them, the enterprise pilot is likely a better fit than one-off reports.
+              Choose the commitment that fits your workflow:
             </p>
-            <div style="display:flex; gap:0.7rem; flex-wrap:wrap; margin-top:0.6rem;">
-              <!-- Paid pilot via email for now -->
-              <a href="mailto:michael@thetokenizer.io?subject=TVAC%20paid%20pilot"
-                 class="btn btn-primary">
-                <span>Request paid pilot</span>
+
+            <ul class="list">
+              <li><strong>12-month plan:</strong> €275/month, billed annually (<strong>€3,300 per year</strong>).</li>
+              <li><strong>6-month plan:</strong> €325/month, billed every six months (<strong>€1,950 per 6 months</strong>).</li>
+            </ul>
+
+            <div style="display:flex; flex-direction:column; gap:0.6rem; margin-top:0.6rem;">
+              <!-- Replace with your live Stripe Payment Link for the 12-month subscription -->
+              <a href="STRIPE_PRO_12_LINK_HERE"
+                 class="btn btn-primary"
+                 style="justify-content:center; width:100%;">
+                <span>TVAC Pro – 12 months (275 €/month)</span>
                 <span class="btn-icon">→</span>
               </a>
-              <a href="mailto:michael@thetokenizer.io?subject=TVAC%20partnership"
-                 class="btn btn-outline">
-                <span>Talk about a partnership</span>
+              <!-- Replace with your live Stripe Payment Link for the 6-month subscription -->
+              <a href="STRIPE_PRO_6_LINK_HERE"
+                 class="btn btn-outline"
+                 style="justify-content:center; width:100%;">
+                <span>TVAC Pro – 6 months (325 €/month)</span>
               </a>
             </div>
           </div>
@@ -1188,8 +1196,8 @@
         <div class="footer-contact-heading">Contact</div>
         <div>Michael Juul Rugaard</div>
         <div>
-          <a href="mailto:michael@thetokenizer.io" class="footer-highlight">
-            michael@thetokenizer.io
+          <a href="mailto:michael@tvacai.com" class="footer-highlight">
+            michael@tvacai.com
           </a>
         </div>
         <div>
