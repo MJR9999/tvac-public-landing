@@ -172,21 +172,26 @@
       [data-theme="light"] .themeBtn { background: rgba(0,0,0,0.02); }
       .themeBtn:hover { transform: translateY(-1px); border-color: var(--border-2); }
 
-      /* ---------- SECTION BANDS (NOW TOP-ORIENTED) ---------- */
+      /* ---------- SECTION BANDS (TOP-ONLY) ---------- */
       section { position: relative; }
 
       .band {
         position: relative;
+        overflow: visible;
       }
+
+      /* IMPORTANT CHANGE:
+         Make the glow a TOP-ONLY overlay with fixed height, so it cannot appear at the bottom of the section. */
       .band::before {
         content: "";
         position: absolute;
-        /* IMPORTANT CHANGE: do NOT extend below the section; keep emphasis at the top */
-        inset: -140px 0 0 0; /* top right bottom left */
+        top: -140px;
+        left: 0;
+        right: 0;
+        height: 380px; /* top-only band height */
         pointer-events: none;
         z-index: 0;
         opacity: 0.95;
-        /* IMPORTANT CHANGE: glows placed near TOP (no bottom glow) */
         background:
           radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.18), transparent 60%),
           radial-gradient(900px 420px at 92% 10%, rgba(120,130,255,0.14), transparent 60%),
