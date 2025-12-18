@@ -172,23 +172,24 @@
       [data-theme="light"] .themeBtn { background: rgba(0,0,0,0.02); }
       .themeBtn:hover { transform: translateY(-1px); border-color: var(--border-2); }
 
-      /* ---------- SECTION BANDS (TOP-ONLY) ---------- */
+      /* ---------- SECTION BANDS (TOP-ONLY, NO BLEED) ---------- */
       section { position: relative; }
 
       .band {
         position: relative;
-        overflow: visible;
+        overflow: hidden;     /* keeps glow inside the section (prevents bottom/previous-section bleed) */
+        isolation: isolate;   /* ensures z-index layering stays contained */
       }
 
       /* IMPORTANT CHANGE:
-         Make the glow a TOP-ONLY overlay with fixed height, so it cannot appear at the bottom of the section. */
+         Anchor the glow to the TOP of the section (no negative top), and keep it clipped inside the section. */
       .band::before {
         content: "";
         position: absolute;
-        top: -140px;
+        top: 0;              /* was -140px */
         left: 0;
         right: 0;
-        height: 380px; /* top-only band height */
+        height: 420px;       /* top-only band height (covers headings inside padded sections) */
         pointer-events: none;
         z-index: 0;
         opacity: 0.95;
@@ -856,9 +857,7 @@
         <div class="splitCard card cardPadLg">
           <div>
             <div class="gallery" aria-label="Report excerpts gallery">
-              <!-- IMPORTANT CHANGE: Card order swapped so Report structure is first -->
-
-              <!-- Card 1 (was #2): Report structure -->
+              <!-- Card 1: Report structure -->
               <div class="shotCard" role="button" tabindex="0"
                    data-title="Table of contents + result snapshot"
                    data-src="assets/tvac-report-toc-result.png"
@@ -878,7 +877,7 @@
                 </div>
               </div>
 
-              <!-- Card 2 (was #1): Factor breakdown -->
+              <!-- Card 2: Factor breakdown -->
               <div class="shotCard" role="button" tabindex="0"
                    data-title="Factor breakdown — detailed explanation"
                    data-src="assets/tvac-report-factor-breakdown.png"
