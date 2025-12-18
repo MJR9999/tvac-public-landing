@@ -1,1107 +1,1225 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TVAC — Tokenization Value-Add Calculator</title>
-  <meta name="description" content="Turn tokenization hype into a decision-grade value-add verdict. TVAC evaluates added value and delivers structured, case-specific reports." />
-  <style>
-    :root{
-      --bg0:#070A12;
-      --bg1:#0B1020;
-      --panel:#0E162B;
-      --panel2:#101A33;
-      --stroke:rgba(255,255,255,.10);
-      --stroke2:rgba(255,255,255,.14);
-      --text:#EAF0FF;
-      --muted:rgba(234,240,255,.72);
-      --muted2:rgba(234,240,255,.56);
-      --accent:#F59E0B;
-      --accent2:#FB923C;
-      --good:#22C55E;
-      --shadow: 0 18px 50px rgba(0,0,0,.45);
-      --shadow2: 0 12px 30px rgba(0,0,0,.35);
-      --r12:12px;
-      --r16:16px;
-      --r22:22px;
-      --max:1180px;
-      --padX:24px;
-      --padY:86px;
-      --headerH:74px;
-      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TVAC — Tokenization Value-Add Calculator</title>
+    <meta
+      name="description"
+      content="TVAC is an AI-driven evaluation engine that produces decision-grade, case-specific tokenization reports (15–20 pages) with a clear verdict, factor logic, assumptions, risk register, and concrete next steps."
+    />
 
-    [data-theme="light"]{
-      --bg0:#F6F7FB;
-      --bg1:#EEF1F8;
-      --panel:#FFFFFF;
-      --panel2:#FFFFFF;
-      --stroke:rgba(17,24,39,.10);
-      --stroke2:rgba(17,24,39,.14);
-      --text:#0B1220;
-      --muted:rgba(11,18,32,.72);
-      --muted2:rgba(11,18,32,.56);
-      --shadow: 0 18px 50px rgba(17,24,39,.12);
-      --shadow2: 0 12px 30px rgba(17,24,39,.10);
-    }
+    <style>
+      /* ---------- THEME ---------- */
+      :root {
+        --bg: #070a12;
+        --panel: rgba(255, 255, 255, 0.04);
+        --panel-2: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.10);
+        --border-2: rgba(255, 255, 255, 0.14);
+        --text: rgba(255, 255, 255, 0.92);
+        --muted: rgba(255, 255, 255, 0.68);
+        --muted-2: rgba(255, 255, 255, 0.55);
+        --accent: #ff9a3c;
+        --accent-2: #ffb25f;
+        --ok: #2ee59d;
+        --shadow: 0 20px 70px rgba(0, 0, 0, 0.45);
+        --radius: 18px;
+        --radius-sm: 14px;
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:var(--font);
-      color:var(--text);
-      background:
-        radial-gradient(1200px 600px at 12% 10%, rgba(245,158,11,.16), transparent 55%),
-        radial-gradient(900px 520px at 88% 20%, rgba(59,130,246,.12), transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-    }
-    a{color:inherit}
-    .container{max-width:var(--max); margin:0 auto; padding:0 var(--padX)}
-    .muted{color:var(--muted)}
-    .muted2{color:var(--muted2)}
-    .chip{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 12px;
-      border:1px solid var(--stroke);
-      border-radius:999px;
-      background:rgba(255,255,255,.04);
-      color:var(--muted);
-      font-size:13px;
-      backdrop-filter: blur(10px);
-    }
-    [data-theme="light"] .chip{background:rgba(17,24,39,.03)}
-    .dot{width:8px;height:8px;border-radius:999px;background:var(--good); box-shadow:0 0 0 4px rgba(34,197,94,.18)}
-    .h1{
-      font-size: clamp(40px, 5.4vw, 66px);
-      line-height: 1.02;
-      letter-spacing: -0.02em;
-      margin:18px 0 12px;
-      font-weight: 800;
-    }
-    .h2{
-      font-size: clamp(26px, 3.0vw, 40px);
-      line-height: 1.10;
-      letter-spacing: -0.01em;
-      margin: 0 0 10px;
-      font-weight: 800;
-    }
-    .kicker{
-      text-transform: uppercase;
-      letter-spacing: .16em;
-      font-size: 12px;
-      color: rgba(245,158,11,.92);
-      font-weight: 700;
-    }
+        --max: 1160px;
+        --padX: 22px;
 
-    /* Header – less busy */
-    header{
-      position:sticky; top:0; z-index:50;
-      height:var(--headerH);
-      border-bottom:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(6,10,18,.85), rgba(6,10,18,.55));
-      backdrop-filter: blur(14px);
-    }
-    [data-theme="light"] header{
-      background: linear-gradient(180deg, rgba(246,247,251,.92), rgba(246,247,251,.70));
-    }
-    .nav{
-      height:var(--headerH);
-      display:flex; align-items:center; justify-content:space-between;
-      gap:16px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:14px;
-      min-width: 260px;
-    }
-    .logo-badge{
-      width:84px; height:38px;
-      border:2px solid rgba(245,158,11,.95);
-      border-radius: 0;            /* SHARP corners (fix #1) */
-      display:flex; align-items:center; justify-content:center;
-      font-weight:900; letter-spacing:.30em;
-      color: rgba(245,158,11,.95);
-      font-size: 14px;
-      background: rgba(245,158,11,.06);
-      box-shadow: 0 10px 30px rgba(245,158,11,.10);
-    }
-    [data-theme="light"] .logo-badge{background: rgba(245,158,11,.10)}
-    .brand-title{
-      display:flex; flex-direction:column; line-height:1.05;
-    }
-    .brand-title strong{font-size:15px; letter-spacing:-.01em}
-    .brand-title span{font-size:12px; color:var(--muted2); margin-top:2px}
+        --h1: 54px;
+        --h2: 34px;
+        --h3: 18px;
 
-    .nav-right{
-      display:flex; align-items:center; gap:10px;
-    }
-    .pill{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
-      padding:10px 14px;
-      border-radius: 999px;
-      font-size: 13px;
-      text-decoration:none;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-      white-space:nowrap;
-    }
-    [data-theme="light"] .pill{background: rgba(17,24,39,.03)}
-    .pill:hover{transform: translateY(-1px); border-color: var(--stroke2)}
-    .cta{
-      border: 0;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      color:#0B1020;
-      padding: 11px 16px;
-      border-radius: 999px;
-      font-weight: 800;
-      font-size: 13px;
-      box-shadow: 0 16px 40px rgba(245,158,11,.16);
-      cursor:pointer;
-      text-decoration:none;
-    }
-    .icon-btn{
-      width:40px; height:40px;
-      border-radius:999px;
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      display:grid; place-items:center;
-      cursor:pointer;
-      color: var(--muted);
-    }
-    [data-theme="light"] .icon-btn{background: rgba(17,24,39,.03)}
-    .icon-btn:hover{border-color:var(--stroke2)}
-    .moon{width:18px;height:18px; display:block}
+        --lead: 17px;
+        --body: 15px;
+      }
 
-    /* Sections */
-    section{padding: var(--padY) 0}
-    .hero{
-      padding: 58px 0 64px;
-    }
-    .hero-grid{
-      display:grid;
-      grid-template-columns: 1.08fr .92fr;
-      gap: 28px;
-      align-items: start;
-      margin-top: 18px;
-    }
-    @media (max-width: 980px){
-      .hero-grid{grid-template-columns: 1fr; gap:18px}
-      .brand{min-width:auto}
-    }
+      [data-theme="light"] {
+        --bg: #f7f7fb;
+        --panel: rgba(0, 0, 0, 0.04);
+        --panel-2: rgba(0, 0, 0, 0.06);
+        --border: rgba(0, 0, 0, 0.10);
+        --border-2: rgba(0, 0, 0, 0.14);
+        --text: rgba(10, 12, 18, 0.92);
+        --muted: rgba(10, 12, 18, 0.70);
+        --muted-2: rgba(10, 12, 18, 0.58);
+        --shadow: 0 18px 60px rgba(0, 0, 0, 0.18);
+      }
 
-    .lead{
-      font-size: 16px;
-      line-height: 1.65;
-      color: var(--muted);
-      max-width: 60ch;
-    }
-    .accent{color: rgba(245,158,11,.98)}
-    .hero-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top: 16px}
-    .btn{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      padding: 11px 14px;
-      border-radius: 999px;
-      font-weight: 800;
-      font-size: 13px;
-      cursor:pointer;
-      text-decoration:none;
-      display:inline-flex; align-items:center; gap:10px;
-    }
-    [data-theme="light"] .btn{background: rgba(17,24,39,.03)}
-    .btn:hover{border-color:var(--stroke2); transform: translateY(-1px)}
-    .btn.primary{
-      border:0;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      color:#0B1020;
-      box-shadow: 0 18px 46px rgba(245,158,11,.18);
-    }
+      /* ---------- BASE ---------- */
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body {
+        margin: 0;
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.55;
+      }
+      a { color: inherit; text-decoration: none; }
+      a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-    /* Cards */
-    .card{
-      border:1px solid var(--stroke);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-      border-radius: var(--r22);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-    [data-theme="light"] .card{
-      background: linear-gradient(180deg, rgba(17,24,39,.02), rgba(17,24,39,.01));
-    }
-    .card-inner{padding: 18px 18px}
-    .card-title{
-      font-weight: 900;
-      letter-spacing: -.01em;
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-    .card-sub{color: var(--muted); font-size: 13px; line-height:1.5}
-    .grid3{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 18px;
-    }
-    @media (max-width: 980px){
-      .grid3{grid-template-columns:1fr}
-    }
+      .container {
+        max-width: var(--max);
+        margin: 0 auto;
+        padding: 0 var(--padX);
+      }
 
-    /* Snapshot (fix #2) */
-    .snapshot{
-      padding: 18px;
-      display:flex;
-      flex-direction:column;
-      gap: 12px;
-    }
-    .snap-top{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-    }
-    .snap-kicker{
-      text-transform:uppercase; letter-spacing:.16em; font-size: 12px; color: var(--muted2); font-weight: 800;
-    }
-    .snap-chip{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
-      border-radius:999px;
-      padding: 6px 10px;
-      font-size: 12px;
-      color: var(--muted);
-      white-space:nowrap;
-    }
-    [data-theme="light"] .snap-chip{background: rgba(17,24,39,.03)}
-    .snap-score{
-      display:flex; align-items:center; gap:10px; justify-content:flex-end;
-      font-weight:900;
-    }
-    .score-num{font-size: 30px; letter-spacing:-.02em}
-    .verdict{
-      display:inline-flex; align-items:center; gap:8px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      border:1px solid rgba(34,197,94,.30);
-      background: rgba(34,197,94,.10);
-      color: rgba(34,197,94,.92);
-      font-weight: 900;
-      font-size: 12px;
-      white-space:nowrap;
-    }
-    .bars{
-      border:1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-      border-radius: var(--r16);
-      padding: 14px;
-    }
-    [data-theme="light"] .bars{background: rgba(17,24,39,.02)}
-    .bar-row{
-      display:grid;
-      grid-template-columns: 1.35fr 2.2fr .55fr;
-      gap: 10px;
-      align-items:center;
-      margin: 10px 0;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .bar-track{
-      height: 8px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid var(--stroke);
-      overflow:hidden;
-    }
-    [data-theme="light"] .bar-track{background: rgba(17,24,39,.06)}
-    .bar-fill{
-      height:100%;
-      border-radius:999px;
-      background: linear-gradient(90deg, rgba(59,130,246,.95), rgba(14,165,233,.95));
-    }
-    .bar-fill.bad{
-      background: linear-gradient(90deg, rgba(244,63,94,.95), rgba(251,146,60,.95));
-    }
-    .snap-foot{
-      color: var(--muted2);
-      font-size: 12px;
-      line-height: 1.45;
-    }
+      /* ---------- NAV ---------- */
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        background: linear-gradient(to bottom, rgba(0,0,0,0.55), rgba(0,0,0,0.20));
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+      }
+      [data-theme="light"] .nav{
+        background: linear-gradient(to bottom, rgba(255,255,255,0.85), rgba(255,255,255,0.55));
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+      }
 
-    /* Product proof images (fix #3) */
-    .proof-grid{
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 16px;
-      align-items: start;
-      margin-top: 18px;
-    }
-    @media (max-width: 980px){ .proof-grid{grid-template-columns:1fr} }
+      .navInner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 0;
+        gap: 14px;
+      }
 
-    .thumb-grid{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 14px;
-    }
-    @media (max-width: 980px){ .thumb-grid{grid-template-columns:1fr} }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 260px;
+      }
 
-    .thumb{
-      border:1px solid var(--stroke);
-      border-radius: var(--r16);
-      background: rgba(255,255,255,.03);
-      overflow:hidden;
-      position: relative;
-      box-shadow: var(--shadow2);
-    }
-    [data-theme="light"] .thumb{background: rgba(17,24,39,.02)}
-    .thumb .imgwrap{
-      aspect-ratio: 16/10;     /* Ensures same size cards */
-      background: rgba(0,0,0,.18);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      overflow:hidden;
-    }
-    [data-theme="light"] .thumb .imgwrap{background: rgba(17,24,39,.04)}
-    .thumb img{
-      width:100%;
-      height:100%;
-      object-fit: cover;
-      display:block;
-      transform: scale(1.02);
-    }
-    .thumb .caption{
-      padding: 12px 12px 14px;
-    }
-    .thumb .caption strong{
-      display:block;
-      font-size: 13px;
-      margin-bottom: 4px;
-      letter-spacing: -.01em;
-    }
-    .thumb .caption span{
-      display:block;
-      font-size: 12px;
-      color: var(--muted2);
-      line-height: 1.45;
-    }
-    .open-btn{
-      position:absolute;
-      top:10px; right:10px;
-      border:1px solid var(--stroke2);
-      background: rgba(0,0,0,.35);
-      color: rgba(255,255,255,.90);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size: 12px;
-      font-weight: 800;
-      cursor:pointer;
-      backdrop-filter: blur(10px);
-    }
-    [data-theme="light"] .open-btn{
-      background: rgba(255,255,255,.75);
-      color: rgba(11,18,32,.85);
-    }
+      /* LOGO: sharp corners, tighter right padding */
+      .logoBox {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 12px;          /* tighter */
+        border: 2px solid var(--accent);
+        border-radius: 0px;          /* sharp corners */
+        letter-spacing: 6px;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 1;
+        min-width: 84px;
+      }
 
-    /* Right panel card */
-    .side{
-      padding: 18px;
-    }
-    .bullets{
-      margin: 10px 0 0;
-      padding-left: 18px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
+      .brandName {
+        font-size: 15px;
+        font-weight: 600;
+        opacity: 0.9;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 240px;
+      }
 
-    /* How it works */
-    .steps{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-top: 16px;
-    }
-    @media (max-width: 980px){ .steps{grid-template-columns:1fr} }
-    .step{
-      padding: 18px;
-      border-radius: var(--r22);
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.03);
-    }
-    [data-theme="light"] .step{background: rgba(17,24,39,.02)}
-    .step strong{display:block; margin-bottom:6px}
-    .step p{margin:0; color:var(--muted); line-height:1.6}
+      .navLinks {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
 
-    /* Pricing */
-    .pricing{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 18px;
-    }
-    @media (max-width: 980px){ .pricing{grid-template-columns:1fr} }
-    .price-head{
-      display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap;
-    }
-    .price{
-      font-size: 34px; font-weight: 950; letter-spacing:-.02em;
-    }
-    .badge{
-      border:1px solid rgba(245,158,11,.35);
-      background: rgba(245,158,11,.10);
-      color: rgba(245,158,11,.95);
-      font-weight: 900;
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius:999px;
-      white-space:nowrap;
-    }
-    .list{margin:12px 0 0; padding-left:18px; color:var(--muted); line-height:1.75}
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 12px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.03);
+        border-radius: 999px;
+        font-size: 13px;
+        color: var(--muted);
+        text-decoration: none;
+        transition: 140ms ease;
+        white-space: nowrap;
+      }
+      [data-theme="light"] .pill { background: rgba(0,0,0,0.02); }
+      .pill:hover { transform: translateY(-1px); border-color: var(--border-2); text-decoration: none; }
+      .pillStrong {
+        border: none;
+        color: #15110b;
+        background: linear-gradient(90deg, var(--accent-2), var(--accent));
+        box-shadow: 0 10px 30px rgba(255,154,60,0.18);
+        font-weight: 650;
+      }
+      .pillStrong:hover { transform: translateY(-1px); }
 
-    /* FAQ */
-    .faq{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin-top: 16px;
-    }
-    @media (max-width: 980px){ .faq{grid-template-columns:1fr} }
-    details{
-      border:1px solid var(--stroke);
-      border-radius: var(--r16);
-      background: rgba(255,255,255,.03);
-      padding: 12px 14px;
-    }
-    [data-theme="light"] details{background: rgba(17,24,39,.02)}
-    summary{
-      cursor:pointer;
-      font-weight: 900;
-      color: var(--text);
-      list-style:none;
-    }
-    summary::-webkit-details-marker{display:none}
-    details p{margin:10px 0 0; color:var(--muted); line-height:1.65}
+      .themeBtn {
+        width: 40px;
+        height: 36px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.03);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 140ms ease;
+      }
+      [data-theme="light"] .themeBtn { background: rgba(0,0,0,0.02); }
+      .themeBtn:hover { transform: translateY(-1px); border-color: var(--border-2); }
 
-    /* About + Methodology */
-    .about{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 16px;
-      margin-top: 18px;
-      align-items: start;
-    }
-    @media (max-width: 980px){ .about{grid-template-columns:1fr} }
+      /* ---------- SECTION BANDS (CONSISTENT) ---------- */
+      section { position: relative; }
 
-    .link{
-      color: rgba(245,158,11,.98);
-      text-decoration: none;
-      border-bottom: 1px solid rgba(245,158,11,.35);
-    }
-    .link:hover{border-bottom-color: rgba(245,158,11,.75)}
+      .band {
+        position: relative;
+      }
+      .band::before {
+        content: "";
+        position: absolute;
+        inset: -120px 0 -120px 0;
+        pointer-events: none;
+        z-index: 0;
+        opacity: 0.95;
+        background:
+          radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.16), transparent 60%),
+          radial-gradient(900px 420px at 92% 20%, rgba(120,130,255,0.14), transparent 60%),
+          radial-gradient(900px 520px at 60% 110%, rgba(255,154,60,0.10), transparent 60%);
+      }
+      [data-theme="light"] .band::before{
+        background:
+          radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.16), transparent 60%),
+          radial-gradient(900px 420px at 92% 20%, rgba(80,90,210,0.12), transparent 60%),
+          radial-gradient(900px 520px at 60% 110%, rgba(255,154,60,0.10), transparent 60%);
+      }
 
-    /* Footer (fix #6) */
-    footer{
-      border-top:1px solid var(--stroke);
-      padding: 28px 0 22px;
-      margin-top: 24px;
-      background: rgba(0,0,0,.10);
-    }
-    [data-theme="light"] footer{background: rgba(17,24,39,.02)}
-    .foot{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap: 16px;
-      flex-wrap:wrap;
-    }
-    .foot small{color: var(--muted2); line-height:1.55}
+      .sectionInner { position: relative; z-index: 1; }
 
-    /* Modal (image lightbox) */
-    .modal{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.72);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index: 80;
-      padding: 24px;
-    }
-    .modal.open{display:flex}
-    .modal-card{
-      max-width: min(1100px, 95vw);
-      max-height: 88vh;
-      border-radius: var(--r22);
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(10,14,26,.95);
-      box-shadow: var(--shadow);
-      position: relative;
-    }
-    [data-theme="light"] .modal-card{background: rgba(255,255,255,.98); border-color: rgba(17,24,39,.18)}
-    .modal-top{
-      display:flex; align-items:center; justify-content:space-between;
-      gap: 10px;
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.88);
-    }
-    [data-theme="light"] .modal-top{color: rgba(11,18,32,.88); border-bottom-color: rgba(17,24,39,.12)}
-    .modal-top strong{font-size: 13px}
-    .modal-actions{display:flex; gap:10px; align-items:center}
-    .m-btn{
-      border:1px solid rgba(255,255,255,.18);
-      background: rgba(255,255,255,.06);
-      color: rgba(255,255,255,.88);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size: 12px;
-      font-weight: 900;
-      cursor:pointer;
-      text-decoration:none;
-    }
-    [data-theme="light"] .m-btn{border-color: rgba(17,24,39,.18); background: rgba(17,24,39,.04); color: rgba(11,18,32,.88)}
-    .m-btn:hover{transform: translateY(-1px)}
-    .modal-img{
-      display:block;
-      width:100%;
-      height:auto;
-      max-height: calc(88vh - 52px);
-      object-fit: contain;
-      background: rgba(0,0,0,.22);
-    }
-    [data-theme="light"] .modal-img{background: rgba(17,24,39,.02)}
+      /* ---------- TYPO ---------- */
+      .eyebrow {
+        color: var(--accent);
+        font-weight: 650;
+        letter-spacing: 2.2px;
+        text-transform: uppercase;
+        font-size: 12px;
+        margin: 0 0 10px;
+      }
 
-    /* Small utilities */
-    .sep{height:1px; background: var(--stroke); margin: 24px 0}
-    .sr{position:absolute; left:-9999px}
-  </style>
-</head>
+      h1 {
+        margin: 0 0 14px;
+        font-size: var(--h1);
+        line-height: 1.05;
+        font-weight: 700; /* less heavy than before */
+        letter-spacing: -0.6px;
+      }
+      .accent { color: var(--accent); }
 
-<body>
-  <header>
-    <div class="container">
-      <div class="nav">
-        <div class="brand">
-          <div class="logo-badge" aria-label="TVAC logo badge">TVAC</div>
-          <div class="brand-title">
-            <strong>Tokenization Value-Add Calculator</strong>
-            <span>Decision-grade feasibility, without hype</span>
+      h2 {
+        margin: 0 0 12px;
+        font-size: var(--h2);
+        line-height: 1.15;
+        font-weight: 650; /* less heavy */
+        letter-spacing: -0.3px;
+      }
+      h3 {
+        margin: 0 0 10px;
+        font-size: var(--h3);
+        line-height: 1.2;
+        font-weight: 650;
+      }
+
+      .lead {
+        font-size: var(--lead);
+        color: var(--muted);
+        max-width: 640px;
+        margin: 0 0 14px;
+      }
+      .small {
+        font-size: var(--body);
+        color: var(--muted-2);
+      }
+
+      /* ---------- LAYOUT ---------- */
+      .padTop { padding: 58px 0; }    /* less vertical monotony */
+      .padMid { padding: 54px 0; }
+      .padTight { padding: 44px 0; }
+
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1.12fr 0.88fr;
+        gap: 22px;
+        align-items: center;
+      }
+      .grid3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .grid4 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+
+      @media (max-width: 980px){
+        :root { --h1: 44px; --h2: 30px; }
+        .grid2 { grid-template-columns: 1fr; }
+        .grid3 { grid-template-columns: 1fr; }
+        .grid4 { grid-template-columns: 1fr; }
+        .brand { min-width: auto; }
+        .brandName { display: none; }
+      }
+
+      /* ---------- CARDS ---------- */
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+      .cardPlain {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: var(--radius);
+      }
+      [data-theme="light"] .cardPlain { background: rgba(0,0,0,0.02); border-color: rgba(0,0,0,0.08); }
+
+      .cardPad { padding: 18px; }
+      .cardPadLg { padding: 22px; }
+
+      .mutedList {
+        margin: 10px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+      }
+      .mutedList li { margin: 6px 0; }
+
+      /* ---------- HERO ---------- */
+      .ctaRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .helperLine {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        color: var(--muted-2);
+        font-size: 13px;
+      }
+      .dot { opacity: 0.5; }
+
+      .miniBadges {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .miniBadge {
+        font-size: 12px;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.03);
+        border-radius: 999px;
+        padding: 7px 10px;
+      }
+      [data-theme="light"] .miniBadge { background: rgba(0,0,0,0.02); }
+
+      /* ---------- SAMPLE SNAPSHOT ---------- */
+      .snapshot {
+        padding: 18px;
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+        border: 1px solid rgba(255,255,255,0.10);
+      }
+      [data-theme="light"] .snapshot {
+        background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.02));
+        border-color: rgba(0,0,0,0.10);
+      }
+
+      .snapTop {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .snapTag {
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+        border-radius: 999px;
+        padding: 6px 10px;
+      }
+      .snapScore {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 650;
+      }
+      .verdict {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: rgba(46,229,157,0.12);
+        border: 1px solid rgba(46,229,157,0.34);
+        color: var(--ok);
+        font-size: 12px;
+        font-weight: 650;
+      }
+      .bars {
+        margin-top: 10px;
+        border-radius: 14px;
+        background: rgba(0,0,0,0.22);
+        border: 1px solid rgba(255,255,255,0.10);
+        padding: 12px;
+      }
+      [data-theme="light"] .bars { background: rgba(0,0,0,0.04); }
+
+      .barRow {
+        display: grid;
+        grid-template-columns: 1fr 170px 42px;
+        gap: 10px;
+        align-items: center;
+        margin: 8px 0;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .barTrack {
+        height: 7px;
+        border-radius: 999px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.08);
+        overflow: hidden;
+      }
+      [data-theme="light"] .barTrack { background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.06); }
+
+      .barFill {
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(120,215,255,0.9), rgba(120,215,255,0.55));
+      }
+      .barFillNeg {
+        background: linear-gradient(90deg, rgba(255,120,120,0.9), rgba(255,120,120,0.55));
+      }
+
+      .formula {
+        margin-top: 10px;
+        font-size: 12.5px;
+        color: var(--muted-2);
+      }
+
+      /* ---------- REPORT PROOF GALLERY ---------- */
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+      @media (max-width: 980px) { .gallery { grid-template-columns: 1fr; } }
+
+      .shotCard {
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.03);
+        overflow: hidden;
+        cursor: pointer;
+        transition: 160ms ease;
+      }
+      [data-theme="light"] .shotCard { background: rgba(0,0,0,0.02); }
+      .shotCard:hover { transform: translateY(-2px); border-color: var(--border-2); }
+
+      .shotFrame {
+        height: 220px; /* SAME HEIGHT FOR ALL */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.22);
+      }
+      [data-theme="light"] .shotFrame { background: rgba(0,0,0,0.04); }
+
+      .shotFrame img{
+        width: 100%;
+        height: 100%;
+        object-fit: contain;  /* keep text correct, no weird scaling */
+        display: block;
+        background: transparent;
+      }
+
+      .shotMeta {
+        padding: 12px 12px 14px;
+      }
+      .shotTitle {
+        font-weight: 650;
+        font-size: 13px;
+        margin: 0 0 6px;
+      }
+      .shotCap {
+        margin: 0;
+        font-size: 12.5px;
+        color: var(--muted);
+      }
+      .shotHint {
+        margin-top: 10px;
+        font-size: 12px;
+        color: var(--muted-2);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      /* ---------- LIGHTBOX ---------- */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.72);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 22px;
+      }
+      .lightbox.open { display: flex; }
+
+      .lightboxInner {
+        width: min(1100px, 100%);
+        max-height: 88vh;
+        background: rgba(10,12,18,0.92);
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 30px 110px rgba(0,0,0,0.55);
+      }
+      [data-theme="light"] .lightboxInner {
+        background: rgba(255,255,255,0.95);
+        border-color: rgba(0,0,0,0.14);
+      }
+
+      .lightboxTop {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.10);
+      }
+      [data-theme="light"] .lightboxTop { border-bottom-color: rgba(0,0,0,0.10); }
+
+      .lightboxTitle {
+        font-weight: 650;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .closeBtn {
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.04);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 8px 10px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      [data-theme="light"] .closeBtn { background: rgba(0,0,0,0.02); }
+
+      .lightboxBody {
+        background: rgba(0,0,0,0.20);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+      }
+      [data-theme="light"] .lightboxBody { background: rgba(0,0,0,0.03); }
+
+      .lightboxBody img{
+        width: 100%;
+        height: 100%;
+        max-height: 78vh;
+        object-fit: contain;
+        display: block;
+      }
+
+      /* ---------- FAQ ---------- */
+      .faqGrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 980px){ .faqGrid { grid-template-columns: 1fr; } }
+
+      details.faqItem {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 14px 14px;
+      }
+      [data-theme="light"] details.faqItem { background: rgba(0,0,0,0.02); }
+      details summary {
+        cursor: pointer;
+        list-style: none;
+        font-weight: 650;
+        color: var(--text);
+        outline: none;
+      }
+      details summary::-webkit-details-marker { display: none; }
+      .faqA {
+        margin-top: 10px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      .faqA p { margin: 8px 0; }
+
+      /* ---------- FOOTER (CENTERED + STRONGER) ---------- */
+      footer {
+        margin-top: 26px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        padding: 26px 0 28px;
+        text-align: center;
+      }
+      [data-theme="light"] footer { border-top-color: rgba(0,0,0,0.08); }
+
+      .footLine {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0 0 8px;
+      }
+      .footLine a { color: var(--accent); }
+      .footDisc {
+        max-width: 860px;
+        margin: 0 auto;
+        color: var(--muted-2);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .copyright {
+        margin-top: 12px;
+        color: var(--muted-2);
+        font-size: 12.5px;
+      }
+
+      /* ---------- UTIL ---------- */
+      .splitCard {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 16px;
+        align-items: stretch;
+      }
+      @media (max-width: 980px){ .splitCard { grid-template-columns: 1fr; } }
+
+      .btnRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.03);
+        color: var(--text);
+        font-weight: 650;
+        font-size: 13px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: 140ms ease;
+        white-space: nowrap;
+      }
+      [data-theme="light"] .btn { background: rgba(0,0,0,0.02); }
+      .btn:hover { transform: translateY(-1px); border-color: var(--border-2); text-decoration: none; }
+
+      .btnPrimary {
+        border: none;
+        color: #15110b;
+        background: linear-gradient(90deg, var(--accent-2), var(--accent));
+        box-shadow: 0 10px 30px rgba(255,154,60,0.18);
+      }
+
+      .tagline {
+        margin-top: 10px;
+        color: var(--muted-2);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- ---------- NAV ---------- -->
+    <div class="nav">
+      <div class="container">
+        <div class="navInner">
+          <div class="brand">
+            <div class="logoBox" aria-label="TVAC logo">TVAC</div>
+            <div class="brandName">Tokenization Value-Add Calculator</div>
           </div>
-        </div>
 
-        <div class="nav-right" aria-label="Primary navigation">
-          <a class="pill" href="#methodology">Methodology</a>
-          <a class="pill" href="#pricing">Pricing</a>
-          <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle dark/light mode" title="Toggle theme">
-            <svg class="moon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M21 13.2A8.5 8.5 0 0 1 10.8 3a7.3 7.3 0 1 0 10.2 10.2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <a class="cta" href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">Request Quick Verdict →</a>
+          <div class="navLinks">
+            <a class="pill" href="#methodology">Methodology</a>
+            <a class="pill" href="#pricing">Pricing</a>
+
+            <button class="themeBtn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
+              <span id="themeIcon" aria-hidden="true">🌙</span>
+            </button>
+
+            <a class="pill pillStrong" href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">Request Quick Verdict →</a>
+          </div>
         </div>
       </div>
     </div>
-  </header>
 
-  <!-- HERO -->
-  <section class="hero" id="top">
-    <div class="container">
-      <div class="chip"><span class="dot"></span> Demo, quick verdict & report available</div>
+    <!-- ---------- HERO (BAND 1) ---------- -->
+    <section class="band padTop" id="top">
+      <div class="container sectionInner">
+        <div class="grid2">
+          <div>
+            <p class="eyebrow">Tokenization feasibility, without hype</p>
+            <h1>
+              Turn tokenization ideas into a
+              <span class="accent">decision-grade verdict</span>.
+            </h1>
 
-      <div class="hero-grid">
-        <div>
-          <div class="kicker">AI evaluation for tokenization</div>
-          <h1 class="h1">Turn tokenization hype into a <span class="accent">hard value-add verdict</span>.</h1>
-          <p class="lead">
-            TVAC measures whether a specific tokenization design creates net added value — or just adds cost, risk and complexity —
-            compared to a conventional structure. You get a structured output you can share internally: scores, blockers, assumptions,
-            and concrete next steps.
-          </p>
+            <p class="lead">
+              TVAC evaluates whether a specific tokenization design creates <b>net added value</b> versus a conventional structure —
+              and delivers a <b>solid, case-specific deep report</b> (typically <b>15–20 pages</b>, ~<b>6,000 words</b>) with the full rationale,
+              assumptions, risk register (where relevant), and concrete next steps.
+            </p>
 
-          <div class="hero-actions">
-            <a class="btn primary" href="https://tvacai.com" onclick="return false" title="Hook up later">Try TVAC demo ▶</a>
-            <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20Deep%20Assessment%20order">Order one-off case report</a>
-            <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20Free%20Quick%20Verdict">Free Quick Verdict ⚡</a>
+            <div class="miniBadges" aria-label="Key report properties">
+              <span class="miniBadge">Case-specific (not generic)</span>
+              <span class="miniBadge">Five-factor rubric + clear logic</span>
+              <span class="miniBadge">Shareable, decision-grade output</span>
+            </div>
+
+            <div class="ctaRow">
+              <a class="btn btnPrimary" href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">Free Quick Verdict (limited) →</a>
+              <a class="btn" href="#pricing">Order Deep Assessment</a>
+              <a class="btn" href="https://tvacai.com" onclick="return false;" title="Hook up later when demo URL is final">Try demo</a>
+            </div>
+
+            <div class="helperLine">
+              <span>Built on a fixed five-factor model</span><span class="dot">•</span>
+              <span>Conservative under uncertainty</span><span class="dot">•</span>
+              <span>Designed for issuers, platforms, and law firms</span>
+            </div>
           </div>
 
-          <p class="muted2" style="margin:12px 0 0; font-size:12px; line-height:1.55">
-            Built on a fixed five-factor model. Conservative under uncertainty. Designed for issuers, platforms, advisors and law firms.
-          </p>
-        </div>
-
-        <!-- Sample evaluation snapshot (always the right one) -->
-        <div class="card" aria-label="Sample evaluation snapshot">
-          <div class="snapshot">
-            <div class="snap-top">
-              <div>
-                <div class="snap-kicker">Sample evaluation snapshot</div>
-                <div class="muted2" style="font-size:13px; margin-top:6px">Overall value-add score</div>
+          <!-- Sample evaluation snapshot (kept as the primary card) -->
+          <div class="snapshot card" aria-label="Sample evaluation snapshot">
+            <div class="snapTop">
+              <div style="display:flex; flex-direction:column; gap:6px;">
+                <div class="small" style="letter-spacing:2px; text-transform:uppercase; color:var(--muted-2); font-weight:650;">Sample evaluation snapshot</div>
+                <div class="small">Overall value-add score</div>
               </div>
-              <div style="text-align:right">
-                <div class="snap-chip">Private company STO</div>
-                <div class="snap-score" style="margin-top:8px">
-                  <span class="score-num">8.6</span>
-                  <span class="verdict"><span class="dot" style="width:7px;height:7px;box-shadow:none"></span> Verdict: go</span>
+
+              <div class="snapScore">
+                <div style="font-size: 34px; letter-spacing:-0.5px;">8.6</div>
+                <span class="verdict"><span style="width:8px;height:8px;border-radius:99px;background:var(--ok);display:inline-block;"></span> Verdict: go</span>
+              </div>
+            </div>
+
+            <div class="bars" aria-label="Factor breakdown">
+              <div class="small" style="letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; color:var(--muted-2); font-weight:650;">Factor breakdown</div>
+
+              <div class="barRow">
+                <div>New Opportunities</div>
+                <div class="barTrack"><div class="barFill" style="width:82%"></div></div>
+                <div style="text-align:right;">8.2</div>
+              </div>
+
+              <div class="barRow">
+                <div>Cost Savings</div>
+                <div class="barTrack"><div class="barFill" style="width:64%"></div></div>
+                <div style="text-align:right;">6.4</div>
+              </div>
+
+              <div class="barRow">
+                <div>Risk Reduction</div>
+                <div class="barTrack"><div class="barFill" style="width:58%"></div></div>
+                <div style="text-align:right;">5.8</div>
+              </div>
+
+              <div class="barRow">
+                <div>Tokenization Costs</div>
+                <div class="barTrack"><div class="barFill barFillNeg" style="width:38%"></div></div>
+                <div style="text-align:right;">3.8</div>
+              </div>
+
+              <div class="barRow">
+                <div>New Risks</div>
+                <div class="barTrack"><div class="barFill barFillNeg" style="width:31%"></div></div>
+                <div style="text-align:right;">3.1</div>
+              </div>
+
+              <div class="formula">
+                Built on the formula: (New Opportunities + Cost Savings + Risk Reduction) − (Tokenization Costs + New Risks).
+              </div>
+            </div>
+
+            <div class="tagline">
+              The output is structured for internal sharing: factor logic, explicit assumptions, and concrete levers to improve the score.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- WHO IT'S FOR (NO BAND, tighter) ---------- -->
+    <section class="padMid">
+      <div class="container sectionInner">
+        <p class="eyebrow">Who it’s for</p>
+        <h2>Built for professional tokenization stakeholders</h2>
+        <p class="lead">For teams that must be credible, conservative, and execution-oriented — and need a repeatable way to qualify real projects.</p>
+
+        <div class="grid3">
+          <div class="cardPlain cardPadLg">
+            <h3>Issuers & Asset Owners</h3>
+            <p class="small">Decide whether tokenization is worth pursuing and what structure is defensible.</p>
+            <ul class="mutedList">
+              <li>Early Go/No-Go clarity</li>
+              <li>Top blockers + mitigation path</li>
+              <li>Design options that move viability</li>
+            </ul>
+          </div>
+
+          <div class="cardPlain cardPadLg">
+            <h3>Law Firms & Advisors</h3>
+            <p class="small">Pre-screen ideas and turn discovery into structured advisory.</p>
+            <ul class="mutedList">
+              <li>Comparable case scoring</li>
+              <li>Fast discovery of real constraints</li>
+              <li>Stakeholder alignment insights</li>
+            </ul>
+          </div>
+
+          <div class="cardPlain cardPadLg">
+            <h3>Platforms, Venues & Custodians</h3>
+            <p class="small">Qualify pipeline and reduce time wasted on weak designs.</p>
+            <ul class="mutedList">
+              <li>Better deal qualification</li>
+              <li>Pinpoint missing inputs quickly</li>
+              <li>Repeatable evaluation workflow</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- HOW IT WORKS (BAND 2) ---------- -->
+    <section class="band padMid" id="how">
+      <div class="container sectionInner">
+        <p class="eyebrow">How it works</p>
+        <h2>A conservative workflow in three steps</h2>
+        <p class="lead">Designed to be useful early — before heavy legal/vendor work begins.</p>
+
+        <div class="grid4">
+          <div class="cardPlain cardPadLg">
+            <h3>1) You describe the case</h3>
+            <p class="small">Asset, jurisdictions, investor scope, liquidity plan, custody model, constraints, and objectives.</p>
+          </div>
+          <div class="cardPlain cardPadLg">
+            <h3>2) TVAC evaluates added value</h3>
+            <p class="small">Scores the case on five factors and applies the core formula: (NO + CS + RR) − (TC + NR).</p>
+          </div>
+          <div class="cardPlain cardPadLg">
+            <h3>3) You get a verdict + a deep report</h3>
+            <p class="small">A decision-grade, case-specific report (15–20 pages, ~6,000 words) with rationale, assumptions, blockers and levers.</p>
+          </div>
+          <div class="cardPlain cardPadLg">
+            <h3>Optional: deeper assessment</h3>
+            <p class="small">Where relevant: risk register, mitigation roadmap, stakeholder alignment, and “what-if” design paths.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PRODUCT PROOF (BAND 3) ---------- -->
+    <section class="band padMid" id="methodology">
+      <div class="container sectionInner">
+        <p class="eyebrow">Product proof</p>
+        <h2>Not just a verdict — a concrete, case-specific report</h2>
+        <p class="lead">
+          TVAC produces structured output you can share internally: factor logic, explicit assumptions, risk focus, and clear next steps.
+          Click any screenshot to open it full-size.
+        </p>
+
+        <div class="splitCard card cardPadLg">
+          <div>
+            <div class="gallery" aria-label="Report excerpts gallery">
+              <!-- Card 1 -->
+              <div class="shotCard" role="button" tabindex="0"
+                   data-title="Factor breakdown — detailed explanation"
+                   data-src="assets/tvac-report-factor-breakdown.png"
+                   data-fallback="/tvac-report-factor-breakdown.png">
+                <div class="shotFrame">
+                  <img
+                    src="assets/tvac-report-factor-breakdown.png"
+                    alt="TVAC report excerpt: factor breakdown"
+                    onerror="this.onerror=null; this.src='/tvac-report-factor-breakdown.png';"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="shotMeta">
+                  <p class="shotTitle">Factor breakdown (why each score)</p>
+                  <p class="shotCap">Ties scores to your case inputs. Shows what drives upside vs friction.</p>
+                  <span class="shotHint">View full size ↗</span>
+                </div>
+              </div>
+
+              <!-- Card 2 -->
+              <div class="shotCard" role="button" tabindex="0"
+                   data-title="Table of contents + result snapshot"
+                   data-src="assets/tvac-report-toc-result.png"
+                   data-fallback="/tvac-report-toc-result.png">
+                <div class="shotFrame">
+                  <img
+                    src="assets/tvac-report-toc-result.png"
+                    alt="TVAC report excerpt: table of contents and result snapshot"
+                    onerror="this.onerror=null; this.src='/tvac-report-toc-result.png';"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="shotMeta">
+                  <p class="shotTitle">Report structure (A–Z)</p>
+                  <p class="shotCap">A navigable walkthrough: verdict, scores, sources, pathways, friction & roadmap.</p>
+                  <span class="shotHint">View full size ↗</span>
+                </div>
+              </div>
+
+              <!-- Card 3 -->
+              <div class="shotCard" role="button" tabindex="0"
+                   data-title="Risk heatmap & mitigation focus"
+                   data-src="assets/tvac-report-risk-heatmap.png"
+                   data-fallback="/tvac-report-risk-heatmap.png">
+                <div class="shotFrame">
+                  <img
+                    src="assets/tvac-report-risk-heatmap.png"
+                    alt="TVAC report excerpt: risk heatmap"
+                    onerror="this.onerror=null; this.src='/tvac-report-risk-heatmap.png';"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="shotMeta">
+                  <p class="shotTitle">Risk heatmap</p>
+                  <p class="shotCap">Shows where to focus mitigation first (highest impact × likelihood).</p>
+                  <span class="shotHint">View full size ↗</span>
                 </div>
               </div>
             </div>
-
-            <div class="bars">
-              <div class="muted2" style="font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:900; margin-bottom:8px">Factor breakdown</div>
-
-              <div class="bar-row">
-                <div>New Opportunities</div>
-                <div class="bar-track"><div class="bar-fill" style="width:82%"></div></div>
-                <div style="text-align:right; font-weight:900; color:var(--text)">8.2</div>
-              </div>
-              <div class="bar-row">
-                <div>Cost Savings</div>
-                <div class="bar-track"><div class="bar-fill" style="width:64%"></div></div>
-                <div style="text-align:right; font-weight:900; color:var(--text)">6.4</div>
-              </div>
-              <div class="bar-row">
-                <div>Risk Reduction</div>
-                <div class="bar-track"><div class="bar-fill" style="width:58%"></div></div>
-                <div style="text-align:right; font-weight:900; color:var(--text)">5.8</div>
-              </div>
-              <div class="bar-row">
-                <div>Tokenization Costs</div>
-                <div class="bar-track"><div class="bar-fill bad" style="width:38%"></div></div>
-                <div style="text-align:right; font-weight:900; color:var(--text)">3.8</div>
-              </div>
-              <div class="bar-row" style="margin-bottom:0">
-                <div>New Risks</div>
-                <div class="bar-track"><div class="bar-fill bad" style="width:31%"></div></div>
-                <div style="text-align:right; font-weight:900; color:var(--text)">3.1</div>
-              </div>
-            </div>
-
-            <div class="snap-foot">
-              Built on the formula: (New Opportunities + Cost Savings + Risk Reduction) − (Tokenization Costs + New Risks).
-            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <!-- WHO IT'S FOR -->
-  <section id="who">
-    <div class="container">
-      <div class="kicker">Who it’s for</div>
-      <h2 class="h2">Built for professional tokenization stakeholders</h2>
-      <p class="muted" style="max-width:80ch; line-height:1.65; margin:0">
-        TVAC is designed for teams that must be credible, conservative, and execution-oriented.
-        It helps you screen cases early — before heavy legal/vendor work begins.
-      </p>
-
-      <div class="grid3">
-        <div class="card"><div class="card-inner">
-          <div class="card-title">Issuers & Asset Owners</div>
-          <div class="card-sub">Decide if tokenization is worth pursuing — and how to structure it.</div>
-          <ul class="bullets">
-            <li>Early Go/No-Go clarity</li>
-            <li>Top blockers & mitigation path</li>
-            <li>Design options that move viability</li>
-          </ul>
-        </div></div>
-
-        <div class="card"><div class="card-inner">
-          <div class="card-title">Law Firms & Advisors</div>
-          <div class="card-sub">Pre-screen client ideas and improve advisory efficiency.</div>
-          <ul class="bullets">
-            <li>Comparable case scoring</li>
-            <li>Fast discovery of constraints</li>
-            <li>Stakeholder alignment insights</li>
-          </ul>
-        </div></div>
-
-        <div class="card"><div class="card-inner">
-          <div class="card-title">Platforms, Venues & Custodians</div>
-          <div class="card-sub">Qualify pipeline and reduce time wasted on weak designs.</div>
-          <ul class="bullets">
-            <li>Better deal qualification</li>
-            <li>Pinpoint missing inputs quickly</li>
-            <li>Repeatable evaluation workflow</li>
-          </ul>
-        </div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRODUCT PROOF -->
-  <section id="product-proof">
-    <div class="container">
-      <div class="kicker">Product proof</div>
-      <h2 class="h2">Not just a verdict — a concrete, case-specific report</h2>
-      <p class="muted" style="max-width:90ch; line-height:1.65; margin:0">
-        TVAC produces structured output you can share internally: factor logic, assumptions, and clear next steps.
-      </p>
-
-      <div class="proof-grid">
-        <div>
-          <div class="thumb-grid" aria-label="Report excerpts">
-            <div class="thumb">
-              <button class="open-btn" type="button" data-open="factor" aria-label="Open image full-size">Open ↗</button>
-              <div class="imgwrap">
-                <img id="img-factor" alt="Report excerpt: Factor breakdown" />
-              </div>
-              <div class="caption">
-                <strong>Factor breakdown — detailed explanation</strong>
-                <span>Why each score was chosen, tied back to inputs and assumptions.</span>
-              </div>
-            </div>
-
-            <div class="thumb">
-              <button class="open-btn" type="button" data-open="toc" aria-label="Open image full-size">Open ↗</button>
-              <div class="imgwrap">
-                <img id="img-toc" alt="Report excerpt: Table of contents & result" />
-              </div>
-              <div class="caption">
-                <strong>Report overview — structure & result</strong>
-                <span>A navigable end-to-end report (A–Z) with sections and outputs.</span>
-              </div>
-            </div>
-
-            <div class="thumb">
-              <button class="open-btn" type="button" data-open="risk" aria-label="Open image full-size">Open ↗</button>
-              <div class="imgwrap">
-                <img id="img-risk" alt="Report excerpt: Risk heatmap" />
-              </div>
-              <div class="caption">
-                <strong>Risk heatmap — mitigation focus</strong>
-                <span>Shows where to focus mitigation first (highest impact + likelihood).</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="side">
-            <div class="card-title">Decision-grade clarity for risk-averse stakeholders</div>
-            <div class="card-sub">
+          <div class="cardPlain cardPadLg" style="height:100%;">
+            <h3>Decision-grade clarity for risk-averse stakeholders</h3>
+            <p class="small">
               TVAC is designed for fintech/legal/institutional environments where trust comes from structure and transparency.
-            </div>
-            <ul class="bullets">
-              <li>Fixed five-factor rubric and clear verdict logic</li>
+            </p>
+
+            <ul class="mutedList">
+              <li>Fixed five-factor rubric + clear verdict logic</li>
               <li>Explicit assumptions and missing inputs</li>
               <li>Concrete recommendations to improve added value</li>
-              <li>Shareable report output for stakeholder alignment</li>
+              <li>Shareable output for stakeholder alignment</li>
             </ul>
 
-            <div class="sep"></div>
+            <div class="cardPlain cardPadLg" style="margin-top:14px;">
+              <h3 style="margin-bottom:6px;">Want the technical note?</h3>
+              <p class="small" style="margin-top:0;">
+                Download the Methodology & Calibration PDF (v1.1).
+              </p>
 
-            <div class="card-title" style="margin-bottom:6px">Want the technical note?</div>
-            <div class="muted" style="font-size:13px; line-height:1.55">
-              Download the Methodology & Calibration PDF (v1.1).
-            </div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px">
-              <a class="btn" href="#methodology">Methodology</a>
-              <a class="btn primary" id="downloadPdfTop" href="tvac-methodology-v1.1.pdf" download>Download PDF ↓</a>
+              <div class="btnRow">
+                <a class="btn" href="#methodology">Methodology</a>
+                <a class="btn btnPrimary" href="/tvac-methodology-v1.1.pdf" download
+                   onclick="/* fallback if needed */">Download PDF ↓</a>
+              </div>
+
+              <p class="small" style="margin-top:10px;">
+                If the download link fails due to filename differences, ensure the PDF exists as <b>/tvac-methodology-v1.1.pdf</b> in repo root.
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- HOW IT WORKS -->
-  <section id="how">
-    <div class="container">
-      <div class="kicker">How it works</div>
-      <h2 class="h2">A conservative workflow in three steps</h2>
-      <p class="muted" style="max-width:90ch; line-height:1.65; margin:0">
-        Designed to be useful early — before heavy legal/vendor work begins.
-      </p>
+    <!-- ---------- PRICING (NO BAND) ---------- -->
+    <section class="padMid" id="pricing">
+      <div class="container sectionInner">
+        <p class="eyebrow">Pricing</p>
+        <h2>Start with a deep report — or go Pro</h2>
+        <p class="lead">Keep it simple: one case, decision-grade output. Then scale if needed.</p>
 
-      <div class="steps">
-        <div class="step">
-          <strong>1) You describe the case</strong>
-          <p>Asset, jurisdictions, investor scope, liquidity plan, custody model, constraints and objectives.</p>
-        </div>
-        <div class="step">
-          <strong>2) TVAC evaluates added value</strong>
-          <p>TVAC scores the case on five factors and applies the core formula: (NO+CS+RR) − (TC+NR).</p>
-        </div>
-        <div class="step">
-          <strong>3) You get a verdict + a case-specific report</strong>
-          <p>Verdict, blockers, design levers, assumptions, and concrete recommendations — optimized for decision makers.</p>
-        </div>
-        <div class="step">
-          <strong>Optional: Deep Assessment</strong>
-          <p>A structured, end-to-end report with risk register, stakeholder alignment and “what-if” design paths.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PRICING -->
-  <section id="pricing">
-    <div class="container">
-      <div class="kicker">Pricing</div>
-      <h2 class="h2">Start with a deep report — or go Pro</h2>
-      <p class="muted" style="max-width:90ch; line-height:1.65; margin:0">
-        Keep it simple: one case, decision-grade output. Then scale if needed.
-      </p>
-
-      <div class="pricing">
-        <div class="card">
-          <div class="card-inner">
-            <div class="price-head">
-              <div>
-                <div class="kicker" style="color:rgba(245,158,11,.90)">One-off deep assessment report</div>
-                <div class="price">€385 <span class="muted2" style="font-size:13px; font-weight:800">per report (intro price, ex. VAT)</span></div>
-              </div>
-              <div class="badge">Decision-grade</div>
+        <div class="grid2" style="align-items: stretch;">
+          <div class="cardPlain cardPadLg" style="border-color: rgba(255,154,60,0.35);">
+            <p class="eyebrow" style="margin-bottom:10px;">One-off deep assessment report</p>
+            <div style="display:flex; align-items:baseline; gap:10px;">
+              <div style="font-size: 34px; font-weight: 750; letter-spacing:-0.4px;">€385</div>
+              <div class="small">per report (intro price, ex. VAT)</div>
             </div>
-            <p class="muted" style="margin:10px 0 0; line-height:1.6">
-              A full structured report: verdict, factor scores, rationale, blockers, levers, and practical next steps.
+
+            <p class="small" style="margin-top:10px;">
+              A full, structured report: verdict, factor scores, rationale, blockers, levers, and practical next steps —
+              typically <b>15–20 pages</b> (~<b>6,000 words</b>) depending on case complexity.
             </p>
-            <ul class="list">
-              <li>Verdict + reasoning</li>
-              <li>Case-specific recommendations</li>
-              <li>Risk register + mitigation roadmap (where relevant)</li>
+
+            <ul class="mutedList">
+              <li>Decision-grade verdict and reasoning</li>
+              <li>Case-specific recommendations to improve added value</li>
+              <li>Risk register + mitigation focus (where relevant)</li>
               <li>Stakeholder alignment (“who pays vs who benefits”)</li>
               <li>What-if options (how to improve the score)</li>
             </ul>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px">
-              <a class="btn primary" href="mailto:michael@tvacai.com?subject=Order%20Deep%20Assessment%20Report">Order deep report →</a>
-              <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20Question">Ask a question</a>
+
+            <div class="btnRow">
+              <a class="btn btnPrimary" href="mailto:michael@tvacai.com?subject=Order%20TVAC%20Deep%20Assessment">Order deep report →</a>
+              <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20question">Ask a question</a>
             </div>
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-inner">
-            <div class="price-head">
-              <div>
-                <div class="kicker" style="color:rgba(245,158,11,.90)">TVAC Pro (subscription)</div>
-                <div class="muted" style="line-height:1.6; margin-top:6px">
-                  For platforms, advisors and teams evaluating multiple cases monthly.
-                </div>
-              </div>
-              <div class="badge">Recurring</div>
-            </div>
+          <div class="cardPlain cardPadLg">
+            <p class="eyebrow" style="margin-bottom:10px;">TVAC Pro (subscription)</p>
+            <p class="small">For platforms, advisors and teams evaluating multiple cases monthly.</p>
 
-            <ul class="list">
+            <ul class="mutedList">
               <li>Recurring access during subscription period (fair-use)</li>
               <li>Consistent evaluation framework across cases</li>
               <li>Best for pipelines, screening and structured advisory</li>
             </ul>
 
-            <div style="display:flex; flex-direction:column; gap:10px; margin-top:14px">
-              <a class="btn primary" href="mailto:michael@tvacai.com?subject=Start%2012-month%20Pro%20%E2%80%94%20%E2%82%AC275%2Fmonth">Start 12-month Pro — €275/month →</a>
-              <a class="btn" href="mailto:michael@tvacai.com?subject=Start%206-month%20Pro%20%E2%80%94%20%E2%82%AC325%2Fmonth">Start 6-month Pro — €325/month</a>
+            <div class="btnRow" style="margin-top:14px;">
+              <a class="btn btnPrimary" href="mailto:michael@tvacai.com?subject=Start%2012-month%20TVAC%20Pro">Start 12-month Pro — €275/month →</a>
+              <a class="btn" href="mailto:michael@tvacai.com?subject=Start%206-month%20TVAC%20Pro">Start 6-month Pro — €325/month</a>
             </div>
 
-            <p class="muted2" style="margin:12px 0 0; font-size:13px; line-height:1.55">
-              Enterprise pilot or integration? Email: <a class="link" href="mailto:michael@tvacai.com">michael@tvacai.com</a>
+            <p class="small" style="margin-top:14px;">
+              Enterprise pilot or integration? Email: <a href="mailto:michael@tvacai.com" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">michael@tvacai.com</a>
             </p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FAQ -->
-  <section id="faq">
-    <div class="container">
-      <div class="kicker">FAQ</div>
-      <h2 class="h2">Short answers to the hard questions</h2>
-      <p class="muted" style="max-width:90ch; line-height:1.65; margin:0">
-        TVAC is decision support: conservative, structured, and explicit about assumptions.
-      </p>
+    <!-- ---------- FAQ (BAND 4) ---------- -->
+    <section class="band padMid" id="faq">
+      <div class="container sectionInner">
+        <p class="eyebrow">FAQ</p>
+        <h2>Answers to the hard questions</h2>
+        <p class="lead">TVAC is decision support: conservative, structured, and explicit about assumptions and uncertainty.</p>
 
-      <div class="faq">
-        <details>
-          <summary>How is TVAC different from “just asking ChatGPT”?</summary>
-          <p>TVAC enforces a fixed rubric (five factors), explicit scoring, and a consistent verdict logic. It is designed to be repeatable and shareable across stakeholders — not a free-form narrative.</p>
-        </details>
-        <details>
-          <summary>Is TVAC legal, tax, or investment advice?</summary>
-          <p>No. TVAC provides informational analysis based on your inputs and a defined rubric. You should validate with qualified legal/tax/investment professionals.</p>
-        </details>
-        <details>
-          <summary>How can TVAC assess added value without all numbers?</summary>
-          <p>Many early decisions are qualitative. TVAC captures uncertainty explicitly and flags missing inputs, assumptions, and the strongest blockers/levers before costly work begins.</p>
-        </details>
-        <details>
-          <summary>What do I get in Quick Verdict vs Deep Assessment?</summary>
-          <p>Quick Verdict gives Go/Borderline/No-Go + five factor scores + top blockers/levers. Deep Assessment adds a structured, end-to-end report with rationale, risk register and implementation considerations.</p>
-        </details>
+        <div class="faqGrid">
+          <details class="faqItem">
+            <summary>How is TVAC different from “just asking ChatGPT”?</summary>
+            <div class="faqA">
+              <p>TVAC is not a generic chat. It applies a fixed five-factor rubric and returns a structured outcome: factor scores, verdict logic, explicit assumptions, and concrete levers.</p>
+              <p>The goal is repeatability and comparability across cases — so decisions can be defended internally and improved iteratively.</p>
+            </div>
+          </details>
+
+          <details class="faqItem">
+            <summary>What do I get in Quick Verdict vs Deep Assessment?</summary>
+            <div class="faqA">
+              <p><b>Quick Verdict</b> is a fast pre-screen: Go / Borderline / No-Go + five factor scores + top blockers + top levers.</p>
+              <p><b>Deep Assessment</b> adds the full, case-specific report (typically 15–20 pages / ~6,000 words): detailed rationale, assumptions, friction points, implementation considerations, and actionable recommendations.</p>
+            </div>
+          </details>
+
+          <details class="faqItem">
+            <summary>How can TVAC score added value without all the numbers?</summary>
+            <div class="faqA">
+              <p>Many early tokenization decisions are made under uncertainty. TVAC makes that uncertainty explicit: it lists assumptions, highlights missing inputs, and scores conservatively based on what is provided.</p>
+              <p>You can then improve the score by improving the design (or adding missing facts) and re-evaluating.</p>
+            </div>
+          </details>
+
+          <details class="faqItem">
+            <summary>Is TVAC legal, tax, or investment advice?</summary>
+            <div class="faqA">
+              <p>No. TVAC provides informational analysis based on your inputs and a defined rubric. It is not legal, financial, investment, or tax advice.</p>
+              <p>Use the output to structure internal decisions — and validate jurisdiction-specific matters with qualified professionals.</p>
+            </div>
+          </details>
+
+          <details class="faqItem">
+            <summary>What kinds of cases is TVAC best suited for?</summary>
+            <div class="faqA">
+              <p>TVAC is most useful where the “added value question” is genuinely non-trivial: private company STOs, fund structures, credit/receivables, infrastructure/energy projects, and other situations where distribution, settlement, governance, and compliance shape feasibility.</p>
+              <p>It is less useful for “tokenize everything” ideas where there is no clear delta vs conventional rails.</p>
+            </div>
+          </details>
+
+          <details class="faqItem">
+            <summary>What inputs should I provide to get a high-quality report?</summary>
+            <div class="faqA">
+              <p>At minimum: asset type, jurisdictions, target investors (retail/professional), custody model, liquidity plan (if any), regulatory posture (assumptions), and the business objective.</p>
+              <p>The more concrete you are about constraints and distribution, the more precise the friction analysis and recommendations become.</p>
+            </div>
+          </details>
+
+          <details class="faqItem">
+            <summary>Can TVAC be used as a repeatable framework across my pipeline?</summary>
+            <div class="faqA">
+              <p>Yes — that’s a core point. The rubric is fixed, which makes outputs comparable across cases and time.</p>
+              <p>Teams can use it to standardize screening, focus diligence on the right unknowns, and document why a case was paused or advanced.</p>
+            </div>
+          </details>
+
+          <details class="faqItem">
+            <summary>How fast is turnaround?</summary>
+            <div class="faqA">
+              <p>Quick Verdict: typically 24–48 hours depending on queue and input clarity.</p>
+              <p>Deep Assessment: agreed case-by-case; the goal is fast delivery while keeping the analysis conservative and structured.</p>
+            </div>
+          </details>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ABOUT + METHODOLOGY -->
-  <section id="methodology">
-    <div class="container">
-      <div class="kicker">About</div>
-      <h2 class="h2">Built for credibility and commercial use</h2>
+    <!-- ---------- ABOUT + BOOK LINK (NO BAND) ---------- -->
+    <section class="padTight" id="about">
+      <div class="container sectionInner">
+        <p class="eyebrow">About</p>
+        <h2>Built for credibility and commercial use</h2>
+        <p class="lead">
+          TVAC is built by Michael Juul Rugaard — author of the book
+          <a
+            href="https://www.amazon.com/stores/author/B0FF29M7NF/about?ccs_id=6f5cb35f-1078-40eb-a5c5-82cc68ad9c25"
+            target="_blank" rel="noreferrer"
+            style="color: var(--accent); text-decoration: underline; text-underline-offset: 3px;"
+          >Asset Tokenization (2025)</a>
+          — as a practical evaluation engine for real tokenization decisions.
+          Contact: <a href="mailto:michael@tvacai.com" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">michael@tvacai.com</a>
+        </p>
 
-      <div class="about">
-        <div class="card">
-          <div class="card-inner">
-            <p class="muted" style="margin:0; line-height:1.75">
-              TVAC is built by Michael Juul Rugaard — author of the book
-              <a class="link" href="https://www.amazon.com/stores/author/B0FF29M7NF/about?ccs_id=6f5cb35f-1078-40eb-a5c5-82cc68ad9c25" target="_blank" rel="noopener">
-                Asset Tokenization (2025)
-              </a>
-              — as a practical evaluation engine for real tokenization decisions.
-              Contact: <a class="link" href="mailto:michael@tvacai.com">michael@tvacai.com</a>
-            </p>
+        <div class="cardPlain cardPadLg">
+          <h3>Methodology & Calibration</h3>
+          <p class="small" style="margin-top:0;">
+            Non-marketing technical note describing the five-factor model, verdict logic, calibration approach, and limitations.
+          </p>
+          <div class="btnRow">
+            <a class="btn btnPrimary" href="/tvac-methodology-v1.1.pdf" download>Download PDF ↓</a>
+            <a class="btn" href="#pricing">Pricing</a>
+            <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">Quick Verdict</a>
           </div>
         </div>
-
-        <div class="card">
-          <div class="card-inner">
-            <div class="card-title">Methodology & Calibration</div>
-            <div class="card-sub">
-              Non-marketing technical note describing the five-factor model, verdict logic, calibration approach, and limitations.
-            </div>
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px">
-              <a class="btn primary" id="downloadPdfBottom" href="tvac-methodology-v1.1.pdf" download>Download PDF ↓</a>
-              <a class="btn" href="#pricing">Pricing</a>
-              <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">Quick Verdict</a>
-            </div>
-          </div>
-        </div>
       </div>
+    </section>
 
-    </div>
-  </section>
+    <!-- ---------- FOOTER (CENTERED) ---------- -->
+    <footer>
+      <div class="container">
+        <p class="footLine">
+          Contact:
+          <a href="mailto:michael@tvacai.com">michael@tvacai.com</a>
+          &nbsp;·&nbsp;
+          <a href="https://www.linkedin.com/in/michaeljuulrugaard/" target="_blank" rel="noreferrer">LinkedIn</a>
+        </p>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="container">
-      <div class="foot">
-        <div>
-          <strong style="display:block; margin-bottom:6px">Contact</strong>
-          <small>
-            Email: <a class="link" href="mailto:michael@tvacai.com">michael@tvacai.com</a>
-            &nbsp;·&nbsp;
-            <a class="link" href="https://www.linkedin.com/in/michaeljuulrugaard/" target="_blank" rel="noopener">LinkedIn</a>
-          </small>
+        <div class="footDisc">
+          <b>Disclaimer.</b> TVAC provides informational analysis based on your inputs and a defined rubric. It is not legal,
+          financial, investment, or tax advice. Always validate jurisdiction-specific matters with qualified professionals.
         </div>
-        <div style="max-width: 72ch">
-          <small>
-            Disclaimer. TVAC provides informational analysis based on your inputs and a defined rubric.
-            It is not legal, financial, investment, or tax advice. Always validate with qualified professionals.
-          </small>
+
+        <div class="copyright">© 2025 Michael Juul Rugaard</div>
+      </div>
+    </footer>
+
+    <!-- ---------- LIGHTBOX MODAL ---------- -->
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <div class="lightboxInner" role="dialog" aria-modal="true" aria-label="Image preview">
+        <div class="lightboxTop">
+          <div class="lightboxTitle" id="lightboxTitle">Preview</div>
+          <button class="closeBtn" id="closeLightbox">Close ✕</button>
+        </div>
+        <div class="lightboxBody">
+          <img id="lightboxImg" alt="Full size preview" />
         </div>
       </div>
     </div>
-  </footer>
 
-  <!-- Modal -->
-  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Image viewer">
-    <div class="modal-card">
-      <div class="modal-top">
-        <strong id="modalTitle">Report excerpt</strong>
-        <div class="modal-actions">
-          <a class="m-btn" id="modalOpenNew" href="#" target="_blank" rel="noopener">Open in new tab ↗</a>
-          <button class="m-btn" id="modalClose" type="button">Close ✕</button>
-        </div>
-      </div>
-      <img class="modal-img" id="modalImg" alt="Full-size report excerpt" />
-    </div>
-  </div>
+    <script>
+      /* ---------- THEME TOGGLE (dark/light) ---------- */
+      (function () {
+        const root = document.documentElement;
+        const btn = document.getElementById("themeBtn");
+        const icon = document.getElementById("themeIcon");
 
-  <script>
-    // ---------- Theme toggle (keeps dark/light) ----------
-    (function(){
-      const saved = localStorage.getItem("tvac-theme");
-      if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
-      const btn = document.getElementById("themeToggle");
-      btn.addEventListener("click", () => {
-        const cur = document.documentElement.getAttribute("data-theme") || "dark";
-        const next = cur === "light" ? "dark" : "light";
-        document.documentElement.setAttribute("data-theme", next);
-        localStorage.setItem("tvac-theme", next);
-      });
-    })();
+        function setTheme(theme) {
+          root.setAttribute("data-theme", theme);
+          localStorage.setItem("tvac_theme", theme);
+          icon.textContent = theme === "light" ? "☀️" : "🌙";
+        }
 
-    // ---------- Robust asset loading (handles your "(2)" filenames too) ----------
-    async function pickFirstExisting(urls){
-      for (const u of urls){
-        try{
-          const res = await fetch(u, { method: "HEAD", cache: "no-store" });
-          if (res.ok) return u;
-        } catch(e){}
-      }
-      return urls[0];
-    }
+        const saved = localStorage.getItem("tvac_theme");
+        if (saved === "light" || saved === "dark") setTheme(saved);
+        else setTheme("dark");
 
-    (async function(){
-      // Images (prefer assets/ but allow root + weird name)
-      const factorUrls = [
-        "assets/tvac-report-factor-breakdown.png",
-        "tvac-report-factor-breakdown.png"
-      ];
+        btn.addEventListener("click", () => {
+          const cur = root.getAttribute("data-theme");
+          setTheme(cur === "light" ? "dark" : "light");
+        });
+      })();
 
-      const tocUrls = [
-        "assets/tvac-report-toc-result.png",
-        "tvac-report-toc-result.png",
-        "tvac-report-toc-result (2).png",
-        "tvac-report-toc-result%20(2).png"
-      ];
+      /* ---------- REPORT GALLERY LIGHTBOX ---------- */
+      (function () {
+        const lb = document.getElementById("lightbox");
+        const lbImg = document.getElementById("lightboxImg");
+        const lbTitle = document.getElementById("lightboxTitle");
+        const closeBtn = document.getElementById("closeLightbox");
 
-      const riskUrls = [
-        "assets/tvac-report-risk-heatmap.png",
-        "tvac-report-risk-heatmap.png"
-      ];
+        function openLightbox(title, src, fallback) {
+          lbTitle.textContent = title || "Preview";
+          lb.classList.add("open");
+          lb.setAttribute("aria-hidden", "false");
 
-      const factor = await pickFirstExisting(factorUrls);
-      const toc = await pickFirstExisting(tocUrls);
-      const risk = await pickFirstExisting(riskUrls);
+          lbImg.onerror = null;
+          lbImg.src = src;
+          lbImg.onerror = function () {
+            if (fallback) {
+              lbImg.onerror = null;
+              lbImg.src = fallback;
+            }
+          };
+        }
 
-      document.getElementById("img-factor").src = factor;
-      document.getElementById("img-toc").src = toc;
-      document.getElementById("img-risk").src = risk;
+        function closeLightbox() {
+          lb.classList.remove("open");
+          lb.setAttribute("aria-hidden", "true");
+          lbImg.src = "";
+        }
 
-      // PDF (prefer v1.1 but allow earlier accidental name)
-      const pdfUrls = [
-        "tvac-methodology-v1.1.pdf",
-        "tvac-methodology-v1 (1).pdf",
-        "tvac-methodology-v1.pdf"
-      ];
-      const pdf = await pickFirstExisting(pdfUrls);
-      document.getElementById("downloadPdfTop").href = pdf;
-      document.getElementById("downloadPdfBottom").href = pdf;
+        document.querySelectorAll(".shotCard").forEach((card) => {
+          const title = card.getAttribute("data-title");
+          const src = card.getAttribute("data-src");
+          const fallback = card.getAttribute("data-fallback");
 
-      // Wire lightbox
-      const map = {
-        factor: { src: factor, title: "Factor breakdown — detailed explanation" },
-        toc: { src: toc, title: "Report overview — structure & result" },
-        risk: { src: risk, title: "Risk heatmap — mitigation focus" }
-      };
+          card.addEventListener("click", () => openLightbox(title, src, fallback));
+          card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openLightbox(title, src, fallback);
+            }
+          });
+        });
 
-      const modal = document.getElementById("modal");
-      const modalImg = document.getElementById("modalImg");
-      const modalTitle = document.getElementById("modalTitle");
-      const modalClose = document.getElementById("modalClose");
-      const modalOpenNew = document.getElementById("modalOpenNew");
-
-      function openModal(key){
-        const item = map[key];
-        if (!item) return;
-        modalTitle.textContent = item.title;
-        modalImg.src = item.src;
-        modalOpenNew.href = item.src;
-        modal.classList.add("open");
-      }
-      function closeModal(){
-        modal.classList.remove("open");
-        modalImg.src = "";
-      }
-
-      document.querySelectorAll("[data-open]").forEach(btn => {
-        btn.addEventListener("click", () => openModal(btn.getAttribute("data-open")));
-      });
-
-      modalClose.addEventListener("click", closeModal);
-      modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
-      window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
-
-    })();
-  </script>
-</body>
+        closeBtn.addEventListener("click", closeLightbox);
+        lb.addEventListener("click", (e) => {
+          if (e.target === lb) closeLightbox();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && lb.classList.contains("open")) closeLightbox();
+        });
+      })();
+    </script>
+  </body>
 </html>
