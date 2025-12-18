@@ -127,6 +127,8 @@
       align-items: center;
       gap: 0.75rem;
       font-size: 0.85rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
 
     .pill {
@@ -187,6 +189,21 @@
       border-color: rgba(248, 250, 252, 0.5);
       color: #e5e7eb;
       background: rgba(15, 23, 42, 0.9);
+    }
+
+    /* Trust button for Methodology PDF */
+    .btn-trust {
+      border-color: rgba(251, 146, 60, 0.9);
+      color: #fffbeb;
+      background: rgba(124, 45, 18, 0.55);
+    }
+
+    .btn-trust:hover {
+      border-color: rgba(251, 146, 60, 1);
+      background: rgba(124, 45, 18, 0.78);
+      color: #fffbeb;
+      transform: translateY(-1px);
+      box-shadow: 0 14px 35px rgba(124, 45, 18, 0.45);
     }
 
     .btn-icon {
@@ -269,6 +286,7 @@
       display: flex;
       align-items: center;
       gap: 0.45rem;
+      flex-wrap: wrap;
     }
 
     .dot-divider {
@@ -316,6 +334,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1rem;
+      gap: 0.8rem;
     }
 
     .hero-card-title {
@@ -342,6 +361,8 @@
       justify-content: space-between;
       align-items: baseline;
       margin-bottom: 0.1rem;
+      gap: 0.8rem;
+      flex-wrap: wrap;
     }
 
     .hero-score-label {
@@ -570,6 +591,7 @@
       align-items: baseline;
       gap: 0.4rem;
       margin-bottom: 0.4rem;
+      flex-wrap: wrap;
     }
 
     .pricing-price {
@@ -652,6 +674,8 @@
     .cta-text-sub {
       font-size: 0.86rem;
       color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 46rem;
     }
 
     /* FOOTER -------------------------------------------------- */
@@ -720,10 +744,14 @@
       <div class="nav-cta">
         <div class="pill">
           <span class="pill-dot"></span>
-          <span>Demo & one-off report available</span>
+          <span>Demo, quick verdict & report available</span>
         </div>
         <a href="#how" class="btn btn-outline">
           How TVAC works
+        </a>
+        <a href="#quickverdict" class="btn btn-outline">
+          <span>Free Quick Verdict</span>
+          <span class="btn-icon">⚡</span>
         </a>
         <!-- One-off report CTA (scrolls to pricing / Stripe link) -->
         <a href="#oneoff" class="btn btn-primary">
@@ -759,6 +787,11 @@
           <!-- Scroll to one-off pricing / Stripe link -->
           <a href="#oneoff" class="btn btn-outline">
             <span>Order one-off case report</span>
+          </a>
+          <!-- NEW: Free Quick Verdict CTA -->
+          <a href="#quickverdict" class="btn btn-outline">
+            <span>Free Quick Verdict</span>
+            <span class="btn-icon">⚡</span>
           </a>
         </div>
 
@@ -841,6 +874,32 @@
               <strong>(New Opportunities + Cost Savings + Risk Reduction) – (Tokenization Costs + New Risks)</strong>.
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW: Quick Verdict CTA strip (super sharp) -->
+    <section class="cta-strip" id="quickverdict">
+      <div class="cta-inner">
+        <div>
+          <div class="cta-text-main">Free Quick Verdict <span style="opacity:0.75;">(limited weekly slots)</span></div>
+          <div class="cta-text-sub">
+            Send <strong>5–10 lines</strong> about your case. You’ll get:
+            <strong>Go / Borderline / No-Go</strong> + <strong>5 factor scores</strong> +
+            <strong>top blockers</strong> + <strong>top levers</strong>. Typical turnaround: <strong>24–48h</strong>.
+          </div>
+        </div>
+        <div style="display:flex; gap:0.7rem; flex-wrap:wrap;">
+          <a
+            href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request&body=Paste%20your%20case%20here%20(5%E2%80%9310%20lines)%3A%0A%0AAsset%3A%0AJurisdictions%20(issuer%20%2B%20sale)%3A%0AInvestor%20scope%3A%0ALiquidity%20plan%3A%0ACustody%20model%3A%0AObjectives%3A%0AConstraints%2Funknowns%3A%0A"
+            class="btn btn-primary"
+          >
+            <span>Request Quick Verdict</span>
+            <span class="btn-icon">→</span>
+          </a>
+          <a href="#oneoff" class="btn btn-outline">
+            <span>Or order the deep report</span>
+          </a>
         </div>
       </div>
     </section>
@@ -958,6 +1017,25 @@
           provide in the case description and structured fields. No live web-scraping or hidden
           external datasets are queried at runtime.
         </p>
+
+        <!-- NEW: Methodology PDF trust button -->
+        <!-- Place the PDF next to this index.html (or update the href to your hosted path) -->
+        <div style="display:flex; gap:0.7rem; flex-wrap:wrap; margin-top:0.9rem;">
+          <a
+            href="tvac-methodology-v1.1.pdf"
+            class="btn btn-trust"
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+          >
+            <span>Download Methodology PDF (v1.1)</span>
+            <span class="btn-icon">↓</span>
+          </a>
+          <a href="#quickverdict" class="btn btn-outline">
+            <span>Get a free Quick Verdict</span>
+            <span class="btn-icon">⚡</span>
+          </a>
+        </div>
       </div>
 
       <div class="grid-two">
@@ -1042,7 +1120,7 @@
               <span>Order one-off case report</span>
               <span class="btn-icon">→</span>
             </a>
-            <a href="mailto:michael@thetokenizer.io?subject=TVAC%20one-off%20case%20questions"
+            <a href="mailto:michael@tvacai.com?subject=TVAC%20one-off%20case%20questions"
                class="btn btn-outline">
               <span>Ask a question first</span>
             </a>
@@ -1079,7 +1157,7 @@
             </div>
             <p class="card-body" style="margin-top:0.7rem;">
               If you are interested in a custom enterprise pilot or integration,
-              you can also <a href="mailto:michael@thetokenizer.io?subject=TVAC%20enterprise%20pilot" class="footer-link">reach out directly by email</a>.
+              you can also <a href="mailto:michael@tvacai.com?subject=TVAC%20enterprise%20pilot" class="footer-link">reach out directly by email</a>.
             </p>
           </div>
         </div>
@@ -1162,6 +1240,11 @@
              class="btn btn-outline">
             <span>Order a one-off report</span>
           </a>
+          <a href="#quickverdict"
+             class="btn btn-outline">
+            <span>Free Quick Verdict</span>
+            <span class="btn-icon">⚡</span>
+          </a>
         </div>
       </div>
     </section>
@@ -1173,8 +1256,8 @@
         <div class="footer-contact-heading">Contact</div>
         <div>Michael Juul Rugaard</div>
         <div>
-          <a href="mailto:michael@thetokenizer.io" class="footer-highlight">
-            michael@thetokenizer.io
+          <a href="mailto:michael@tvacai.com" class="footer-highlight">
+            michael@tvacai.com
           </a>
         </div>
         <div>
