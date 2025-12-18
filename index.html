@@ -99,19 +99,19 @@
         min-width: 260px;
       }
 
-      /* LOGO: sharp corners, tighter right padding */
+      /* LOGO: sharp corners, tighter right padding + slightly less letter spacing */
       .logoBox {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 10px 12px;          /* tighter */
+        padding: 10px 7px 10px 12px; /* top right bottom left (tighter right side) */
         border: 2px solid var(--accent);
         border-radius: 0px;          /* sharp corners */
-        letter-spacing: 6px;
+        letter-spacing: 5px;         /* slightly tighter */
         font-weight: 700;
         font-size: 14px;
         line-height: 1;
-        min-width: 84px;
+        min-width: 78px;             /* slightly smaller */
       }
 
       .brandName {
@@ -172,7 +172,7 @@
       [data-theme="light"] .themeBtn { background: rgba(0,0,0,0.02); }
       .themeBtn:hover { transform: translateY(-1px); border-color: var(--border-2); }
 
-      /* ---------- SECTION BANDS (CONSISTENT) ---------- */
+      /* ---------- SECTION BANDS (NOW TOP-ORIENTED) ---------- */
       section { position: relative; }
 
       .band {
@@ -181,20 +181,22 @@
       .band::before {
         content: "";
         position: absolute;
-        inset: -120px 0 -120px 0;
+        /* IMPORTANT CHANGE: do NOT extend below the section; keep emphasis at the top */
+        inset: -140px 0 0 0; /* top right bottom left */
         pointer-events: none;
         z-index: 0;
         opacity: 0.95;
+        /* IMPORTANT CHANGE: glows placed near TOP (no bottom glow) */
         background:
-          radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.16), transparent 60%),
-          radial-gradient(900px 420px at 92% 20%, rgba(120,130,255,0.14), transparent 60%),
-          radial-gradient(900px 520px at 60% 110%, rgba(255,154,60,0.10), transparent 60%);
+          radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.18), transparent 60%),
+          radial-gradient(900px 420px at 92% 10%, rgba(120,130,255,0.14), transparent 60%),
+          radial-gradient(900px 420px at 55% 22%, rgba(255,154,60,0.10), transparent 62%);
       }
       [data-theme="light"] .band::before{
         background:
-          radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.16), transparent 60%),
-          radial-gradient(900px 420px at 92% 20%, rgba(80,90,210,0.12), transparent 60%),
-          radial-gradient(900px 520px at 60% 110%, rgba(255,154,60,0.10), transparent 60%);
+          radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.18), transparent 60%),
+          radial-gradient(900px 420px at 92% 10%, rgba(80,90,210,0.12), transparent 60%),
+          radial-gradient(900px 420px at 55% 22%, rgba(255,154,60,0.10), transparent 62%);
       }
 
       .sectionInner { position: relative; z-index: 1; }
@@ -213,7 +215,7 @@
         margin: 0 0 14px;
         font-size: var(--h1);
         line-height: 1.05;
-        font-weight: 700; /* less heavy than before */
+        font-weight: 700;
         letter-spacing: -0.6px;
       }
       .accent { color: var(--accent); }
@@ -222,7 +224,7 @@
         margin: 0 0 12px;
         font-size: var(--h2);
         line-height: 1.15;
-        font-weight: 650; /* less heavy */
+        font-weight: 650;
         letter-spacing: -0.3px;
       }
       h3 {
@@ -244,7 +246,7 @@
       }
 
       /* ---------- LAYOUT ---------- */
-      .padTop { padding: 58px 0; }    /* less vertical monotony */
+      .padTop { padding: 58px 0; }
       .padMid { padding: 54px 0; }
       .padTight { padding: 44px 0; }
 
@@ -351,13 +353,6 @@
         gap: 12px;
         margin-bottom: 12px;
       }
-      .snapTag {
-        border: 1px solid var(--border);
-        color: var(--muted);
-        font-size: 12px;
-        border-radius: 999px;
-        padding: 6px 10px;
-      }
       .snapScore {
         display: flex;
         align-items: center;
@@ -438,7 +433,7 @@
       .shotCard:hover { transform: translateY(-2px); border-color: var(--border-2); }
 
       .shotFrame {
-        height: 220px; /* SAME HEIGHT FOR ALL */
+        height: 220px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -449,7 +444,7 @@
       .shotFrame img{
         width: 100%;
         height: 100%;
-        object-fit: contain;  /* keep text correct, no weird scaling */
+        object-fit: contain;
         display: block;
         background: transparent;
       }
@@ -576,7 +571,7 @@
       }
       .faqA p { margin: 8px 0; }
 
-      /* ---------- FOOTER (CENTERED + STRONGER) ---------- */
+      /* ---------- FOOTER ---------- */
       footer {
         margin-top: 26px;
         border-top: 1px solid rgba(255,255,255,0.08);
@@ -693,7 +688,7 @@
             <p class="lead">
               TVAC evaluates whether a specific tokenization design creates <b>net added value</b> versus a conventional structure —
               and delivers a <b>solid, case-specific deep report</b> (typically <b>15–20 pages</b>, ~<b>6,000 words</b>) with the full rationale,
-              assumptions, risk register (where relevant), and concrete next steps.
+              assumptions, risk focus, and concrete next steps.
             </p>
 
             <div class="miniBadges" aria-label="Key report properties">
@@ -715,7 +710,6 @@
             </div>
           </div>
 
-          <!-- Sample evaluation snapshot (kept as the primary card) -->
           <div class="snapshot card" aria-label="Sample evaluation snapshot">
             <div class="snapTop">
               <div style="display:flex; flex-direction:column; gap:6px;">
@@ -775,7 +769,7 @@
       </div>
     </section>
 
-    <!-- ---------- WHO IT'S FOR (NO BAND, tighter) ---------- -->
+    <!-- ---------- WHO IT'S FOR ---------- -->
     <section class="padMid">
       <div class="container sectionInner">
         <p class="eyebrow">Who it’s for</p>
@@ -785,7 +779,7 @@
         <div class="grid3">
           <div class="cardPlain cardPadLg">
             <h3>Issuers & Asset Owners</h3>
-            <p class="small">Decide whether tokenization is worth pursuing and what structure is defensible.</p>
+            <p class="small">Decide if tokenization is worth pursuing and what structure is defensible.</p>
             <ul class="mutedList">
               <li>Early Go/No-Go clarity</li>
               <li>Top blockers + mitigation path</li>
@@ -830,7 +824,7 @@
           </div>
           <div class="cardPlain cardPadLg">
             <h3>2) TVAC evaluates added value</h3>
-            <p class="small">Scores the case on five factors and applies the core formula: (NO + CS + RR) − (TC + NR).</p>
+            <p class="small">Scores the case on five factors and applies the formula: (NO + CS + RR) − (TC + NR).</p>
           </div>
           <div class="cardPlain cardPadLg">
             <h3>3) You get a verdict + a deep report</h3>
@@ -857,27 +851,9 @@
         <div class="splitCard card cardPadLg">
           <div>
             <div class="gallery" aria-label="Report excerpts gallery">
-              <!-- Card 1 -->
-              <div class="shotCard" role="button" tabindex="0"
-                   data-title="Factor breakdown — detailed explanation"
-                   data-src="assets/tvac-report-factor-breakdown.png"
-                   data-fallback="/tvac-report-factor-breakdown.png">
-                <div class="shotFrame">
-                  <img
-                    src="assets/tvac-report-factor-breakdown.png"
-                    alt="TVAC report excerpt: factor breakdown"
-                    onerror="this.onerror=null; this.src='/tvac-report-factor-breakdown.png';"
-                    loading="lazy"
-                  />
-                </div>
-                <div class="shotMeta">
-                  <p class="shotTitle">Factor breakdown (why each score)</p>
-                  <p class="shotCap">Ties scores to your case inputs. Shows what drives upside vs friction.</p>
-                  <span class="shotHint">View full size ↗</span>
-                </div>
-              </div>
+              <!-- IMPORTANT CHANGE: Card order swapped so Report structure is first -->
 
-              <!-- Card 2 -->
+              <!-- Card 1 (was #2): Report structure -->
               <div class="shotCard" role="button" tabindex="0"
                    data-title="Table of contents + result snapshot"
                    data-src="assets/tvac-report-toc-result.png"
@@ -897,7 +873,27 @@
                 </div>
               </div>
 
-              <!-- Card 3 -->
+              <!-- Card 2 (was #1): Factor breakdown -->
+              <div class="shotCard" role="button" tabindex="0"
+                   data-title="Factor breakdown — detailed explanation"
+                   data-src="assets/tvac-report-factor-breakdown.png"
+                   data-fallback="/tvac-report-factor-breakdown.png">
+                <div class="shotFrame">
+                  <img
+                    src="assets/tvac-report-factor-breakdown.png"
+                    alt="TVAC report excerpt: factor breakdown"
+                    onerror="this.onerror=null; this.src='/tvac-report-factor-breakdown.png';"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="shotMeta">
+                  <p class="shotTitle">Factor breakdown (why each score)</p>
+                  <p class="shotCap">Ties scores to your case inputs. Shows what drives upside vs friction.</p>
+                  <span class="shotHint">View full size ↗</span>
+                </div>
+              </div>
+
+              <!-- Card 3: Risk heatmap -->
               <div class="shotCard" role="button" tabindex="0"
                    data-title="Risk heatmap & mitigation focus"
                    data-src="assets/tvac-report-risk-heatmap.png"
@@ -940,8 +936,7 @@
 
               <div class="btnRow">
                 <a class="btn" href="#methodology">Methodology</a>
-                <a class="btn btnPrimary" href="/tvac-methodology-v1.1.pdf" download
-                   onclick="/* fallback if needed */">Download PDF ↓</a>
+                <a class="btn btnPrimary" href="/tvac-methodology-v1.1.pdf" download>Download PDF ↓</a>
               </div>
 
               <p class="small" style="margin-top:10px;">
@@ -953,7 +948,7 @@
       </div>
     </section>
 
-    <!-- ---------- PRICING (NO BAND) ---------- -->
+    <!-- ---------- PRICING ---------- -->
     <section class="padMid" id="pricing">
       <div class="container sectionInner">
         <p class="eyebrow">Pricing</p>
@@ -1085,7 +1080,7 @@
       </div>
     </section>
 
-    <!-- ---------- ABOUT + BOOK LINK (NO BAND) ---------- -->
+    <!-- ---------- ABOUT ---------- -->
     <section class="padTight" id="about">
       <div class="container sectionInner">
         <p class="eyebrow">About</p>
@@ -1115,7 +1110,7 @@
       </div>
     </section>
 
-    <!-- ---------- FOOTER (CENTERED) ---------- -->
+    <!-- ---------- FOOTER ---------- -->
     <footer>
       <div class="container">
         <p class="footLine">
@@ -1148,7 +1143,7 @@
     </div>
 
     <script>
-      /* ---------- THEME TOGGLE (dark/light) ---------- */
+      /* ---------- THEME TOGGLE ---------- */
       (function () {
         const root = document.documentElement;
         const btn = document.getElementById("themeBtn");
