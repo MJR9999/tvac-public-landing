@@ -196,6 +196,99 @@
           radial-gradient(900px 420px at 92% 10%, rgba(120,130,255,0.14), transparent 60%),
           radial-gradient(900px 420px at 55% 22%, rgba(255,154,60,0.10), transparent 62%);
       }
+
+      /* ---------- VARIATION WRAPS ---------- */
+      /* Inset framed section (breaks repeated full-width "band" look) */
+      .frameWrap{
+        position: relative;
+        border-radius: 22px;
+        padding: 34px 28px;
+        border: 1px solid rgba(255,255,255,0.10);
+        background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        isolation: isolate;
+      }
+      [data-theme="light"] .frameWrap{
+        border-color: rgba(0,0,0,0.10);
+        background: linear-gradient(180deg, rgba(0,0,0,0.03), rgba(0,0,0,0.02));
+      }
+      .frameWrap::before{
+        content:"";
+        position:absolute;
+        top:0; left:0; right:0;
+        height:3px;
+        background: linear-gradient(90deg, var(--accent), rgba(255,154,60,0));
+        opacity: 0.92;
+        z-index: 0;
+      }
+      .frameWrap::after{
+        content:"";
+        position:absolute;
+        inset:-140px -80px auto -80px;
+        height:260px;
+        background:
+          radial-gradient(closest-side, rgba(255,154,60,0.18), transparent 70%),
+          radial-gradient(closest-side, rgba(120,150,255,0.12), transparent 70%);
+        filter: blur(10px);
+        opacity: 0.55;
+        pointer-events:none;
+        z-index: 0;
+      }
+      .frameWrap > *{ position: relative; z-index: 1; }
+      @media (max-width: 720px){
+        .frameWrap{ padding: 26px 18px; }
+      }
+
+      /* Model formula card (subtle technical feel) */
+      .formulaBox{
+        border: 1px solid rgba(255,154,60,0.35);
+        background: rgba(255,255,255,0.03);
+        border-radius: var(--radius);
+        padding: 18px;
+      }
+      [data-theme="light"] .formulaBox{
+        background: rgba(0,0,0,0.02);
+        border-color: rgba(255,154,60,0.40);
+      }
+      .formulaKicker{
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted-2);
+        margin: 0 0 10px;
+      }
+      .monoFormula{
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.45;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .monoFormula b{ color: var(--accent); }
+
+      /* Product proof frame + gentle glow behind gallery */
+      .proofFrame{
+        position: relative;
+        border-radius: 22px;
+        border: 1px solid rgba(255,255,255,0.10);
+        overflow: hidden;
+      }
+      [data-theme="light"] .proofFrame{ border-color: rgba(0,0,0,0.10); }
+      .proofFrame::before{
+        content:"";
+        position:absolute;
+        inset: 0;
+        pointer-events:none;
+        background:
+          radial-gradient(900px 360px at 18% 0%, rgba(255,154,60,0.15), transparent 60%),
+          radial-gradient(900px 360px at 90% 10%, rgba(120,150,255,0.10), transparent 60%);
+        opacity: 0.75;
+        z-index: 0;
+      }
+      .proofFrame > *{ position: relative; z-index: 1; }
+
       [data-theme="light"] .band::before{
         background:
           radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.18), transparent 60%),
@@ -251,8 +344,8 @@
 
       /* ---------- LAYOUT ---------- */
       .padTop { padding: 58px 0; }
-      .padMid { padding: 54px 0; }
-      .padTight { padding: 44px 0; }
+      .padMid { padding: 52px 0; }
+      .padTight { padding: 42px 0; }
 
       .grid2 {
         display: grid;
@@ -337,28 +430,6 @@
         padding: 7px 10px;
       }
       [data-theme="light"] .miniBadge { background: rgba(0,0,0,0.02); }
-
-      /* ---------- MODEL FORMULA BOX ---------- */
-      .formulaLabel{
-        font-size: 12px;
-        font-weight: 650;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        color: var(--muted-2);
-        margin: 0 0 8px;
-      }
-      .formulaExpr{
-        font-size: 15px;
-        font-weight: 700;
-        letter-spacing: -0.1px;
-        line-height: 1.35;
-        color: var(--text);
-      }
-      .formulaNote{
-        margin-top: 10px;
-        font-size: 13px;
-        color: var(--muted);
-      }
 
       /* ---------- SAMPLE SNAPSHOT ---------- */
       .snapshot {
@@ -688,6 +759,7 @@
 
           <div class="navLinks">
             <a class="pill" href="#methodology">Methodology</a>
+            <a class="pill" href="#model">Model</a>
             <a class="pill" href="#pricing">Pricing</a>
 
             <button class="themeBtn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
@@ -836,63 +908,80 @@
       </div>
     </section>
 
-    <!-- ---------- THE MODEL (NEW SECTION) ---------- -->
-    <section class="band padTight" id="model">
+    <!-- ---------- THE MODEL ---------- -->
+    <section class="padTight" id="model">
       <div class="container sectionInner">
-        <p class="eyebrow">The model</p>
-        <h2>TVAC is built on a fixed added value formula</h2>
-        <p class="lead">
-          Instead of “AI vibes”, TVAC uses a conservative five-factor rubric and applies a simple, transparent model you can defend internally.
-        </p>
+        <div class="frameWrap">
+          <p class="eyebrow">The model</p>
+          <h2>TVAC is built on a fixed added value formula</h2>
+          <p class="lead">
+            TVAC is not “AI vibes” — it uses a conservative five-factor rubric with explicit assumptions,
+            so your team can understand what drives the verdict and how to improve the design.
+          </p>
 
-        <div class="splitCard card cardPadLg">
-          <div class="cardPlain cardPadLg">
-            <h3 style="margin-bottom:8px;">What the five factors capture</h3>
-            <ul class="mutedList" style="margin-top:0;">
-              <li><b>New Opportunities</b>: distribution, liquidity pathways, new investor access, programmability.</li>
-              <li><b>Cost Savings</b>: operational efficiency, automation, simplified processes over time.</li>
-              <li><b>Risk Reduction</b>: improved controls, transparency, settlement/counterparty improvements (when real).</li>
-              <li><b>Tokenization Costs</b>: build/integration, legal/compliance work, vendor/platform dependencies.</li>
-              <li><b>New Risks</b>: regulatory friction, governance complexity, tech/custody risks, operational attack surface.</li>
-            </ul>
-          </div>
-
-          <div class="cardPlain cardPadLg">
-            <div class="formulaLabel">Core formula</div>
-            <div class="formulaExpr">
-              <b>Added Value</b> = (New Opportunities + Cost Savings + Risk Reduction) – (Tokenization Costs + New Risks)
+          <div class="splitCard" style="margin-top: 14px;">
+            <div class="cardPlain cardPadLg">
+              <h3>What the five factors capture</h3>
+              <ul class="mutedList">
+                <li><b>New Opportunities</b>: distribution, liquidity pathways, new investor access, programmability.</li>
+                <li><b>Cost Savings</b>: operational efficiency, automation, simpler processes over time.</li>
+                <li><b>Risk Reduction</b>: improved controls, transparency, settlement/counterparty improvements (when real).</li>
+                <li><b>Tokenization Costs</b>: build/integration, legal/compliance work, vendor/platform dependencies.</li>
+                <li><b>New Risks</b>: regulatory friction, governance complexity, tech/custody risks, operational attack surface.</li>
+              </ul>
             </div>
-            <div class="formulaNote">
-              TVAC scores conservatively under uncertainty and makes assumptions explicit — so you can improve the design and re-evaluate.
+
+            <div class="formulaBox">
+              <div class="formulaKicker">Core formula</div>
+              <div class="monoFormula">
+                <b>Added Value</b> = (New Opportunities + Cost Savings + Risk Reduction)
+                – (Tokenization Costs + New Risks)
+              </div>
+              <p class="small" style="margin-top: 12px;">
+                Under uncertainty, TVAC scores conservatively and makes assumptions explicit —
+                so you can iterate and re-run variants.
+              </p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ---------- HOW IT WORKS (BAND 2) ---------- -->
-    <section class="band padMid" id="how">
-      <div class="container sectionInner">
-        <p class="eyebrow">How it works</p>
-        <h2>A conservative workflow in three steps</h2>
-        <p class="lead">Designed to be useful early — before heavy legal/vendor work begins.</p>
 
-        <div class="grid4">
-          <div class="cardPlain cardPadLg">
-            <h3>1) You describe the case</h3>
-            <p class="small">Asset, jurisdictions, investor scope, liquidity plan, custody model, constraints, and objectives.</p>
-          </div>
-          <div class="cardPlain cardPadLg">
-            <h3>2) TVAC evaluates added value</h3>
-            <p class="small">Scores the case on five factors and applies the formula: (NO + CS + RR) − (TC + NR).</p>
-          </div>
-          <div class="cardPlain cardPadLg">
-            <h3>3) You get a verdict + a deep report</h3>
-            <p class="small">A decision-grade, case-specific report (15–20 pages, ~6,000 words) with rationale, assumptions, blockers and levers.</p>
-          </div>
-          <div class="cardPlain cardPadLg">
-            <h3>Optional: deeper assessment</h3>
-            <p class="small">Where relevant: risk register, mitigation roadmap, stakeholder alignment, and “what-if” design paths.</p>
+<!-- ---------- HOW IT WORKS ---------- -->
+    <section class="padMid" id="how">
+      <div class="container sectionInner">
+        <div class="frameWrap">
+          <p class="eyebrow">How it works</p>
+          <h2>A conservative workflow in four steps</h2>
+          <p class="lead">
+            Designed to be useful early — before heavy legal/vendor work begins — and structured so stakeholders can trust the logic.
+          </p>
+
+          <div class="grid4">
+            <div class="cardPlain cardPadLg">
+              <div class="small" style="letter-spacing:2px; text-transform:uppercase; color:var(--muted-2); font-weight:700;">Step 1</div>
+              <h3 style="margin-top:10px;">Describe the case</h3>
+              <p class="small">Asset, jurisdictions, investor scope, liquidity plan, custody model, constraints, and objectives.</p>
+            </div>
+
+            <div class="cardPlain cardPadLg">
+              <div class="small" style="letter-spacing:2px; text-transform:uppercase; color:var(--muted-2); font-weight:700;">Step 2</div>
+              <h3 style="margin-top:10px;">TVAC evaluates added value</h3>
+              <p class="small">Scores the case on five factors and applies the formula: (NO + CS + RR) − (TC + NR).</p>
+            </div>
+
+            <div class="cardPlain cardPadLg">
+              <div class="small" style="letter-spacing:2px; text-transform:uppercase; color:var(--muted-2); font-weight:700;">Step 3</div>
+              <h3 style="margin-top:10px;">You get a verdict + a deep report</h3>
+              <p class="small">A decision-grade, case-specific report (15–20 pages, ~6,000 words) with rationale, assumptions, blockers and levers.</p>
+            </div>
+
+            <div class="cardPlain cardPadLg">
+              <div class="small" style="letter-spacing:2px; text-transform:uppercase; color:var(--muted-2); font-weight:700;">Step 4</div>
+              <h3 style="margin-top:10px;">Iterate (or add human review)</h3>
+              <p class="small">Run variants and compare outputs. Optional human review adds sanity-check notes and clarifying questions (typically 24–48h).</p>
+            </div>
           </div>
         </div>
       </div>
@@ -908,7 +997,7 @@
           Click any screenshot to open it full-size.
         </p>
 
-        <div class="splitCard card cardPadLg">
+        <div class="splitCard card cardPadLg proofFrame">
           <div>
             <div class="gallery" aria-label="Report excerpts gallery">
               <!-- Card 1: Report structure -->
@@ -1130,10 +1219,11 @@
           </details>
 
           <details class="faqItem">
-            <summary>How fast is TVAC — and what does 24–48h refer to?</summary>
+            <summary>How fast is turnaround?</summary>
             <div class="faqA">
-              <p>The automated evaluation is <b>self-serve</b> and typically completes in minutes.</p>
-              <p>The <b>24–48h</b> timing only applies if you request <b>optional human review</b> (a sanity check + clarifying questions, plus a more polished executive summary if needed).</p>
+              <p><b>Self-serve:</b> when you run TVAC, the automated evaluation typically completes in minutes (often ~80–120 seconds, depending on load and case complexity).</p>
+              <p><b>Optional human review:</b> if you request a sanity check (plus 1–3 clarifying questions and a tighter executive summary), we typically respond within <b>24–48 hours</b>.</p>
+              <p>The key point: the engine is fast — the longer turnaround only applies when you add a human review layer.</p>
             </div>
           </details>
         </div>
