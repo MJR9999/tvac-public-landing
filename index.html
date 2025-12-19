@@ -181,15 +181,13 @@
         isolation: isolate;   /* ensures z-index layering stays contained */
       }
 
-      /* IMPORTANT CHANGE:
-         Anchor the glow to the TOP of the section (no negative top), and keep it clipped inside the section. */
       .band::before {
         content: "";
         position: absolute;
-        top: 0;              /* was -140px */
+        top: 0;
         left: 0;
         right: 0;
-        height: 420px;       /* top-only band height (covers headings inside padded sections) */
+        height: 420px;
         pointer-events: none;
         z-index: 0;
         opacity: 0.95;
@@ -339,6 +337,33 @@
         padding: 7px 10px;
       }
       [data-theme="light"] .miniBadge { background: rgba(0,0,0,0.02); }
+
+      /* ---------- CORE FORMULA ---------- */
+      .formulaCard{
+        margin: 14px 0 10px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.03);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        max-width: 720px;
+      }
+      [data-theme="light"] .formulaCard{ background: rgba(0,0,0,0.02); }
+      .formulaLabel{
+        font-size: 12px;
+        font-weight: 650;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted-2);
+      }
+      .formulaExpr{
+        font-size: 14px;
+        font-weight: 650;
+        color: var(--text);
+      }
 
       /* ---------- SAMPLE SNAPSHOT ---------- */
       .snapshot {
@@ -696,6 +721,11 @@
               and delivers a <b>solid, case-specific deep report</b> (typically <b>15–20 pages</b>, ~<b>6,000 words</b>) with the full rationale,
               assumptions, risk focus, and concrete next steps.
             </p>
+
+            <div class="formulaCard" aria-label="Added value formula">
+              <div class="formulaLabel">Core formula</div>
+              <div class="formulaExpr"><b>Added Value</b> = (New Opportunities + Cost Savings + Risk Reduction) – (Tokenization Costs + New Risks)</div>
+            </div>
 
             <div class="miniBadges" aria-label="Key report properties">
               <span class="miniBadge">Case-specific (not generic)</span>
