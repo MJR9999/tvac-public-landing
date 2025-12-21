@@ -880,29 +880,8 @@
 
     <!-- NEW: Quick Verdict CTA strip (super sharp) -->
     <section class="cta-strip" id="quickverdict">
-      <div class="cta-inner">
-        <div>
-          <div class="cta-text-main">Free Quick Verdict <span style="opacity:0.75;">(limited weekly slots)</span></div>
-          <div class="cta-text-sub">
-            Send <strong>5–10 lines</strong> about your case. You’ll get:
-            <strong>Go / Borderline / No-Go</strong> + <strong>5 factor scores</strong> +
-            <strong>top blockers</strong> + <strong>top levers</strong>. Typical turnaround: <strong>24–48h</strong>.
-          </div>
-        </div>
-        <div style="display:flex; gap:0.7rem; flex-wrap:wrap;">
-          <a
-            href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request&body=Paste%20your%20case%20here%20(5%E2%80%9310%20lines)%3A%0A%0AAsset%3A%0AJurisdictions%20(issuer%20%2B%20sale)%3A%0AInvestor%20scope%3A%0ALiquidity%20plan%3A%0ACustody%20model%3A%0AObjectives%3A%0AConstraints%2Funknowns%3A%0A"
-            class="btn btn-primary"
-          >
-            <span>Request Quick Verdict</span>
-            <span class="btn-icon">→</span>
-          </a>
-          <a href="#oneoff" class="btn btn-outline">
-            <span>Or order the deep report</span>
-          </a>
-        </div>
-      </div>
-    </section>
+  <div id="qv-app"></div>
+</section>
 
     <!-- What & How -->
     <section class="section" id="how">
@@ -1297,5 +1276,12 @@
     yearSpan.textContent = new Date().getFullYear();
   }
 </script>
+
+  <script>
+    // API base for Quick Verdict
+    window.TVAC_API_BASE = "https://tokenlex-api-new.onrender.com";
+  </script>
+  <script src="quickverdict.js"></script>
+
 </body>
 </html>
