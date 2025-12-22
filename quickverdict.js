@@ -1,13 +1,18 @@
 /* quickverdict.js
    TVAC Landing – Quick Verdict widget
    - mounts into <div id="qv-app"></div>
-   - uses /api/quickverdict endpoints
+   - calls TVAC API (config via window.TVAC_API_BASE)
+   - robust fallback across possible endpoints
 */
 
 (function () {
-  const API_BASE = (window.TVAC_API_BASE || "").replace(/\/$/, "");
-  const LS_TOKEN_KEY = "tvac_qv_token";
+  // Prefer explicit config from index.html:
+  //   <script>window.TVAC_API_BASE="https://tokenlex-api-new.onrender.com";</script>
+  // but provide a safe fallback so the widget never points at the landing domain by accident.
+  const FALLBACK_API_BASE = "https://tokenlex-api-new.onrender.com";
 
+  const API_BASE = String(window.TVAC_API_BASE || FALLBACK_API_BASE).replace(/\/$/, "");
+  const LS_TOKEN_KEY = "tvac_qv_token";
   const MIN_WORDS = 150;
 
   function $(sel, root) {
@@ -34,7 +39,8 @@
     if (s === "go") return "Go";
     if (s === "no-go" || s === "nogo") return "No-Go";
     if (s === "revise") return "Revise";
-    return v || "Revise";
+    if (!v) return "Revise";
+    return v;
   }
 
   function verdictBadgeClass(v) {
@@ -44,8 +50,7 @@
     return "pill warn";
   }
 
-  async function apiFetch(path, opts = {}) {
-    const url = `${API_BASE}${path}`;
+  async function fetchJson(url, opts = {}) {
     const res = await fetch(url, {
       method: opts.method || "GET",
       headers: { "Content-Type": "application/json", ...(opts.headers || {}) },
@@ -57,14 +62,40 @@
       json = await res.json();
     } catch (_) {}
 
-    if (!res.ok) {
-      const msg =
-        (json && (json.ui_message || json.error || json.message)) ||
-        `Request failed (${res.status}).`;
-      throw new Error(msg);
+    return { res, json };
+  }
+
+  // Try a list of endpoints in order until one works.
+  async function apiFetchTry(paths, opts = {}) {
+    const tried = [];
+    for (const path of paths) {
+      const url = `${API_BASE}${path}`;
+      tried.push(url);
+
+      const { res, json } = await fetchJson(url, opts);
+
+      // Treat 404 as "try next"
+      if (res.status === 404) continue;
+
+      if (!res.ok) {
+        const msg =
+          (json && (json.ui_message || json.error || json.message)) ||
+          `Request failed (${res.status}).`;
+        const e = new Error(msg);
+        e._tried = tried;
+        e._status = res.status;
+        throw e;
+      }
+
+      return { data: json, usedUrl: url, tried };
     }
 
-    return json;
+    const e = new Error(
+      "Endpoint not found. The API is reachable, but none of the expected Quick Verdict endpoints exist."
+    );
+    e._tried = tried;
+    e._status = 404;
+    throw e;
   }
 
   function mountStylesOnce() {
@@ -72,7 +103,6 @@
     const style = el("style", {
       id: "qv-styles",
       html: `
-      /* Minimal additions – respects existing landing theme */
       #qv-app { width: 100%; }
       .qv-card {
         border: 1px solid rgba(255,255,255,0.08);
@@ -117,8 +147,8 @@
       }
       .qv-btn.primary { background: rgba(255,255,255,0.10); }
       .qv-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-      .qv-error { color: #ffb3b3; font-size: 14px; }
-      .qv-ok { color: #b7ffd0; font-size: 14px; }
+      .qv-error { color: #ffb3b3; font-size: 14px; white-space: pre-wrap; }
+      .qv-ok { color: #b7ffd0; font-size: 14px; white-space: pre-wrap; }
       .pill { display:inline-flex; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; border:1px solid rgba(255,255,255,0.12); }
       .pill.ok { background: rgba(40, 200, 120, 0.16); }
       .pill.warn { background: rgba(255, 190, 60, 0.14); }
@@ -140,10 +170,27 @@
   }
 
   function buildPayload(caseText) {
-    // Minimal payload for backend – backend can map constraints/case_text
-    return {
-      case_text: caseText,
-    };
+    // Keep minimal — backend can map as needed.
+    return { case_text: caseText };
+  }
+
+  function normalizeQuickVerdictResponse(data) {
+    // Accept a few likely response shapes:
+    // 1) { ok:true, token, quick_verdict:{...} }
+    // 2) { ok:true, token, verdict, verdict_reason, ... }  (already "quick")
+    // 3) { verdict, verdict_reason, ... } (no ok wrapper)
+    if (!data) return { ok: false, token: "", quick: null };
+
+    if (data.quick_verdict) {
+      return { ok: data.ok !== false, token: data.token || "", quick: data.quick_verdict };
+    }
+
+    // If it looks like an evaluation object, treat it as quick verdict.
+    if (data.verdict || data.verdict_reason) {
+      return { ok: data.ok !== false, token: data.token || "", quick: data };
+    }
+
+    return { ok: !!data.ok, token: data.token || "", quick: data.quick_verdict || null };
   }
 
   function render(container) {
@@ -151,11 +198,11 @@
 
     const state = {
       token: localStorage.getItem(LS_TOKEN_KEY) || "",
-      caseText: "",
       loading: false,
       lastQuick: null,
       error: "",
       info: "",
+      lastUsedUrl: "",
     };
 
     const root = el("div", { class: "qv-card" });
@@ -165,13 +212,10 @@
 
     const header = el("div", {}, [
       el("h3", { class: "qv-title" }, ["Quick Verdict"]),
-      el(
-        "p",
-        { class: "qv-sub" },
-        [
-          "Get a fast, structured screening of your case. This is not the full report — it’s a first decision signal that helps you decide whether to invest in a deep assessment.",
-        ]
-      ),
+      el("p", { class: "qv-sub" }, [
+        "Get a fast, structured screening of your case. This is not the full report — it’s a first decision signal that helps you decide whether to invest in a deep assessment.",
+      ]),
+      el("div", { class: "qv-help" }, [`API: ${API_BASE}`]),
     ]);
 
     const ta = el("textarea", {
@@ -181,7 +225,6 @@
     });
 
     const wcLine = el("div", { class: "qv-help" }, ["Words: 0 (min. 150)"]);
-
     const errLine = el("div", { class: "qv-error" }, [""]);
     const infoLine = el("div", { class: "qv-ok" }, [""]);
 
@@ -194,7 +237,6 @@
 
     const tokenBox = el("div", { class: "qv-box" });
     const resultBox = el("div", { class: "qv-box" });
-
     const ctaBox = el("div", { class: "qv-box" });
 
     function setLoading(on) {
@@ -206,9 +248,13 @@
       wcLine.style.opacity = on ? "0.6" : "0.78";
     }
 
-    function setError(msg) {
+    function setError(msg, extra) {
       state.error = msg || "";
-      errLine.textContent = state.error;
+      const lines = [state.error].filter(Boolean);
+      if (extra && extra.tried && extra.tried.length) {
+        lines.push("", "Tried:", ...extra.tried.map((u) => `- ${u}`));
+      }
+      errLine.textContent = lines.join("\n");
     }
     function setInfo(msg) {
       state.info = msg || "";
@@ -218,8 +264,7 @@
     function updateWordCount() {
       const wc = wordCount(ta.value);
       wcLine.textContent = `Words: ${wc} (min. ${MIN_WORDS})`;
-      if (wc >= MIN_WORDS) wcLine.style.opacity = "0.9";
-      else wcLine.style.opacity = "0.78";
+      wcLine.style.opacity = wc >= MIN_WORDS ? "0.9" : "0.78";
     }
 
     function renderToken() {
@@ -230,37 +275,65 @@
       }
       btnClear.style.display = "inline-flex";
       tokenBox.innerHTML = "";
-      tokenBox.appendChild(el("div", { class: "qv-split" }, [
-        el("div", {}, [
-          el("div", { class: "qv-h" }, ["Your resume token"]),
-          el("div", { class: "qv-token" }, [state.token]),
-          el("div", { class: "qv-help" }, ["Keep this token if you want to resume later. We store your draft temporarily (anonymous, token-based)."]),
-        ]),
-        el("button", {
-          class: "qv-btn",
-          type: "button",
-          onclick: async () => {
-            try {
-              setError("");
-              setInfo("");
-              setLoading(true);
-              const data = await apiFetch(`/api/quickverdict/${encodeURIComponent(state.token)}`);
-              const payload = data.currentPayload || {};
-              const text = payload.case_text || payload.caseDescription || payload.freeText || payload.constraints || "";
-              ta.value = text;
-              updateWordCount();
-              state.lastQuick = data.quick_verdict || null;
-              renderResult();
-              btnRerun.style.display = "inline-flex";
-              setInfo("Draft loaded. You can edit and re-run.");
-            } catch (e) {
-              setError(e.message || "Could not load token.");
-            } finally {
-              setLoading(false);
-            }
-          },
-        }, ["Resume"]),
-      ]));
+      tokenBox.appendChild(
+        el("div", { class: "qv-split" }, [
+          el("div", {}, [
+            el("div", { class: "qv-h" }, ["Your resume token"]),
+            el("div", { class: "qv-token" }, [state.token]),
+            el("div", { class: "qv-help" }, [
+              "Keep this token if you want to resume later. We store your draft temporarily (anonymous, token-based).",
+            ]),
+          ]),
+          el(
+            "button",
+            {
+              class: "qv-btn",
+              type: "button",
+              onclick: async () => {
+                try {
+                  setError("");
+                  setInfo("");
+                  setLoading(true);
+
+                  // Try token GET endpoints as well (if your API supports it)
+                  const attempt = await apiFetchTry(
+                    [
+                      `/api/quickverdict/${encodeURIComponent(state.token)}`,
+                      `/api/evaluate/v2/${encodeURIComponent(state.token)}`,
+                      `/api/evaluate/${encodeURIComponent(state.token)}`,
+                    ],
+                    { method: "GET" }
+                  );
+
+                  const data = attempt.data || {};
+                  const payload = data.currentPayload || data.payload || {};
+                  const text =
+                    payload.case_text ||
+                    payload.caseDescription ||
+                    payload.freeText ||
+                    payload.constraints ||
+                    data.case_text ||
+                    "";
+                  ta.value = text;
+                  updateWordCount();
+
+                  const norm = normalizeQuickVerdictResponse(data);
+                  state.lastQuick = norm.quick || null;
+
+                  renderResult();
+                  btnRerun.style.display = "inline-flex";
+                  setInfo("Draft loaded. You can edit and re-run.");
+                } catch (e) {
+                  setError(e.message || "Could not load token.", { tried: e._tried || [] });
+                } finally {
+                  setLoading(false);
+                }
+              },
+            },
+            ["Resume"]
+          ),
+        ])
+      );
     }
 
     function renderResult() {
@@ -278,13 +351,13 @@
       const blockers = Array.isArray(q.top_blockers) ? q.top_blockers : [];
       const levers = Array.isArray(q.top_levers) ? q.top_levers : [];
 
-      resultBox.appendChild(el("div", { class: "qv-row" }, [
-        el("div", { class: "qv-h" }, ["Result:"]),
-        badge,
-        el("span", { class: "qv-help" }, [
-          q.confidence ? `Confidence: ${String(q.confidence).toUpperCase()}` : "",
-        ]),
-      ]));
+      resultBox.appendChild(
+        el("div", { class: "qv-row" }, [
+          el("div", { class: "qv-h" }, ["Result:"]),
+          badge,
+          el("span", { class: "qv-help" }, [q.confidence ? `Confidence: ${String(q.confidence).toUpperCase()}` : ""]),
+        ])
+      );
 
       if (reasons.length) {
         resultBox.appendChild(el("div", { class: "qv-h", style: "margin-top:10px;" }, ["Top reasons (short)"]));
@@ -306,6 +379,10 @@
         levers.slice(0, 3).forEach((r) => ul.appendChild(el("li", {}, [String(r)])));
         resultBox.appendChild(ul);
       }
+
+      if (state.lastUsedUrl) {
+        resultBox.appendChild(el("div", { class: "qv-help", style: "margin-top:10px;" }, [`Endpoint used: ${state.lastUsedUrl}`]));
+      }
     }
 
     function renderCTA() {
@@ -317,19 +394,13 @@
         ])
       );
 
-      // Use existing pricing anchors if your index.html has them; otherwise keep generic.
-      // You can replace hrefs later with your Stripe links for single report / subscription.
       const btns = el("div", { class: "qv-actions" }, [
         el("a", { class: "qv-btn primary", href: "#pricing" }, ["Get the full report (paid)"]),
         el("a", { class: "qv-btn", href: "#pricing" }, ["See plans & pricing"]),
       ]);
       ctaBox.appendChild(btns);
 
-      ctaBox.appendChild(
-        el("div", { class: "qv-help", style: "margin-top:8px;" }, [
-          "Tip: you can refine your case text above before buying. Better input → better output.",
-        ])
-      );
+      ctaBox.appendChild(el("div", { class: "qv-help", style: "margin-top:8px;" }, ["Tip: better input → better output."]));
     }
 
     async function runQuickVerdict() {
@@ -346,25 +417,32 @@
       try {
         setLoading(true);
 
-        const data = await apiFetch("/api/quickverdict", {
-          method: "POST",
-          body: buildPayload(text),
-        });
+        // Try endpoints in a conservative order.
+        // If your API uses a different endpoint, this still degrades gracefully.
+        const attempt = await apiFetchTry(
+          ["/api/quickverdict", "/api/evaluate/v2", "/api/evaluate"],
+          { method: "POST", body: buildPayload(text) }
+        );
 
-        if (!data || !data.ok) throw new Error("Unexpected response.");
+        const norm = normalizeQuickVerdictResponse(attempt.data);
+        if (!norm.ok) throw new Error("Unexpected response format.");
 
-        state.token = data.token || "";
+        state.lastUsedUrl = attempt.usedUrl || "";
+        state.token = norm.token || state.token || "";
+
+        // Save token only if present
         if (state.token) localStorage.setItem(LS_TOKEN_KEY, state.token);
 
-        state.lastQuick = data.quick_verdict || null;
+        state.lastQuick = norm.quick || null;
+
         renderToken();
         renderResult();
         renderCTA();
 
         btnRerun.style.display = "inline-flex";
-        setInfo("Quick Verdict ready. Token saved in this browser.");
+        setInfo("Quick Verdict ready. Token saved in this browser (if provided by API).");
       } catch (e) {
-        setError(e.message || "Quick Verdict failed.");
+        setError(e.message || "Quick Verdict failed.", { tried: e._tried || [] });
       } finally {
         setLoading(false);
       }
@@ -381,6 +459,7 @@
         return;
       }
 
+      // If we have no token support on API, just run again.
       if (!state.token) {
         await runQuickVerdict();
         return;
@@ -389,18 +468,26 @@
       try {
         setLoading(true);
 
-        const data = await apiFetch(`/api/quickverdict/${encodeURIComponent(state.token)}`, {
-          method: "PUT",
-          body: { case_text: text, rerun: true },
-        });
+        const attempt = await apiFetchTry(
+          [
+            `/api/quickverdict/${encodeURIComponent(state.token)}`,
+            `/api/evaluate/v2/${encodeURIComponent(state.token)}`,
+            `/api/evaluate/${encodeURIComponent(state.token)}`,
+          ],
+          { method: "PUT", body: { case_text: text, rerun: true } }
+        );
 
-        if (!data || !data.ok) throw new Error("Unexpected response.");
-        state.lastQuick = data.quick_verdict || null;
+        const norm = normalizeQuickVerdictResponse(attempt.data);
+        if (!norm.ok) throw new Error("Unexpected response format.");
+
+        state.lastUsedUrl = attempt.usedUrl || "";
+        state.lastQuick = norm.quick || null;
+
         renderResult();
         renderCTA();
         setInfo("Updated and re-run completed.");
       } catch (e) {
-        setError(e.message || "Update failed.");
+        setError(e.message || "Update failed.", { tried: e._tried || [] });
       } finally {
         setLoading(false);
       }
@@ -417,10 +504,7 @@
       setInfo("Token cleared.");
     }
 
-    ta.addEventListener("input", () => {
-      updateWordCount();
-    });
-
+    ta.addEventListener("input", updateWordCount);
     btnRun.addEventListener("click", runQuickVerdict);
     btnRerun.addEventListener("click", updateAndRerun);
     btnClear.addEventListener("click", clearToken);
@@ -444,33 +528,15 @@
     renderResult();
     renderCTA();
 
-    // If token exists, we can auto-offer resume
-    if (state.token) {
-      btnRerun.style.display = "inline-flex";
-    }
+    if (state.token) btnRerun.style.display = "inline-flex";
   }
 
   function init() {
     const container = document.getElementById("qv-app");
     if (!container) return;
-
-    if (!API_BASE) {
-      container.appendChild(
-        el("div", { class: "qv-card" }, [
-          el("div", { class: "qv-error" }, [
-            "Quick Verdict is not configured. Missing window.TVAC_API_BASE.",
-          ]),
-        ])
-      );
-      return;
-    }
-
     render(container);
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();
