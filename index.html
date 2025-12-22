@@ -784,7 +784,6 @@
               <span id="themeIcon" aria-hidden="true">🌙</span>
             </button>
 
-            <!-- CHANGED: no mailto, scrolls to widget -->
             <a class="pill pillStrong" href="#quickverdict">Request Quick Verdict →</a>
           </div>
         </div>
@@ -815,7 +814,6 @@
             </div>
 
             <div class="ctaRow">
-              <!-- CHANGED: no mailto, scrolls to widget -->
               <a class="btn btnPrimary" href="#quickverdict">Free Quick Verdict (limited) →</a>
               <a class="btn" href="#pricing">Order Deep Assessment</a>
               <a class="btn" href="https://tvacai.com" onclick="return false;" title="Hook up later when demo URL is final">Try demo</a>
@@ -887,7 +885,7 @@
       </div>
     </section>
 
-    <!-- ---------- QUICK VERDICT (NEW) ---------- -->
+    <!-- ---------- QUICK VERDICT ---------- -->
     <section class="padMid" id="quickverdict">
       <div class="container sectionInner">
         <div class="frameWrap">
@@ -898,7 +896,6 @@
             the five factor scores, top blockers, and the most effective design levers.
           </p>
 
-          <!-- IMPORTANT: quickverdict.js mounts here -->
           <div id="qv-app" aria-label="TVAC Quick Verdict widget"></div>
 
           <div class="qvFallback">
@@ -1035,7 +1032,7 @@
       </div>
     </section>
 
-    <!-- ---------- PRODUCT PROOF (BAND 3) ---------- -->
+    <!-- ---------- PRODUCT PROOF ---------- -->
     <section class="band padMid" id="methodology">
       <div class="container sectionInner">
         <p class="eyebrow">Product proof</p>
@@ -1048,7 +1045,6 @@
         <div class="splitCard card cardPadLg proofFrame">
           <div>
             <div class="gallery" aria-label="Report excerpts gallery">
-              <!-- Card 1: Report structure -->
               <div class="shotCard" role="button" tabindex="0"
                    data-title="Table of contents + result snapshot"
                    data-src="assets/tvac-report-toc-result.png"
@@ -1068,7 +1064,6 @@
                 </div>
               </div>
 
-              <!-- Card 2: Factor breakdown -->
               <div class="shotCard" role="button" tabindex="0"
                    data-title="Factor breakdown — detailed explanation"
                    data-src="assets/tvac-report-factor-breakdown.png"
@@ -1088,7 +1083,6 @@
                 </div>
               </div>
 
-              <!-- Card 3: Risk heatmap -->
               <div class="shotCard" role="button" tabindex="0"
                    data-title="Risk heatmap & mitigation focus"
                    data-src="assets/tvac-report-risk-heatmap.png"
@@ -1200,7 +1194,7 @@
       </div>
     </section>
 
-    <!-- ---------- FAQ (BAND 4) ---------- -->
+    <!-- ---------- FAQ ---------- -->
     <section class="band padMid" id="faq">
       <div class="container sectionInner">
         <p class="eyebrow">FAQ</p>
@@ -1302,7 +1296,6 @@
           <div class="btnRow">
             <a class="btn btnPrimary" href="/tvac-methodology-v1.1.pdf" download>Download PDF ↓</a>
             <a class="btn" href="#pricing">Pricing</a>
-            <!-- CHANGED: no mailto, scrolls to widget -->
             <a class="btn" href="#quickverdict">Quick Verdict</a>
           </div>
         </div>
@@ -1416,10 +1409,21 @@
       })();
     </script>
 
-    <!-- ---------- QUICK VERDICT WIRING (NEW) ---------- -->
+    <!-- ---------- QUICK VERDICT CONFIG + WIRING ---------- -->
     <script>
-      // Backend base (used by quickverdict.js)
+      /**
+       * Backend base used by quickverdict.js
+       * Current production API (Render):
+       */
       window.TVAC_API_BASE = "https://tokenlex-api-new.onrender.com";
+
+      /**
+       * Paths used by the widget (so we can change without editing the widget logic everywhere)
+       * - If you implement /api/quickverdict on the backend, keep TVAC_QV_PATH as-is.
+       * - If you decide to reuse /api/evaluate/v2 for Quick Verdict, you can switch the widget to use TVAC_EVAL_PATH.
+       */
+      window.TVAC_QV_PATH = "/api/quickverdict";
+      window.TVAC_EVAL_PATH = "/api/evaluate/v2";
     </script>
     <script src="quickverdict.js"></script>
   </body>
