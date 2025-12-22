@@ -53,6 +53,7 @@
       /* ---------- BASE ---------- */
       * { box-sizing: border-box; }
       html, body { height: 100%; }
+      html { scroll-behavior: smooth; }
       body {
         margin: 0;
         font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
@@ -68,6 +69,9 @@
         margin: 0 auto;
         padding: 0 var(--padX);
       }
+
+      /* Make anchor jumps land nicely below sticky nav */
+      section[id] { scroll-margin-top: 92px; }
 
       /* ---------- NAV ---------- */
       .nav {
@@ -238,6 +242,19 @@
       .frameWrap > *{ position: relative; z-index: 1; }
       @media (max-width: 720px){
         .frameWrap{ padding: 26px 18px; }
+      }
+
+      /* Quick Verdict mount area */
+      #qv-app { margin-top: 14px; }
+      .qvFallback {
+        margin-top: 12px;
+        color: var(--muted-2);
+        font-size: 13px;
+      }
+      .qvFallback a{
+        color: var(--accent);
+        text-decoration: underline;
+        text-underline-offset: 3px;
       }
 
       /* Model formula card (subtle technical feel) */
@@ -761,12 +778,14 @@
             <a class="pill" href="#methodology">Methodology</a>
             <a class="pill" href="#model">Model</a>
             <a class="pill" href="#pricing">Pricing</a>
+            <a class="pill" href="#quickverdict">Quick Verdict</a>
 
             <button class="themeBtn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
               <span id="themeIcon" aria-hidden="true">🌙</span>
             </button>
 
-            <a class="pill pillStrong" href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">Request Quick Verdict →</a>
+            <!-- CHANGED: no mailto, scrolls to widget -->
+            <a class="pill pillStrong" href="#quickverdict">Request Quick Verdict →</a>
           </div>
         </div>
       </div>
@@ -796,7 +815,8 @@
             </div>
 
             <div class="ctaRow">
-              <a class="btn btnPrimary" href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">Free Quick Verdict (limited) →</a>
+              <!-- CHANGED: no mailto, scrolls to widget -->
+              <a class="btn btnPrimary" href="#quickverdict">Free Quick Verdict (limited) →</a>
               <a class="btn" href="#pricing">Order Deep Assessment</a>
               <a class="btn" href="https://tvacai.com" onclick="return false;" title="Hook up later when demo URL is final">Try demo</a>
             </div>
@@ -863,6 +883,35 @@
               The output is structured for internal sharing: factor logic, explicit assumptions, and concrete levers to improve the score.
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- QUICK VERDICT (NEW) ---------- -->
+    <section class="padMid" id="quickverdict">
+      <div class="container sectionInner">
+        <div class="frameWrap">
+          <p class="eyebrow">Quick Verdict</p>
+          <h2>Get a fast, decision-grade snapshot</h2>
+          <p class="lead">
+            Submit your case in a structured format and receive a conservative verdict (Go / Borderline / No-Go),
+            the five factor scores, top blockers, and the most effective design levers.
+          </p>
+
+          <!-- IMPORTANT: quickverdict.js mounts here -->
+          <div id="qv-app" aria-label="TVAC Quick Verdict widget"></div>
+
+          <div class="qvFallback">
+            If the widget fails to load, you can still request it by email:
+            <a href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">michael@tvacai.com</a>.
+          </div>
+
+          <noscript>
+            <div class="qvFallback">
+              JavaScript is required for Quick Verdict. Please email:
+              <a href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">michael@tvacai.com</a>.
+            </div>
+          </noscript>
         </div>
       </div>
     </section>
@@ -947,8 +996,7 @@
       </div>
     </section>
 
-
-<!-- ---------- HOW IT WORKS ---------- -->
+    <!-- ---------- HOW IT WORKS ---------- -->
     <section class="padMid" id="how">
       <div class="container sectionInner">
         <div class="frameWrap">
@@ -1254,7 +1302,8 @@
           <div class="btnRow">
             <a class="btn btnPrimary" href="/tvac-methodology-v1.1.pdf" download>Download PDF ↓</a>
             <a class="btn" href="#pricing">Pricing</a>
-            <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">Quick Verdict</a>
+            <!-- CHANGED: no mailto, scrolls to widget -->
+            <a class="btn" href="#quickverdict">Quick Verdict</a>
           </div>
         </div>
       </div>
@@ -1366,5 +1415,12 @@
         });
       })();
     </script>
+
+    <!-- ---------- QUICK VERDICT WIRING (NEW) ---------- -->
+    <script>
+      // Backend base (used by quickverdict.js)
+      window.TVAC_API_BASE = "https://tokenlex-api-new.onrender.com";
+    </script>
+    <script src="quickverdict.js"></script>
   </body>
 </html>
