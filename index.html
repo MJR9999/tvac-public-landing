@@ -9,16 +9,6 @@
       content="TVAC is an AI-driven evaluation engine that produces decision-grade, case-specific tokenization reports (15–20 pages) with a clear verdict, factor logic, assumptions, risk register, and concrete next steps."
     />
 
-    <!-- Quick Verdict widget config (landing) -->
-    <script>
-      // Backend base URL (Render API service)
-      window.TVAC_API_BASE = "https://tokenlex-api-new.onrender.com";
-      // API paths (do not change unless backend routes change)
-      window.TVAC_QV_PATH = "/api/quickverdict";
-      window.TVAC_EVAL_PATH = "/api/evaluate/v2";
-    </script>
-    <script src="quickverdict.js" defer></script>
-
     <style>
       /* ---------- THEME ---------- */
       :root {
@@ -207,16 +197,16 @@
       .card h3 { margin: 0 0 8px; font-size: 16px; }
       .card p { margin: 0; color: rgba(255,255,255,0.70); font-size: 14px; }
 
-      /* ---------- QUICK VERDICT SECTION ---------- */
-      #quickverdict { scroll-margin-top: 90px; }
-      .qv-wrap {
+      /* ---------- GUIDED TOUR SECTION ---------- */
+      #guidedtour { scroll-margin-top: 90px; }
+      .gt-wrap {
         background: rgba(255,255,255,0.03);
         border: 1px solid rgba(255,255,255,0.10);
         border-radius: var(--radius2);
         padding: 18px;
         box-shadow: var(--shadow);
       }
-      .qv-host { margin-top: 14px; }
+      .gt-host { margin-top: 14px; }
 
       /* ---------- FOOTER ---------- */
       footer { padding: 34px 0 48px; color: rgba(255,255,255,0.55); font-size: 13px; }
@@ -242,11 +232,12 @@
         <div class="nav-links">
           <a class="pill" href="#methodology">Methodology</a>
           <a class="pill" href="#model">Model</a>
+          <a class="pill" href="#guidedtour">Guided Tour</a>
           <a class="pill" href="#pricing">Pricing</a>
         </div>
 
         <div class="nav-right">
-          <a class="cta" href="#quickverdict">Request Quick Verdict →</a>
+          <a class="cta" href="#guidedtour">View Guided Tour →</a>
         </div>
       </div>
     </div>
@@ -274,7 +265,7 @@
           </div>
 
           <div class="hero-actions">
-            <a class="btn primary" href="#quickverdict">Free Quick Verdict (limited) →</a>
+            <a class="btn primary" href="#guidedtour">Explore a real case report →</a>
             <a class="btn" href="#pricing">Order Deep Assessment</a>
             <a class="btn" href="#demo">Try demo</a>
           </div>
@@ -390,18 +381,36 @@
       </div>
     </section>
 
+    <!-- Guided Tour (replaces Quick Verdict) -->
+    <section id="guidedtour">
+      <div class="container">
+        <h2 class="section-title">Inside a real TVAC case report</h2>
+        <p class="section-lead">
+          A guided walkthrough showing how TVAC turns a tokenization idea into a decision-grade assessment —
+          including framing, the five-factor method, rubrics, case-specific reasoning, and an implementation-oriented plan.
+        </p>
+
+        <div class="gt-wrap">
+          <div class="gt-host">
+            <!-- Guided Tour mounts here -->
+            <div id="guidedTour"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Pricing -->
     <section id="pricing">
       <div class="container">
         <h2 class="section-title">Pricing</h2>
         <p class="section-lead">
-          Start with a Quick Verdict screening. Upgrade to a deep assessment report when you need full decision-grade documentation.
+          Start by reviewing the Guided Tour. Order a deep assessment report when you need full decision-grade documentation for your specific case.
         </p>
 
         <div class="grid-3">
           <div class="card">
-            <h3>Quick Verdict</h3>
-            <p>Fast screening verdict + factor scores + top blockers.</p>
+            <h3>Guided Tour</h3>
+            <p>A curated walkthrough of a real report structure, logic, and value pathways.</p>
           </div>
           <div class="card">
             <h3>Deep Assessment</h3>
@@ -415,28 +424,14 @@
       </div>
     </section>
 
-    <!-- Quick Verdict -->
-    <section id="quickverdict">
-      <div class="container">
-        <h2 class="section-title">Get a fast, decision-grade snapshot</h2>
-        <p class="section-lead">
-          Submit your case in a structured format and receive a conservative verdict (Go / Borderline / No-Go),
-          the five factor scores, top blockers, and the most effective design levers.
-        </p>
-
-        <div class="qv-wrap">
-          <div class="qv-host">
-            <!-- Quick Verdict widget mounts here -->
-            <div id="qv-app"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <footer>
       <div class="container">
-        © TVAC. If the widget fails to load, contact <a href="mailto:michael@tvacai.com">michael@tvacai.com</a>.
+        © TVAC. Questions? Contact <a href="mailto:michael@tvacai.com">michael@tvacai.com</a>.
       </div>
     </footer>
+
+    <!-- Guided Tour scripts (data first, then renderer) -->
+    <script src="guided-tour/guidedTourData.js"></script>
+    <script src="guided-tour/GuidedCaseTour.js"></script>
   </body>
 </html>
