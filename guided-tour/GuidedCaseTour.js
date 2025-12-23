@@ -1,394 +1,366 @@
 /* guided-tour/GuidedCaseTour.js
-   Vanilla JS guided tour (frontend-only).
-   Mounts into: #guided-tour-app
-   Uses data from: window.TVAC_GUIDED_TOURS
+   TVAC Guided Tour – robust loader + modal tour (frontend-only)
+
+   Goals:
+   - Do NOT require index.html edits
+   - If window.guidedTourData is missing, load guided-tour/guidedTourData.js dynamically
+   - Hook into existing buttons (Start Guided Tour / View Guided Tour)
+   - Provide a clean modal with Next/Back + keyboard + close
 */
 
 (function () {
-  const mount = document.getElementById("guided-tour-app");
-  if (!mount) return;
+  const DATA_SCRIPT_SRC = "guided-tour/guidedTourData.js";
 
-  // Inject minimal CSS (scoped with .gt-*)
-  const css = `
-  .gt-shell{ margin-top:14px; }
-  .gt-note{ color: var(--muted); font-size: 14px; margin: 10px 0 0; }
-  .gt-pill{
-    display:inline-flex; align-items:center; gap:8px;
-    padding: 8px 10px; border-radius: 999px;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.03);
-    color: var(--muted);
-    font-size: 12.5px;
-  }
-  [data-theme="light"] .gt-pill{ background: rgba(0,0,0,0.02); }
-
-  .gt-modal{
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.72);
-    display: none; align-items: center; justify-content: center;
-    z-index: 2000;
-    padding: 20px;
-  }
-  .gt-modal.open{ display:flex; }
-
-  .gt-card{
-    width: min(1060px, 100%);
-    max-height: 88vh;
-    background: rgba(10,12,18,0.92);
-    border: 1px solid rgba(255,255,255,0.14);
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 30px 110px rgba(0,0,0,0.55);
-  }
-  [data-theme="light"] .gt-card{
-    background: rgba(255,255,255,0.95);
-    border-color: rgba(0,0,0,0.14);
+  // ---------- utilities ----------
+  function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
   }
 
-  .gt-top{
-    display:flex; align-items:center; justify-content: space-between;
-    gap: 12px;
-    padding: 12px 14px;
-    border-bottom: 1px solid rgba(255,255,255,0.10);
-  }
-  [data-theme="light"] .gt-top{ border-bottom-color: rgba(0,0,0,0.10); }
-
-  .gt-title{
-    font-weight: 650;
-    font-size: 13px;
-    color: var(--muted);
-    display:flex; flex-wrap: wrap; gap: 10px; align-items:center;
+  function getTourSteps() {
+    // Accept multiple shapes to be future-proof
+    if (Array.isArray(window.guidedTourData)) return window.guidedTourData;
+    if (window.TVAC_GUIDED_TOUR && Array.isArray(window.TVAC_GUIDED_TOUR.steps))
+      return window.TVAC_GUIDED_TOUR.steps;
+    if (window.TVAC_GUIDED_TOUR && Array.isArray(window.TVAC_GUIDED_TOUR.steps?.steps))
+      return window.TVAC_GUIDED_TOUR.steps.steps;
+    return null;
   }
 
-  .gt-close{
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.04);
-    color: var(--text);
-    border-radius: 999px;
-    padding: 8px 10px;
-    cursor: pointer;
-    font-size: 12px;
-  }
-  [data-theme="light"] .gt-close{ background: rgba(0,0,0,0.02); }
+  function loadScriptOnce(src) {
+    return new Promise((resolve, reject) => {
+      // already loaded?
+      const existing = Array.from(document.scripts).find((s) => (s.src || "").includes(src));
+      if (existing) return resolve(true);
 
-  .gt-body{
-    display:grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: 0;
-    max-height: calc(88vh - 56px);
-  }
-  @media (max-width: 980px){
-    .gt-body{ grid-template-columns: 1fr; }
+      const s = document.createElement("script");
+      // cache-bust to avoid stale CDN/browser cache while you iterate
+      s.src = src + (src.includes("?") ? "&" : "?") + "v=" + Date.now();
+      s.async = true;
+      s.onload = () => resolve(true);
+      s.onerror = () => reject(new Error("Failed to load " + src));
+      document.head.appendChild(s);
+    });
   }
 
-  .gt-imageWrap{
-    background: rgba(0,0,0,0.20);
-    display:flex; align-items:center; justify-content:center;
-    padding: 10px;
-    border-right: 1px solid rgba(255,255,255,0.10);
-  }
-  [data-theme="light"] .gt-imageWrap{
-    background: rgba(0,0,0,0.03);
-    border-right-color: rgba(0,0,0,0.10);
-  }
-  @media (max-width: 980px){
-    .gt-imageWrap{ border-right: none; border-bottom: 1px solid rgba(255,255,255,0.10); }
-    [data-theme="light"] .gt-imageWrap{ border-bottom-color: rgba(0,0,0,0.10); }
-  }
+  function ensureTourDataLoaded() {
+    return new Promise(async (resolve) => {
+      // quick path
+      if (getTourSteps()) return resolve(true);
 
-  .gt-image{
-    width: 100%;
-    height: 100%;
-    max-height: 78vh;
-    object-fit: contain;
-    display:block;
-  }
+      // try to load data file
+      try {
+        await loadScriptOnce(DATA_SCRIPT_SRC);
 
-  .gt-right{
-    padding: 16px 16px 14px;
-    overflow: auto;
-  }
+        // give the script a tick to attach window.guidedTourData
+        await sleep(25);
 
-  .gt-kicker{
-    color: var(--accent);
-    font-weight: 700;
-    letter-spacing: 2.2px;
-    text-transform: uppercase;
-    font-size: 11.5px;
-    margin: 0 0 8px;
-  }
-  .gt-h{
-    margin: 0 0 10px;
-    font-size: 22px;
-    line-height: 1.15;
-    font-weight: 700;
-    letter-spacing: -0.2px;
-  }
-  .gt-p{
-    margin: 0;
-    color: var(--muted);
-    font-size: 14.5px;
-    line-height: 1.6;
-  }
-
-  .gt-progress{
-    margin-top: 14px;
-    display:flex; align-items:center; justify-content: space-between;
-    gap: 12px;
-  }
-  .gt-bar{
-    flex: 1;
-    height: 7px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.08);
-    overflow:hidden;
-  }
-  [data-theme="light"] .gt-bar{ background: rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.06); }
-  .gt-barFill{
-    height: 100%;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--accent-2), var(--accent));
-    width: 0%;
-  }
-  .gt-stepText{ color: var(--muted-2); font-size: 12.5px; white-space: nowrap; }
-
-  .gt-controls{
-    display:flex; flex-wrap: wrap; gap: 10px;
-    margin-top: 14px;
-  }
-
-  .gt-btn{
-    display:inline-flex; align-items:center; justify-content:center;
-    gap:8px;
-    padding: 10px 14px;
-    border-radius: 999px;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,0.03);
-    color: var(--text);
-    font-weight: 650;
-    font-size: 13px;
-    cursor: pointer;
-    text-decoration:none;
-    transition: 140ms ease;
-    white-space: nowrap;
-  }
-  [data-theme="light"] .gt-btn{ background: rgba(0,0,0,0.02); }
-  .gt-btn:hover{ transform: translateY(-1px); border-color: var(--border-2); text-decoration:none; }
-  .gt-btnPrimary{
-    border: none;
-    color: #15110b;
-    background: linear-gradient(90deg, var(--accent-2), var(--accent));
-    box-shadow: 0 10px 30px rgba(255,154,60,0.18);
-  }
-  .gt-btn:disabled{
-    opacity: 0.45;
-    cursor: not-allowed;
-    transform: none;
-  }
-  `;
-  const styleTag = document.createElement("style");
-  styleTag.textContent = css;
-  document.head.appendChild(styleTag);
-
-  // Data
-  const data = window.TVAC_GUIDED_TOURS;
-  const tours = (data && data.tours) ? data.tours : [];
-  const defaultId = (data && data.defaultTourId) ? data.defaultTourId : (tours[0] && tours[0].id);
-
-  function getTourById(id) {
-    return tours.find(t => t.id === id) || tours[0] || null;
-  }
-
-  const tour = getTourById(defaultId);
-  if (!tour || !Array.isArray(tour.steps) || tour.steps.length === 0) {
-    mount.innerHTML = `<div class="gt-shell"><span class="gt-pill">Guided Tour unavailable</span><div class="gt-note">No tour data found.</div></div>`;
-    return;
-  }
-
-  // Modal skeleton
-  const modal = document.createElement("div");
-  modal.className = "gt-modal";
-  modal.setAttribute("aria-hidden", "true");
-
-  modal.innerHTML = `
-    <div class="gt-card" role="dialog" aria-modal="true" aria-label="TVAC Guided Tour">
-      <div class="gt-top">
-        <div class="gt-title">
-          <span class="gt-pill">GUIDED TOUR</span>
-          <span>${escapeHtml(tour.title || "TVAC Guided Tour")}</span>
-        </div>
-        <button class="gt-close" type="button" aria-label="Close">Close ✕</button>
-      </div>
-
-      <div class="gt-body">
-        <div class="gt-imageWrap">
-          <img class="gt-image" alt="" />
-        </div>
-        <div class="gt-right">
-          <div class="gt-kicker"></div>
-          <div class="gt-h"></div>
-          <p class="gt-p"></p>
-
-          <div class="gt-progress" aria-label="Tour progress">
-            <div class="gt-bar"><div class="gt-barFill"></div></div>
-            <div class="gt-stepText"></div>
-          </div>
-
-          <div class="gt-controls">
-            <button class="gt-btn" type="button" data-action="prev">← Previous</button>
-            <button class="gt-btn gt-btnPrimary" type="button" data-action="next">Next →</button>
-            <a class="gt-btn" data-action="ctaPrimary" href="#" style="display:none;">Request Deep Assessment →</a>
-            <a class="gt-btn" data-action="ctaSecondary" href="#" style="display:none;">Ask a question</a>
-          </div>
-
-          <p class="gt-note" style="margin-top:12px;">
-            Tip: Use <b>←</b>/<b>→</b> to navigate and <b>Esc</b> to close.
-          </p>
-        </div>
-      </div>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  const imgEl = modal.querySelector(".gt-image");
-  const kickerEl = modal.querySelector(".gt-kicker");
-  const hEl = modal.querySelector(".gt-h");
-  const pEl = modal.querySelector(".gt-p");
-  const barFill = modal.querySelector(".gt-barFill");
-  const stepText = modal.querySelector(".gt-stepText");
-  const closeBtn = modal.querySelector(".gt-close");
-  const prevBtn = modal.querySelector('[data-action="prev"]');
-  const nextBtn = modal.querySelector('[data-action="next"]');
-  const ctaPrimary = modal.querySelector('[data-action="ctaPrimary"]');
-  const ctaSecondary = modal.querySelector('[data-action="ctaSecondary"]');
-
-  let idx = 0;
-
-  function render() {
-    const steps = tour.steps;
-    const step = steps[idx];
-
-    kickerEl.textContent = step.kicker || "";
-    hEl.textContent = step.title || "";
-    pEl.textContent = step.body || "";
-
-    imgEl.alt = step.imageAlt || step.title || "Guided tour image";
-    imgEl.onerror = null;
-    imgEl.src = step.image || "";
-
-    // Buttons
-    prevBtn.disabled = idx === 0;
-    const last = idx === steps.length - 1;
-    nextBtn.textContent = last ? "Finish ✕" : "Next →";
-
-    // Progress
-    const pct = Math.round(((idx + 1) / steps.length) * 100);
-    barFill.style.width = pct + "%";
-    stepText.textContent = `Step ${idx + 1} / ${steps.length}`;
-
-    // CTA only on last step
-    if (last && tour.cta && tour.cta.primaryHref) {
-      ctaPrimary.style.display = "inline-flex";
-      ctaPrimary.textContent = tour.cta.primaryLabel || "Request Deep Assessment →";
-      ctaPrimary.href = tour.cta.primaryHref;
-      ctaPrimary.target = tour.cta.primaryHref.startsWith("http") ? "_blank" : "_self";
-      ctaPrimary.rel = "noreferrer";
-
-      if (tour.cta.secondaryHref) {
-        ctaSecondary.style.display = "inline-flex";
-        ctaSecondary.textContent = tour.cta.secondaryLabel || "Ask a question";
-        ctaSecondary.href = tour.cta.secondaryHref;
-        ctaSecondary.target = tour.cta.secondaryHref.startsWith("http") ? "_blank" : "_self";
-        ctaSecondary.rel = "noreferrer";
-      } else {
-        ctaSecondary.style.display = "none";
+        if (getTourSteps()) return resolve(true);
+        return resolve(false);
+      } catch (e) {
+        return resolve(false);
       }
+    });
+  }
+
+  // ---------- UI: small status line under buttons ----------
+  function setStatus(kind, text) {
+    const el =
+      document.querySelector("[data-guided-tour-status]") ||
+      document.getElementById("guidedTourStatus") ||
+      null;
+
+    if (!el) return;
+
+    el.textContent = text || "";
+    el.style.display = text ? "block" : "none";
+
+    // optional mild styling
+    el.style.marginTop = "12px";
+    el.style.fontSize = "14px";
+    el.style.opacity = "0.85";
+
+    if (kind === "error") el.style.opacity = "0.95";
+  }
+
+  // ---------- Modal ----------
+  function buildModal() {
+    // If already exists, reuse
+    let overlay = document.getElementById("tvacGuidedTourOverlay");
+    if (overlay) return overlay;
+
+    overlay = document.createElement("div");
+    overlay.id = "tvacGuidedTourOverlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 24px;
+    `;
+
+    const panel = document.createElement("div");
+    panel.id = "tvacGuidedTourPanel";
+    panel.style.cssText = `
+      width: min(980px, 100%);
+      max-height: 90vh;
+      overflow: auto;
+      background: rgba(255,255,255,0.96);
+      border-radius: 18px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+      border: 1px solid rgba(0,0,0,0.08);
+    `;
+
+    panel.innerHTML = `
+      <div style="padding: 18px 18px 10px 18px; display:flex; gap:12px; align-items:center; justify-content:space-between;">
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <div id="tvacGTKicker" style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; opacity:0.7;">GUIDED TOUR</div>
+          <div id="tvacGTTitle" style="font-size:22px; font-weight:700; line-height:1.25;">—</div>
+          <div id="tvacGTSub" style="font-size:14px; opacity:0.8; line-height:1.4;">—</div>
+        </div>
+
+        <button id="tvacGTClose" aria-label="Close" style="
+          border: 1px solid rgba(0,0,0,0.12);
+          background: rgba(255,255,255,0.7);
+          border-radius: 12px;
+          padding: 10px 12px;
+          cursor: pointer;
+          font-weight: 600;
+        ">Close ✕</button>
+      </div>
+
+      <div style="padding: 0 18px 18px 18px;">
+        <div id="tvacGTImageWrap" style="
+          background: rgba(0,0,0,0.03);
+          border: 1px solid rgba(0,0,0,0.06);
+          border-radius: 16px;
+          overflow: hidden;
+          margin-top: 10px;
+        ">
+          <img id="tvacGTImage" alt="" style="display:none; width:100%; height:auto;" />
+          <div id="tvacGTNoImage" style="padding: 18px; font-size:14px; opacity:0.8;">
+            No image for this step.
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr; gap: 14px; margin-top: 14px;">
+          <ul id="tvacGTBullets" style="margin:0; padding-left: 18px; line-height:1.55; font-size: 15px;"></ul>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.08);">
+          <div id="tvacGTStepCounter" style="font-size:13px; opacity:0.8;">Step —</div>
+
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button id="tvacGTPrev" style="
+              border: 1px solid rgba(0,0,0,0.12);
+              background: rgba(255,255,255,0.7);
+              border-radius: 12px;
+              padding: 10px 12px;
+              cursor: pointer;
+              font-weight: 600;
+              min-width: 92px;
+            ">← Back</button>
+
+            <button id="tvacGTNext" style="
+              border: 1px solid rgba(0,0,0,0.12);
+              background: rgba(255,255,255,0.9);
+              border-radius: 12px;
+              padding: 10px 12px;
+              cursor: pointer;
+              font-weight: 700;
+              min-width: 92px;
+            ">Next →</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+
+    // close on backdrop click
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) hideModal();
+    });
+
+    // close on button
+    panel.querySelector("#tvacGTClose").addEventListener("click", hideModal);
+
+    // keyboard
+    document.addEventListener("keydown", (e) => {
+      if (overlay.style.display !== "flex") return;
+      if (e.key === "Escape") hideModal();
+      if (e.key === "ArrowRight") nextStep();
+      if (e.key === "ArrowLeft") prevStep();
+    });
+
+    // nav buttons
+    panel.querySelector("#tvacGTNext").addEventListener("click", nextStep);
+    panel.querySelector("#tvacGTPrev").addEventListener("click", prevStep);
+
+    return overlay;
+  }
+
+  let currentIndex = 0;
+  let stepsCache = null;
+
+  function renderStep() {
+    const overlay = buildModal();
+    const panel = document.getElementById("tvacGuidedTourPanel");
+    const step = stepsCache[currentIndex];
+
+    panel.querySelector("#tvacGTKicker").textContent = step.kicker || "GUIDED TOUR";
+    panel.querySelector("#tvacGTTitle").textContent = step.title || "—";
+    panel.querySelector("#tvacGTSub").textContent = step.subtitle || "";
+
+    const img = panel.querySelector("#tvacGTImage");
+    const noImg = panel.querySelector("#tvacGTNoImage");
+
+    if (step.image) {
+      img.src = step.image;
+      img.alt = step.imageAlt || step.title || "Guided Tour step image";
+      img.style.display = "block";
+      noImg.style.display = "none";
     } else {
-      ctaPrimary.style.display = "none";
-      ctaSecondary.style.display = "none";
+      img.removeAttribute("src");
+      img.style.display = "none";
+      noImg.style.display = "block";
     }
+
+    const ul = panel.querySelector("#tvacGTBullets");
+    ul.innerHTML = "";
+    (step.bullets || []).forEach((b) => {
+      const li = document.createElement("li");
+      li.textContent = b;
+      ul.appendChild(li);
+    });
+
+    panel.querySelector("#tvacGTStepCounter").textContent =
+      `Step ${currentIndex + 1} of ${stepsCache.length}`;
+
+    // button disable states
+    panel.querySelector("#tvacGTPrev").disabled = currentIndex === 0;
+    panel.querySelector("#tvacGTPrev").style.opacity = currentIndex === 0 ? "0.5" : "1";
+    panel.querySelector("#tvacGTPrev").style.cursor = currentIndex === 0 ? "not-allowed" : "pointer";
+
+    const isLast = currentIndex === stepsCache.length - 1;
+    panel.querySelector("#tvacGTNext").textContent = isLast ? "Done ✓" : "Next →";
   }
 
-  function open() {
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-    render();
+  function showModal() {
+    const overlay = buildModal();
+    overlay.style.display = "flex";
+    renderStep();
   }
 
-  function close() {
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
+  function hideModal() {
+    const overlay = document.getElementById("tvacGuidedTourOverlay");
+    if (overlay) overlay.style.display = "none";
   }
 
-  function next() {
-    const steps = tour.steps;
-    if (idx >= steps.length - 1) {
-      close();
+  function nextStep() {
+    if (!stepsCache) return;
+    if (currentIndex >= stepsCache.length - 1) return hideModal();
+    currentIndex += 1;
+    renderStep();
+  }
+
+  function prevStep() {
+    if (!stepsCache) return;
+    if (currentIndex <= 0) return;
+    currentIndex -= 1;
+    renderStep();
+  }
+
+  // ---------- Hook into existing landing buttons ----------
+  function findStartButtons() {
+    const candidates = [];
+
+    // common ids / data attrs (try a lot, but harmless)
+    [
+      "#startGuidedTour",
+      "#start-guided-tour",
+      "[data-action='start-guided-tour']",
+      "[data-guided-tour-start]",
+      "a[href*='#guided-tour']",
+      "a[href*='#guidedTour']",
+      "button"
+    ].forEach((sel) => {
+      document.querySelectorAll(sel).forEach((el) => candidates.push(el));
+    });
+
+    // Filter to only elements that look like the start buttons
+    return candidates.filter((el) => {
+      const t = (el.textContent || "").trim().toLowerCase();
+      return (
+        t.includes("start guided tour") ||
+        t.includes("view guided tour") ||
+        t === "guided tour" ||
+        (el.getAttribute("href") || "").toLowerCase().includes("guided")
+      );
+    });
+  }
+
+  async function startTour() {
+    setStatus("", "Loading tour…");
+
+    const ok = await ensureTourDataLoaded();
+    stepsCache = getTourSteps();
+
+    if (!ok || !stepsCache || !stepsCache.length) {
+      setStatus("error", "Guided Tour unavailable. No tour data found.");
       return;
     }
-    idx += 1;
-    render();
+
+    setStatus("", ""); // clear
+    currentIndex = 0;
+    showModal();
   }
 
-  function prev() {
-    if (idx <= 0) return;
-    idx -= 1;
-    render();
-  }
+  function attach() {
+    // status line (optional)
+    // If your index.html already has a place for this, great.
+    // If not, we won’t inject anything disruptive.
+    const statusEl =
+      document.querySelector("[data-guided-tour-status]") ||
+      document.getElementById("guidedTourStatus") ||
+      null;
 
-  // Wire modal controls
-  closeBtn.addEventListener("click", close);
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) close();
-  });
-  prevBtn.addEventListener("click", prev);
-  nextBtn.addEventListener("click", next);
+    if (statusEl) {
+      statusEl.style.display = "none";
+    }
 
-  // Keyboard nav
-  document.addEventListener("keydown", (e) => {
-    if (!modal.classList.contains("open")) return;
-    if (e.key === "Escape") close();
-    if (e.key === "ArrowRight") next();
-    if (e.key === "ArrowLeft") prev();
-  });
+    // hook buttons
+    const btns = findStartButtons();
+    btns.forEach((b) => {
+      // Avoid double-binding
+      if (b.__tvacGuidedTourBound) return;
+      b.__tvacGuidedTourBound = true;
 
-  // Mount small status (optional)
-  mount.innerHTML = `
-    <div class="gt-shell">
-      <span class="gt-pill">Ready: ${escapeHtml(tour.steps.length + " steps")}</span>
-    </div>
-  `;
-
-  // Wire landing page buttons
-  const startBtn = document.getElementById("gtStartBtn");
-  if (startBtn) {
-    startBtn.addEventListener("click", () => {
-      idx = 0;
-      open();
+      b.addEventListener("click", (e) => {
+        // allow normal anchor jumps if user holds cmd/ctrl etc.
+        if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+        e.preventDefault();
+        startTour();
+      });
     });
+
+    // If there’s a Start button inside the card rendered as a <button>,
+    // it will be caught above. Otherwise, tour can still be started via nav.
   }
 
-  const openTocBtn = document.getElementById("gtOpenTocBtn");
-  if (openTocBtn) {
-    openTocBtn.addEventListener("click", () => {
-      // Open the existing screenshot in your lightbox if present; otherwise open tour at TOC step.
-      const tocCard = document.querySelector('.shotCard[data-src="assets/tvac-report-toc-result.png"]');
-      if (tocCard) tocCard.click();
-      else {
-        idx = 1;
-        open();
-      }
-    });
+  // Wait until DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", attach);
+  } else {
+    attach();
   }
 
-  // Helper
-  function escapeHtml(str) {
-    return String(str || "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
+  // Expose for debugging/manual triggering
+  window.TVAC_START_GUIDED_TOUR = startTour;
 })();
