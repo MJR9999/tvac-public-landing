@@ -778,13 +778,13 @@
             <a class="pill" href="#methodology">Methodology</a>
             <a class="pill" href="#model">Model</a>
             <a class="pill" href="#pricing">Pricing</a>
-            <a class="pill" href="#quickverdict">Quick Verdict</a>
+            <a class="pill" href="#quickverdict">Guided Tour</a>
 
             <button class="themeBtn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
               <span id="themeIcon" aria-hidden="true">🌙</span>
             </button>
 
-            <a class="pill pillStrong" href="#quickverdict">Request Quick Verdict →</a>
+            <a class="pill pillStrong" href="#quickverdict">View Guided Tour →</a>
           </div>
         </div>
       </div>
@@ -814,7 +814,7 @@
             </div>
 
             <div class="ctaRow">
-              <a class="btn btnPrimary" href="#quickverdict">Free Quick Verdict (limited) →</a>
+              <a class="btn btnPrimary" href="#quickverdict">Guided Tour (see real output) →</a>
               <a class="btn" href="#pricing">Order Deep Assessment</a>
               <a class="btn" href="https://tvacai.com" onclick="return false;" title="Hook up later when demo URL is final">Try demo</a>
             </div>
@@ -895,6 +895,15 @@
             Instead of a fragile “mini-evaluation” widget, this is a <b>visual, step-by-step tour</b> through a concrete tokenization case report —
             showing the <b>structure</b>, the <b>five-factor logic</b>, the <b>assumptions</b>, and how the analysis becomes <b>case-specific</b>
             (not a generic LLM prompt response).
+          </p>
+
+          <!-- Buttons + tiny status line (rendered by GuidedCaseTour.js too, but we give a visible CTA here) -->
+          <div class="btnRow" style="margin-top: 10px;">
+            <button class="btn btnPrimary" id="gtStartBtn" type="button">Start Guided Tour →</button>
+            <button class="btn" id="gtOpenTocBtn" type="button">See report structure (TOC) ↗</button>
+          </div>
+          <p class="small" id="gtStatus" style="margin: 10px 0 0; color: var(--muted-2);">
+            The tour loads instantly and runs 100% on this landing page (no backend calls).
           </p>
 
           <div id="guided-tour-app" aria-label="TVAC Guided Tour"></div>
@@ -1304,7 +1313,7 @@
           <div class="btnRow">
             <a class="btn btnPrimary" href="/tvac-methodology-v1.1.pdf" download>Download PDF ↓</a>
             <a class="btn" href="#pricing">Pricing</a>
-            <a class="btn" href="#quickverdict">Quick Verdict</a>
+            <a class="btn" href="#quickverdict">Guided Tour</a>
           </div>
         </div>
       </div>
