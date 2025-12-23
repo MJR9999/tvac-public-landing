@@ -6,638 +6,816 @@
     <title>TVAC — Tokenization Value-Add Calculator</title>
     <meta
       name="description"
-      content="Tokenization feasibility, without hype. TVAC evaluates whether a specific tokenization design creates net added value — and delivers a conservative verdict, factor logic, assumptions, risk register, and concrete next steps."
+      content="Tokenization feasibility, without hype. TVAC evaluates whether a specific tokenization design creates net added value — and delivers a case-specific deep report (~6,000 words) with rationale, assumptions, risk focus and concrete next steps."
     />
-
-    <!-- Landing config -->
-    <script>
-      // Backend base URL (Render API service)
-      window.TVAC_API_BASE = "https://tokenlex-api-new.onrender.com";
-      // API paths (do not change unless backend routes change)
-      window.TVAC_EVAL_PATH = "/api/evaluate/v2";
-    </script>
 
     <style>
       :root {
         --bg: #070a12;
         --panel: rgba(255, 255, 255, 0.04);
         --panel-2: rgba(255, 255, 255, 0.06);
-        --border: rgba(255, 255, 255, 0.1);
+        --border: rgba(255, 255, 255, 0.10);
         --border-2: rgba(255, 255, 255, 0.14);
         --text: rgba(255, 255, 255, 0.92);
         --muted: rgba(255, 255, 255, 0.68);
-        --muted2: rgba(255, 255, 255, 0.56);
-        --brand: #ff7a18;
-        --brand2: #ffb169;
-        --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        --muted2: rgba(255, 255, 255, 0.54);
+        --accent: #f0a14b;
+        --accent2: #f4b068;
+        --accent3: #ffcf95;
+        --ok: #2dd4bf;
+        --warn: #fbbf24;
+        --bad: #fb7185;
+        --shadow: 0 12px 40px rgba(0,0,0,.55);
         --radius: 18px;
-        --radius2: 24px;
-        --max: 1100px;
+        --radius2: 22px;
+        --max: 1120px;
       }
 
-      * {
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        height: 100%;
-      }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
       body {
         margin: 0;
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
-          "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
-        background: radial-gradient(
-            1200px 700px at 20% -10%,
-            rgba(255, 122, 24, 0.22),
-            transparent 60%
-          ),
-          radial-gradient(
-            900px 600px at 90% 0%,
-            rgba(255, 177, 105, 0.14),
-            transparent 55%
-          ),
-          radial-gradient(
-            900px 600px at 60% 110%,
-            rgba(110, 180, 255, 0.08),
-            transparent 60%
-          ),
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+        background:
+          radial-gradient(1200px 700px at 65% 25%, rgba(240, 161, 75, 0.10), rgba(7,10,18,0) 55%),
+          radial-gradient(900px 520px at 15% 35%, rgba(45, 212, 191, 0.07), rgba(7,10,18,0) 50%),
           var(--bg);
         color: var(--text);
-        line-height: 1.5;
+        line-height: 1.45;
       }
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
+      a { color: inherit; }
+      .container { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
 
-      .container {
-        width: 100%;
-        max-width: var(--max);
-        margin: 0 auto;
-        padding: 0 20px;
-      }
-
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        backdrop-filter: blur(10px);
-        background: rgba(7, 10, 18, 0.62);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      }
+      /* NAV */
       .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        position: sticky; top: 0; z-index: 50;
+        background: rgba(7,10,18,0.78);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+      }
+      .nav-inner {
+        display: flex; align-items: center; justify-content: space-between;
         padding: 14px 0;
-        gap: 14px;
+        gap: 16px;
       }
       .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 700;
-        letter-spacing: 0.4px;
+        display: flex; align-items: center; gap: 10px;
+        font-weight: 700; letter-spacing: 0.2px;
+        min-width: 240px;
       }
-      .brand-badge {
-        width: 34px;
-        height: 34px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--brand), var(--brand2));
-        box-shadow: 0 10px 30px rgba(255, 122, 24, 0.18);
+      .brand .logo {
+        width: 62px; height: 28px;
+        border: 1px solid rgba(240,161,75,0.65);
+        display: grid; place-items: center;
+        border-radius: 8px;
+        font-weight: 800; letter-spacing: 3px; font-size: 12px;
       }
-      .nav-links {
-        display: flex;
-        gap: 18px;
-        align-items: center;
+      .brand span { color: var(--muted); font-weight: 600; }
+      .nav-links { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+      .pill {
+        padding: 9px 12px;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 999px;
         color: var(--muted);
+        text-decoration: none;
         font-size: 14px;
+        background: rgba(255,255,255,0.02);
       }
-      .nav-links a:hover {
-        color: var(--text);
-      }
-      .nav-cta {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
+      .pill:hover { border-color: rgba(255,255,255,0.22); color: rgba(255,255,255,0.82); }
+      .cta {
         padding: 10px 14px;
-        border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(255, 255, 255, 0.04);
-        color: var(--text);
-        font-weight: 600;
-        font-size: 14px;
-        transition: transform 0.12s ease, background 0.12s ease, border 0.12s ease;
-        cursor: pointer;
+        border-radius: 999px;
+        background: linear-gradient(135deg, rgba(240,161,75,1), rgba(244,176,104,1));
+        color: #1a120a;
+        text-decoration: none;
+        font-weight: 800;
+        border: 0;
+        white-space: nowrap;
       }
-      .btn:hover {
-        transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.18);
-      }
-      .btn.primary {
-        background: linear-gradient(135deg, var(--brand), var(--brand2));
-        border: none;
-        color: #1b0f05;
-      }
-      .btn.primary:hover {
-        transform: translateY(-1px);
-        filter: brightness(1.03);
-      }
+      .cta:hover { filter: brightness(1.05); }
 
-      .hero {
-        padding: 68px 0 24px;
-      }
+      /* HERO */
+      .hero { padding: 64px 0 34px; }
       .hero-grid {
         display: grid;
-        grid-template-columns: 1.2fr 0.8fr;
+        grid-template-columns: 1.1fr 0.9fr;
         gap: 28px;
-        align-items: start;
+        align-items: center;
       }
       .kicker {
-        display: inline-flex;
-        gap: 10px;
-        align-items: center;
+        color: rgba(240,161,75,0.92);
+        font-weight: 800;
+        letter-spacing: 1.5px;
         font-size: 12px;
-        letter-spacing: 0.18em;
-        color: rgba(255, 255, 255, 0.66);
         text-transform: uppercase;
+        margin-bottom: 10px;
       }
       h1 {
-        margin: 14px 0 10px;
-        font-size: 44px;
-        line-height: 1.06;
-        letter-spacing: -0.02em;
+        margin: 0 0 14px;
+        font-size: clamp(40px, 4.5vw, 58px);
+        line-height: 1.02;
+        letter-spacing: -0.6px;
       }
-      .subhead {
-        margin: 0;
-        color: var(--muted);
-        font-size: 18px;
-        max-width: 58ch;
+      h1 .accent { color: var(--accent); }
+      .lead { margin: 0 0 18px; color: rgba(255,255,255,0.78); font-size: 16px; max-width: 60ch; }
+      .tags { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 20px; }
+      .tag {
+        font-size: 13px; color: rgba(255,255,255,0.72);
+        border: 1px solid rgba(255,255,255,0.12);
+        padding: 7px 10px; border-radius: 999px;
+        background: rgba(255,255,255,0.02);
       }
-      .hero-actions {
-        display: flex;
-        gap: 12px;
-        margin-top: 18px;
-        flex-wrap: wrap;
+      .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px; align-items: center; }
+      .btn {
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(255,255,255,0.03);
+        color: rgba(255,255,255,0.9);
+        padding: 11px 14px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 800;
+        font-size: 14px;
       }
-      .hero-card {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        border-radius: 22px;
+      .btn:hover { border-color: rgba(255,255,255,0.26); background: rgba(255,255,255,0.04); }
+      .btn.primary {
+        background: linear-gradient(135deg, rgba(240,161,75,1), rgba(244,176,104,1));
+        color: #1a120a;
+        border: 0;
+      }
+      .btn.primary:hover { filter: brightness(1.05); }
+      .subnote { color: rgba(255,255,255,0.55); font-size: 13px; margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+      .subnote span { display: inline-flex; align-items: center; gap: 8px; }
+      .dot { width: 6px; height: 6px; border-radius: 99px; background: rgba(255,255,255,0.22); display: inline-block; }
+
+      /* SNAPSHOT CARD */
+      .snapshot {
+        background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: var(--radius2);
+        box-shadow: var(--shadow);
+        padding: 18px;
+        position: relative;
+        overflow: hidden;
+      }
+      .snapshot:before {
+        content: "";
+        position: absolute;
+        inset: -160px -140px auto auto;
+        width: 380px;
+        height: 380px;
+        background: radial-gradient(circle at 30% 30%, rgba(240,161,75,0.18), rgba(7,10,18,0) 60%);
+        transform: rotate(12deg);
+        pointer-events: none;
+      }
+      .snap-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+      .snap-title { font-weight: 800; color: rgba(255,255,255,0.68); font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase; }
+      .snap-score { font-size: 42px; font-weight: 900; letter-spacing: -0.6px; }
+      .badge {
+        display: inline-flex; gap: 8px; align-items: center;
+        padding: 8px 12px; border-radius: 999px;
+        border: 1px solid rgba(45,212,191,0.35);
+        background: rgba(45,212,191,0.12);
+        color: rgba(255,255,255,0.92);
+        font-weight: 900;
+        font-size: 13px;
+      }
+      .badge .dot { background: rgba(45,212,191,0.95); }
+      .snap-body {
+        margin-top: 14px;
+        background: rgba(0,0,0,0.16);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: var(--radius);
+        padding: 14px;
+      }
+      .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 10px 0; }
+      .row .lbl { color: rgba(255,255,255,0.72); font-size: 13px; width: 170px; }
+      .bar { flex: 1; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
+      .bar > i { display: block; height: 100%; width: 60%; background: rgba(45,212,191,0.8); border-radius: 999px; }
+      .row .val { width: 44px; text-align: right; color: rgba(255,255,255,0.78); font-size: 13px; }
+
+      /* SECTIONS */
+      section { padding: 34px 0; }
+      .section-kicker {
+        color: rgba(240,161,75,0.85);
+        font-weight: 900;
+        letter-spacing: 1.5px;
+        font-size: 12px;
+        text-transform: uppercase;
+        margin: 0 0 10px;
+      }
+      .section-title { font-size: 30px; margin: 0 0 10px; letter-spacing: -0.3px; }
+      .section-lead { color: rgba(255,255,255,0.70); max-width: 86ch; margin: 0 0 16px; }
+      .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+      .card {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: var(--radius);
+        padding: 16px;
+      }
+      .card h3 { margin: 0 0 8px; font-size: 16px; }
+      .card p { margin: 0; color: rgba(255,255,255,0.70); font-size: 14px; }
+      .card ul { margin: 10px 0 0; padding-left: 18px; color: rgba(255,255,255,0.70); }
+      .card li { margin: 6px 0; }
+
+      /* FEATURE BOX (Guided Tour replacement for Quick Verdict) */
+      #guidedtour { scroll-margin-top: 90px; }
+      .feature-wrap {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: var(--radius2);
         padding: 18px;
         box-shadow: var(--shadow);
       }
-      .hero-card h3 {
-        margin: 0 0 10px;
-        font-size: 16px;
-        letter-spacing: 0.02em;
-      }
-      .hero-card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 14px;
-      }
-      .hero-metrics {
+      .feature-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 14px;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 18px;
+        align-items: start;
       }
-      .metric {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 16px;
-        padding: 12px;
-      }
-      .metric .val {
-        font-weight: 800;
+      .feature-title {
+        font-weight: 900;
         font-size: 18px;
+        margin: 0 0 8px;
       }
-      .metric .lbl {
-        color: var(--muted2);
-        font-size: 12px;
-      }
-
-      section {
-        padding: 58px 0;
-      }
-      .section-title {
-        font-size: 28px;
-        margin: 0 0 10px;
-        letter-spacing: -0.01em;
-      }
-      .section-lead {
-        margin: 0 0 22px;
-        color: var(--muted);
-        max-width: 70ch;
-      }
-
-      /* Pricing cards */
-      .pricing-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 14px;
-      }
-      .price-card {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        border-radius: 22px;
-        padding: 18px;
-      }
-      .price-card h3 {
-        margin: 0 0 6px;
-        font-size: 16px;
-      }
-      .price-card .price {
-        font-size: 24px;
-        font-weight: 800;
-        margin: 8px 0;
-      }
-      .price-card p {
-        color: var(--muted);
+      .feature-copy {
+        color: rgba(255,255,255,0.70);
         margin: 0 0 12px;
-        font-size: 14px;
       }
-      .price-card ul {
-        margin: 0 0 14px;
-        padding-left: 18px;
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      /* Snapshot / widget area (reused for Guided Tour) */
-      .snap {
-        padding-top: 52px;
-      }
-      .snap .lead {
-        color: var(--muted);
-        max-width: 78ch;
+      .mini-note {
+        color: rgba(255,255,255,0.58);
+        font-size: 13px;
         margin-top: 10px;
       }
-      .qv-app {
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 16px;
-        margin-top: 18px;
-      }
-      .qv-box {
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.10);
-        border-radius: 22px;
-        padding: 16px;
-        min-height: 260px;
-      }
-      .qv-side {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 22px;
-        padding: 16px;
-      }
-      .qv-side h3 {
+      .feature-right h4 {
         margin: 0 0 8px;
-        font-size: 16px;
+        font-size: 14px;
+        color: rgba(255,255,255,0.88);
+        font-weight: 900;
       }
-      .qv-side p {
-        margin: 0 0 12px;
-        color: var(--muted);
+      .linkish {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 900;
+        color: rgba(240,161,75,0.95);
+        text-decoration: none;
+        margin-top: 10px;
+      }
+      .linkish:hover { text-decoration: underline; }
+
+      /* SCREENSHOT GRID */
+      .shot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .shot {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: var(--radius);
+        overflow: hidden;
+      }
+      .shot a { text-decoration: none; display: block; }
+      .shot img { width: 100%; height: auto; display: block; }
+      .shot .cap { padding: 12px 12px 14px; }
+      .shot .cap b { display: block; margin-bottom: 6px; }
+      .shot .cap span { color: rgba(255,255,255,0.70); font-size: 13px; display: block; }
+
+      /* FAQ */
+      .faq {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: var(--radius2);
+        overflow: hidden;
+      }
+      details {
+        border-top: 1px solid rgba(255,255,255,0.10);
+        padding: 14px 16px;
+      }
+      details:first-child { border-top: 0; }
+      summary {
+        cursor: pointer;
+        font-weight: 900;
+        color: rgba(255,255,255,0.90);
+        list-style: none;
+      }
+      summary::-webkit-details-marker { display: none; }
+      details p {
+        margin: 10px 0 0;
+        color: rgba(255,255,255,0.70);
         font-size: 14px;
       }
-      .qv-links {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-        margin-top: 12px;
-      }
-      .link {
-        font-weight: 700;
-        color: rgba(255, 255, 255, 0.9);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.24);
-      }
-      .link:hover {
-        border-bottom-color: rgba(255, 255, 255, 0.5);
-      }
-      .qv-note {
-        margin-top: 12px;
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.62);
-      }
 
-      /* Footer */
-      footer {
-        padding: 40px 0 60px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        color: rgba(255, 255, 255, 0.60);
-        font-size: 13px;
-      }
+      /* FOOTER */
+      footer { padding: 34px 0 48px; color: rgba(255,255,255,0.55); font-size: 13px; }
+      footer a { color: rgba(240,161,75,0.95); }
 
-      /* Responsive */
       @media (max-width: 980px) {
-        .hero-grid {
-          grid-template-columns: 1fr;
-        }
-        .pricing-grid {
-          grid-template-columns: 1fr;
-        }
-        .qv-app {
-          grid-template-columns: 1fr;
-        }
+        .hero-grid { grid-template-columns: 1fr; }
+        .grid-3 { grid-template-columns: 1fr; }
+        .grid-2 { grid-template-columns: 1fr; }
+        .grid-4 { grid-template-columns: 1fr; }
+        .feature-grid { grid-template-columns: 1fr; }
+        .shot-grid { grid-template-columns: 1fr; }
+        .nav-links { display: none; }
+        .brand { min-width: unset; }
       }
     </style>
   </head>
 
   <body>
-    <div class="topbar">
-      <div class="container">
-        <div class="nav">
-          <a class="brand" href="#top">
-            <span class="brand-badge" aria-hidden="true"></span>
-            <span>TVAC</span>
-          </a>
-
-          <div class="nav-links">
-            <a href="#how">How it works</a>
-            <a href="#pricing">Pricing</a>
-            <a href="tvac-methodology-v1.1.pdf" target="_blank" rel="noopener"
-              >Methodology</a
-            >
-          </div>
-
-          <div class="nav-cta">
-            <a class="btn primary" href="#guidedtour">Explore Guided Tour →</a>
-          </div>
+    <div class="nav">
+      <div class="container nav-inner">
+        <div class="brand">
+          <div class="logo">TVAC</div>
+          <span>Tokenization Value-Add Calculator</span>
         </div>
+
+        <div class="nav-links">
+          <a class="pill" href="#methodology">Methodology</a>
+          <a class="pill" href="#model">Model</a>
+          <a class="pill" href="#pricing">Pricing</a>
+          <a class="pill" href="#guidedtour">Guided Tour</a>
+          <a class="pill" href="#faq">FAQ</a>
+        </div>
+
+        <a class="cta" href="#guidedtour">View Guided Tour →</a>
       </div>
     </div>
 
-    <main id="top">
-      <header class="hero">
-        <div class="container">
-          <div class="hero-grid">
-            <div>
-              <div class="kicker">TOKENIZATION FEASIBILITY, WITHOUT HYPE</div>
-              <h1>Tokenization Value-Add Calculator</h1>
-              <p class="subhead">
-                TVAC evaluates whether tokenizing a specific asset design creates net
-                added value — and produces decision-grade documentation you can act on.
-              </p>
+    <header class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="kicker">Tokenization feasibility, without hype</div>
+          <h1>
+            Turn tokenization<br />
+            ideas into a <span class="accent">decision-grade</span> verdict.
+          </h1>
 
-              <div class="hero-actions">
-                <a class="btn primary" href="#guidedtour">Guided Tour (sample) →</a>
-                <a class="btn" href="#pricing">Order Deep Assessment</a>
-                <a class="btn" href="#demo">See example outputs</a>
-              </div>
-            </div>
-
-            <aside class="hero-card">
-              <h3>What you get</h3>
-              <p>
-                A conservative verdict, factor scores, key assumptions, risk register, and
-                concrete next steps — written like a professional memo, not generic AI text.
-              </p>
-              <div class="hero-metrics">
-                <div class="metric">
-                  <div class="val">6,000+ words</div>
-                  <div class="lbl">Deep assessment report</div>
-                </div>
-                <div class="metric">
-                  <div class="val">5-factor model</div>
-                  <div class="lbl">Added Value scoring</div>
-                </div>
-                <div class="metric">
-                  <div class="val">Risk heatmap</div>
-                  <div class="lbl">Operational + legal risk</div>
-                </div>
-                <div class="metric">
-                  <div class="val">Action plan</div>
-                  <div class="lbl">Implementation-ready</div>
-                </div>
-              </div>
-            </aside>
-          </div>
-        </div>
-      </header>
-
-      <section id="how">
-        <div class="container">
-          <h2 class="section-title">How it works</h2>
-          <p class="section-lead">
-            TVAC applies a structured rubric to your case and produces a consistent,
-            auditable assessment. It’s built for real tokenization decisions — not hype.
-          </p>
-
-          <div class="pricing-grid">
-            <div class="price-card">
-              <h3>Step 1: Case input</h3>
-              <p>
-                You describe the asset, investors, jurisdiction, venue/custody assumptions,
-                and goals (raising, liquidity, settlement, etc.).
-              </p>
-              <ul>
-                <li>Structured case template</li>
-                <li>Input completeness check</li>
-                <li>Conservative assumptions</li>
-              </ul>
-            </div>
-            <div class="price-card">
-              <h3>Step 2: Scoring</h3>
-              <p>
-                TVAC scores the five factors and computes Added Value:
-                (New Opportunities + Cost Savings + Risk Reduction) − (Tokenization Costs + New Risks).
-              </p>
-              <ul>
-                <li>Transparent factor logic</li>
-                <li>Blockers & levers</li>
-                <li>Decision-grade verdict</li>
-              </ul>
-            </div>
-            <div class="price-card">
-              <h3>Step 3: Deep report</h3>
-              <p>
-                A 6,000+ word report with regulatory/operational analysis, a risk register,
-                and an action plan you can execute.
-              </p>
-              <ul>
-                <li>Regulatory & market assessment</li>
-                <li>Risk heatmap + mitigations</li>
-                <li>Concrete next steps</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="demo">
-        <div class="container">
-          <h2 class="section-title">Example outputs</h2>
-          <p class="section-lead">
-            TVAC outputs are designed to be shared internally and with external stakeholders
-            (counsel, custodians, venues, investors).
-          </p>
-
-          <div class="pricing-grid">
-            <div class="price-card">
-              <h3>Risk heatmap</h3>
-              <p>Operational + legal risks, surfaced and prioritized.</p>
-              <img
-                src="tvac-report-risk-heatmap.png"
-                alt="TVAC report risk heatmap"
-                style="width: 100%; border-radius: 16px; border: 1px solid rgba(255,255,255,0.10);"
-              />
-            </div>
-            <div class="price-card">
-              <h3>Report structure</h3>
-              <p>Decision-grade table of contents and output layout.</p>
-              <img
-                src="tvac-report-toc-result (2).png"
-                alt="TVAC report structure"
-                style="width: 100%; border-radius: 16px; border: 1px solid rgba(255,255,255,0.10);"
-              />
-            </div>
-            <div class="price-card">
-              <h3>Methodology</h3>
-              <p>Read the rubric and calibration approach.</p>
-              <a class="btn" href="tvac-methodology-v1.1.pdf" target="_blank" rel="noopener">
-                Open Methodology PDF
-              </a>
-              <div style="height: 10px;"></div>
-              <a class="btn" href="tvac-methodology-v1 (1).pdf" target="_blank" rel="noopener">
-                Open v1 PDF (legacy)
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="pricing">
-        <div class="container">
-          <h2 class="section-title">Pricing</h2>
-          <p class="section-lead">
-            Start with a Guided Tour walkthrough. Upgrade to a deep assessment report
-            when you need full decision-grade documentation.
-          </p>
-
-          <div class="pricing-grid">
-            <div class="price-card">
-              <h3>Guided Tour</h3>
-              <div class="price">Free</div>
-              <p>
-                A polished, step-by-step walkthrough of a real 6,000+ word TVAC report (frontend-only).
-              </p>
-              <ul>
-                <li>Report structure & logic</li>
-                <li>Factor scoring rubrics</li>
-                <li>Blockers, levers, risks</li>
-              </ul>
-              <a class="btn primary" href="#guidedtour">Open Guided Tour →</a>
-            </div>
-
-            <div class="price-card">
-              <h3>Deep Assessment</h3>
-              <div class="price">Paid</div>
-              <p>
-                Full TVAC report (6,000+ words) for your specific case, including risk register and action plan.
-              </p>
-              <ul>
-                <li>Regulatory & operational analysis</li>
-                <li>Risk heatmap + mitigations</li>
-                <li>Implementation planning</li>
-              </ul>
-              <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20Deep%20Assessment%20request"
-                >Request by email</a
-              >
-            </div>
-
-            <div class="price-card">
-              <h3>Enterprise</h3>
-              <div class="price">Pilot</div>
-              <p>
-                For teams who want repeatable decision automation, internal templates, and calibration.
-              </p>
-              <ul>
-                <li>Multiple asset classes</li>
-                <li>Internal rubric tuning</li>
-                <li>Provider / venue mapping</li>
-              </ul>
-              <a
-                class="btn"
-                href="mailto:michael@tvacai.com?subject=TVAC%20Enterprise%20pilot"
-                >Talk to us</a
-              >
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Guided Tour -->
-      <section id="guidedtour" class="snap">
-        <div class="container">
-          <div class="kicker">GUIDED TOUR</div>
-          <h2>Take a guided tour through a real TVAC report</h2>
           <p class="lead">
-            Instead of a fragile live widget, this is a stable, fully
-            frontend-only walkthrough that shows exactly how TVAC thinks: the structure,
-            the logic, the scoring rubrics, and how a case turns into an implementation-ready plan.
+            TVAC evaluates whether a specific tokenization design creates <b>net added value</b>
+            versus a conventional structure — and delivers a solid, case-specific deep report
+            (typically 15–20 pages, ~6,000 words) with the full rationale, assumptions, risk focus,
+            and concrete next steps.
           </p>
 
-          <div class="qv-app">
-            <div id="guided-tour-app" class="qv-box" aria-live="polite"></div>
-            <div class="qv-side">
-              <h3>What you’ll see</h3>
-              <p>
-                A curated, step-by-step walkthrough of a 6,000+ word report — including
-                the Added Value formula, factor scoring, blockers, levers, risk heatmap,
-                and concrete next steps.
+          <div class="tags">
+            <span class="tag">Case-specific (not generic)</span>
+            <span class="tag">Five-factor rubric + clear logic</span>
+            <span class="tag">Shareable, decision-grade output</span>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#guidedtour">Guided Tour (free) →</a>
+            <a class="btn" href="#pricing">Order Deep Assessment</a>
+            <a class="btn" href="#demo">Try demo</a>
+          </div>
+
+          <div class="subnote">
+            <span><i class="dot"></i> Built on a fixed five-factor model</span>
+            <span><i class="dot"></i> Conservative under uncertainty</span>
+            <span><i class="dot"></i> Designed for issuers, platforms, and law firms</span>
+          </div>
+        </div>
+
+        <div class="snapshot">
+          <div class="snap-top">
+            <div>
+              <div class="snap-title">Sample evaluation snapshot</div>
+              <div style="margin-top:6px;color:rgba(255,255,255,0.70);font-size:13px;">Overall value-add score</div>
+            </div>
+            <div class="snap-score">8.6</div>
+            <div class="badge"><i class="dot"></i> Verdict: go</div>
+          </div>
+
+          <div class="snap-body">
+            <div style="font-weight:900;color:rgba(255,255,255,0.70);font-size:12px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px;">
+              Factor breakdown
+            </div>
+
+            <div class="row">
+              <div class="lbl">New Opportunities</div>
+              <div class="bar"><i style="width:82%"></i></div>
+              <div class="val">8.2</div>
+            </div>
+            <div class="row">
+              <div class="lbl">Cost Savings</div>
+              <div class="bar"><i style="width:64%"></i></div>
+              <div class="val">6.4</div>
+            </div>
+            <div class="row">
+              <div class="lbl">Risk Reduction</div>
+              <div class="bar"><i style="width:58%"></i></div>
+              <div class="val">5.8</div>
+            </div>
+            <div class="row">
+              <div class="lbl">Tokenization Costs</div>
+              <div class="bar"><i style="width:38%;background:rgba(251,113,133,0.8)"></i></div>
+              <div class="val">3.8</div>
+            </div>
+            <div class="row">
+              <div class="lbl">New Risks</div>
+              <div class="bar"><i style="width:31%;background:rgba(251,113,133,0.8)"></i></div>
+              <div class="val">3.1</div>
+            </div>
+
+            <div style="margin-top:10px;color:rgba(255,255,255,0.62);font-size:13px;">
+              Built on the formula: (New Opportunities + Cost Savings + Risk Reduction)
+              − (Tokenization Costs + New Risks).
+            </div>
+
+            <div style="margin-top:10px;color:rgba(255,255,255,0.58);font-size:13px;">
+              The output is structured for internal sharing: factor logic, explicit assumptions,
+              and concrete levers to improve the score.
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- GUIDED TOUR (replaces Quick Verdict section) -->
+    <section id="guidedtour">
+      <div class="container">
+        <div class="section-kicker">Guided Tour</div>
+        <h2 class="section-title">Get a fast, decision-grade walkthrough</h2>
+        <p class="section-lead">
+          Explore a curated, visual tour through a real TVAC report: structure, logic, the five-factor rubric,
+          why it’s case-specific (not generic), and how it supports planning and execution.
+        </p>
+
+        <div class="feature-wrap">
+          <div class="feature-grid">
+            <div>
+              <div class="feature-title">Guided Tour</div>
+              <p class="feature-copy">
+                A structured “guided reading” of a real case report — designed to show what you actually get from TVAC:
+                the framework, the reasoning chain, the report sections, and the practical implementation-oriented output.
               </p>
 
-              <div class="qv-links">
-                <a class="link" href="#pricing">See plans & pricing</a>
-                <a class="link" href="tvac-methodology-v1.1.pdf" target="_blank" rel="noopener">Read methodology (PDF)</a>
-              </div>
+              <!-- Mount point for Guided Tour -->
+              <div id="guidedTour"></div>
 
-              <div class="qv-note">
-                Tip: this tour is static and safe — it never touches the TVAC backend.
+              <div class="mini-note">
+                Tip: this tour is intentionally curated. The Deep Assessment is fully customized to your case inputs.
+              </div>
+            </div>
+
+            <div class="feature-right">
+              <h4>Want the full answer?</h4>
+              <p class="feature-copy" style="margin-top:0;">
+                Guided Tour is a walkthrough. The full report includes a deep assessment (regulatory, market, technical,
+                operational), a risk register, and a concrete action plan.
+              </p>
+              <a class="linkish" href="#pricing">Get the full report (paid) →</a>
+              <a class="linkish" href="#pricing" style="display:block;margin-top:12px;">See plans & pricing →</a>
+              <div class="mini-note" style="margin-top:12px;">
+                If anything fails to load, you can still reach us at <a href="mailto:michael@tvacai.com">michael@tvacai.com</a>.
               </div>
             </div>
           </div>
         </div>
-      </section>
-    </main>
+
+        <div style="margin-top:10px;color:rgba(255,255,255,0.55);font-size:13px;">
+          If the widget fails to load, you can still request it by email: <a href="mailto:michael@tvacai.com">michael@tvacai.com</a>.
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO IT'S FOR -->
+    <section id="who">
+      <div class="container">
+        <div class="section-kicker">Who it’s for</div>
+        <h2 class="section-title">Built for professional tokenization stakeholders</h2>
+        <p class="section-lead">
+          For teams that must be credible, conservative, and execution-oriented — and need a repeatable way to qualify real projects.
+        </p>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>Issuers & Asset Owners</h3>
+            <p>Decide if tokenization is worth pursuing and what structure is defensible.</p>
+            <ul>
+              <li>Early Go/No-Go clarity</li>
+              <li>Top blockers + mitigation path</li>
+              <li>Design options that move viability</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Law Firms & Advisors</h3>
+            <p>Pre-screen ideas and turn discovery into structured advisory.</p>
+            <ul>
+              <li>Comparable case scoring</li>
+              <li>Fast discovery of real constraints</li>
+              <li>Stakeholder alignment insights</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Platforms, Venues & Custodians</h3>
+            <p>Qualify pipeline and reduce time wasted on weak designs.</p>
+            <ul>
+              <li>Better deal qualification</li>
+              <li>Pinpoint missing inputs quickly</li>
+              <li>Repeatable evaluation workflow</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE MODEL -->
+    <section id="model">
+      <div class="container">
+        <div class="section-kicker">The model</div>
+        <h2 class="section-title">TVAC is built on a fixed added value formula</h2>
+        <p class="section-lead">
+          TVAC is not “AI vibes” — it uses a conservative five-factor rubric with explicit assumptions,
+          so your team can understand what drives the verdict and how to improve the design.
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>What the five factors capture</h3>
+            <ul>
+              <li><b>New Opportunities:</b> distribution, liquidity pathways, new investor access, programmability.</li>
+              <li><b>Cost Savings:</b> operational efficiency, automation, simpler processes over time.</li>
+              <li><b>Risk Reduction:</b> improved controls, transparency, settlement/counterparty improvements (when real).</li>
+              <li><b>Tokenization Costs:</b> build/integration, legal/compliance work, vendor/platform dependencies.</li>
+              <li><b>New Risks:</b> regulatory friction, governance complexity, tech/custody risks, operational attack surface.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-color: rgba(240,161,75,0.25);">
+            <div style="color:rgba(255,255,255,0.70);font-weight:900;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px;">
+              Core formula
+            </div>
+            <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+                        font-weight:900; font-size:14px; line-height:1.5; color: rgba(255,255,255,0.88);">
+              Added Value = (New Opportunities + Cost Savings + Risk Reduction) − (Tokenization Costs + New Risks)
+            </div>
+            <p style="margin:12px 0 0;color:rgba(255,255,255,0.70);font-size:14px;">
+              Under uncertainty, TVAC scores conservatively and makes assumptions explicit — so you can iterate and re-run variants.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="methodology">
+      <div class="container">
+        <div class="section-kicker">How it works</div>
+        <h2 class="section-title">A conservative workflow in four steps</h2>
+        <p class="section-lead">
+          Designed to be useful early — before heavy legal/vendor work begins — and structured so stakeholders can trust the logic.
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <div style="color:rgba(255,255,255,0.65);font-weight:900;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;">Step 1</div>
+            <h3>Describe the case</h3>
+            <p>Asset, jurisdictions, investor scope, liquidity plan, custody model, constraints, and objectives.</p>
+          </div>
+
+          <div class="card">
+            <div style="color:rgba(255,255,255,0.65);font-weight:900;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;">Step 2</div>
+            <h3>TVAC evaluates added value</h3>
+            <p>Scores the case on five factors and applies the formula: (NO + CS + RR) − (TC + NR).</p>
+          </div>
+
+          <div class="card">
+            <div style="color:rgba(255,255,255,0.65);font-weight:900;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;">Step 3</div>
+            <h3>You get a verdict + a deep report</h3>
+            <p>A decision-grade, case-specific report (15–20 pages, ~6,000 words) with rationale, assumptions, blockers and levers.</p>
+          </div>
+
+          <div class="card">
+            <div style="color:rgba(255,255,255,0.65);font-weight:900;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;">Step 4</div>
+            <h3>Iterate (or add human review)</h3>
+            <p>Run variants and compare outputs. Optional human review adds sanity-check notes and clarifying questions (typically 24–48h).</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT PROOF / SCREENSHOTS -->
+    <section id="proof">
+      <div class="container">
+        <div class="section-kicker">Product proof</div>
+        <h2 class="section-title">Not just a verdict — a concrete, case-specific report</h2>
+        <p class="section-lead">
+          TVAC produces structured output you can share internally: factor logic, explicit assumptions, risk focus, and clear next steps.
+          Click any screenshot to open it full-size.
+        </p>
+
+        <div class="shot-grid">
+          <div class="shot">
+            <a href="tvac-report-toc-result (2).png" target="_blank" rel="noopener">
+              <img src="tvac-report-toc-result (2).png" alt="Report structure (A–Z)" />
+              <div class="cap">
+                <b>Report structure (A–Z)</b>
+                <span>A navigable walkthrough: verdict, scores, sources, pathways, friction & roadmap.</span>
+                <span style="margin-top:8px;color:rgba(240,161,75,0.95);font-weight:900;">View full size ↗</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="shot">
+            <a href="tvac-report-risk-heatmap.png" target="_blank" rel="noopener">
+              <img src="tvac-report-risk-heatmap.png" alt="Risk heatmap" />
+              <div class="cap">
+                <b>Risk heatmap</b>
+                <span>Shows where to focus mitigation first (highest impact × likelihood).</span>
+                <span style="margin-top:8px;color:rgba(240,161,75,0.95);font-weight:900;">View full size ↗</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="shot">
+            <a href="tvac-report-toc-result (2).png" target="_blank" rel="noopener">
+              <img src="tvac-report-toc-result (2).png" alt="Factor breakdown (why each score)" />
+              <div class="cap">
+                <b>Factor breakdown (why each score)</b>
+                <span>Ties scores to your case inputs. Shows what drives upside vs friction.</span>
+                <span style="margin-top:8px;color:rgba(240,161,75,0.95);font-weight:900;">View full size ↗</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:14px;">
+          <div class="card">
+            <h3>Decision-grade clarity for risk-averse stakeholders</h3>
+            <p>
+              TVAC is designed for fintech/legal/institutional environments where trust comes from structure and transparency.
+            </p>
+            <ul>
+              <li>Fixed five-factor rubric + clear verdict logic</li>
+              <li>Explicit assumptions and missing inputs</li>
+              <li>Concrete recommendations to improve added value</li>
+              <li>Shareable output for stakeholder alignment</li>
+            </ul>
+          </div>
+
+          <div class="card">
+            <h3>Want the technical note?</h3>
+            <p>Download the Methodology & Calibration PDF (v1.1).</p>
+            <a class="btn primary" href="tvac-methodology-v1.1.pdf" target="_blank" rel="noopener">Download PDF ↓</a>
+            <div class="mini-note" style="margin-top:10px;">
+              If the download link fails due to filename differences, ensure the PDF exists as <code>/tvac-methodology-v1.1.pdf</code>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <div class="container">
+        <div class="section-kicker">Pricing</div>
+        <h2 class="section-title">Start with a deep report — or go Pro</h2>
+        <p class="section-lead">
+          Keep it simple: one case, decision-grade output. Then scale if needed.
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <div style="color:rgba(255,255,255,0.65);font-weight:900;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px;">
+              One-off deep assessment report
+            </div>
+            <h3>€385 per report (intro price, ex. VAT)</h3>
+            <p>
+              A full, structured report: verdict, factor scores, rationale, blockers, levers, and practical next steps — typically 15–20 pages (~6,000 words).
+            </p>
+            <ul>
+              <li>Decision-grade verdict and reasoning</li>
+              <li>Case-specific recommendations to improve added value</li>
+              <li>Risk register + mitigation focus (where relevant)</li>
+              <li>Stakeholder alignment (“who pays vs who benefits”)</li>
+              <li>What-if options (how to improve the score)</li>
+            </ul>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn primary" href="mailto:michael@tvacai.com?subject=Order%20deep%20report%20%E2%80%94%20TVAC&body=Hi%20Michael%2C%0A%0AI%E2%80%99d%20like%20to%20order%20a%20TVAC%20Deep%20Assessment%20report.%0A%0ACase%20summary%3A%0A-%20Asset%3A%0A-%20Jurisdiction(s)%3A%0A-%20Investor%20scope%3A%0A-%20Liquidity%20plan%3A%0A-%20Custody%2Fvenue%3A%0A-%20Constraints%2Fnotes%3A%0A%0AThanks%2C">
+                Order deep report →
+              </a>
+              <a class="btn" href="mailto:michael@tvacai.com?subject=Question%20about%20TVAC&body=Hi%20Michael%2C%0A%0AI%20have%20a%20question%20about%20TVAC%3A%0A%0A">
+                Ask a question
+              </a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div style="color:rgba(255,255,255,0.65);font-weight:900;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:10px;">
+              TVAC Pro (subscription)
+            </div>
+            <h3>For platforms, advisors and teams evaluating multiple cases monthly</h3>
+            <ul>
+              <li>Recurring access during subscription period (fair-use)</li>
+              <li>Consistent evaluation framework across cases</li>
+              <li>Best for pipelines, screening and structured advisory</li>
+            </ul>
+
+            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+              <a class="btn primary" href="mailto:michael@tvacai.com?subject=Start%2012-month%20TVAC%20Pro&body=Hi%20Michael%2C%0A%0AI%E2%80%99d%20like%20to%20start%20TVAC%20Pro%20(12-month)%20%E2%80%94%20%E2%82%AC275%2Fmonth.%0A%0ACompany%3A%0ATeam%20size%3A%0AUse%20case%3A%0A%0AThanks%2C">
+                Start 12-month Pro — €275/month →
+              </a>
+              <a class="btn" href="mailto:michael@tvacai.com?subject=Start%206-month%20TVAC%20Pro&body=Hi%20Michael%2C%0A%0AI%E2%80%99d%20like%20to%20start%20TVAC%20Pro%20(6-month)%20%E2%80%94%20%E2%82%AC325%2Fmonth.%0A%0ACompany%3A%0ATeam%20size%3A%0AUse%20case%3A%0A%0AThanks%2C">
+                Start 6-month Pro — €325/month →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <div class="section-kicker">FAQ</div>
+        <h2 class="section-title">Answers to the hard questions</h2>
+        <p class="section-lead">
+          TVAC is decision support: conservative, structured, and explicit about assumptions and uncertainty.
+        </p>
+
+        <div class="faq">
+          <details open>
+            <summary>How is TVAC different from “just asking ChatGPT”?</summary>
+            <p>
+              TVAC is built on a fixed five-factor rubric and explicit verdict logic, designed for repeatability and conservative decision support.
+              Outputs are structured for stakeholder alignment and include explicit assumptions, blockers and concrete levers — not a generic narrative response.
+            </p>
+          </details>
+          <details>
+            <summary>What do I get in Guided Tour vs Deep Assessment?</summary>
+            <p>
+              Guided Tour shows how a real report is structured and why it is decision-grade. Deep Assessment is fully customized to your case inputs and includes
+              deep assessment sections, risk register and an implementation-oriented action plan.
+            </p>
+          </details>
+          <details>
+            <summary>How can TVAC score added value without all the numbers?</summary>
+            <p>
+              TVAC scores conservatively under uncertainty and makes assumptions explicit. The point is early clarity: identify blockers, the likely value pathways,
+              and what inputs are missing — before heavy legal/vendor work begins.
+            </p>
+          </details>
+          <details>
+            <summary>Is TVAC legal, tax, or investment advice?</summary>
+            <p>
+              No. TVAC provides informational analysis based on your inputs and a defined rubric. Always validate jurisdiction-specific matters with qualified professionals.
+            </p>
+          </details>
+          <details>
+            <summary>Enterprise pilot or integration?</summary>
+            <p>
+              Email: <a href="mailto:michael@tvacai.com">michael@tvacai.com</a>
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <div class="section-kicker">About</div>
+        <h2 class="section-title">Built for credibility and commercial use</h2>
+        <p class="section-lead">
+          TVAC is built by Michael Juul Rugaard — author of the book Asset Tokenization (2025) — as a practical evaluation engine for real tokenization decisions.
+          Contact: <a href="mailto:michael@tvacai.com">michael@tvacai.com</a>
+        </p>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Methodology & Calibration</h3>
+            <p>Non-marketing technical note describing the five-factor model, verdict logic, calibration approach, and limitations.</p>
+            <a class="btn primary" href="tvac-methodology-v1.1.pdf" target="_blank" rel="noopener">Download PDF ↓</a>
+          </div>
+          <div class="card">
+            <h3>Links</h3>
+            <p style="margin:0 0 10px;color:rgba(255,255,255,0.70);">
+              Contact: <a href="mailto:michael@tvacai.com">michael@tvacai.com</a> · LinkedIn
+            </p>
+            <p style="margin:0;color:rgba(255,255,255,0.70);">
+              Use the Guided Tour above to understand the structure and decision-grade nature of TVAC output.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <footer>
       <div class="container">
-        © TVAC — Tokenization Value-Add Calculator · Contact: michael@tvacai.com
+        <div style="margin-bottom:10px;">
+          Disclaimer. TVAC provides informational analysis based on your inputs and a defined rubric.
+          It is not legal, financial, investment, or tax advice. Always validate jurisdiction-specific matters with qualified professionals.
+        </div>
+        <div>© 2025 Michael Juul Rugaard · Contact: <a href="mailto:michael@tvacai.com">michael@tvacai.com</a></div>
       </div>
     </footer>
 
-    <script src="patch-cta.js" defer></script>
-
-    <script src="guided-tour/guidedTourData.js" defer></script>
-    <script src="guided-tour/GuidedCaseTour.js" defer></script>
-    <script>
-      // Fallback mount (in case the guided tour script doesn't auto-mount)
-      window.addEventListener("DOMContentLoaded", function () {
-        var host = document.getElementById("guided-tour-app");
-        if (!host) return;
-
-        if (window.GuidedCaseTour && typeof window.GuidedCaseTour.mount === "function") {
-          window.GuidedCaseTour.mount(host);
-          return;
-        }
-        if (typeof window.renderGuidedCaseTour === "function") {
-          window.renderGuidedCaseTour(host);
-          return;
-        }
-        // Minimal graceful fallback
-        host.innerHTML =
-          '<div style="padding:16px; color: rgba(255,255,255,0.85);">Guided Tour assets are loading… If you still see this, ensure <code>guided-tour/guidedTourData.js</code> and <code>guided-tour/GuidedCaseTour.js</code> exist in the repo.</div>';
-      });
-    </script>
+    <!-- Guided Tour scripts (data first, then renderer) -->
+    <script src="guided-tour/guidedTourData.js"></script>
+    <script src="guided-tour/GuidedCaseTour.js"></script>
   </body>
 </html>
