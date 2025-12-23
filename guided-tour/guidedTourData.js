@@ -1,159 +1,84 @@
 /* guided-tour/guidedTourData.js
-   Data model for the Guided Tour (static, frontend-only).
-   Exposes: window.GUIDED_TOUR_DATA
+   Global: window.TVAC_GUIDED_TOURS
 */
+
 (function () {
-  "use strict";
-
-  // Use existing screenshots already in repo root (safe, no new assets required).
-  // You can later add more images under guided-tour/assets/... and update paths here.
-  const IMG_TOC = "tvac-report-toc-result (2).png";
-  const IMG_HEATMAP = "tvac-report-risk-heatmap.png";
-
-  window.GUIDED_TOUR_DATA = {
-    version: "2025-12-23-v1",
+  window.TVAC_GUIDED_TOURS = {
+    defaultTourId: "tour_report_walkthrough",
     tours: [
       {
-        id: "tour-report-walkthrough-v1",
-        title: "A guided walkthrough of a real 6,000-word TVAC report",
-        subtitle:
-          "A visual, step-by-step tour showing structure, five-factor logic, assumptions, and why the output is case-specific (not a generic LLM response).",
-        meta: {
-          durationLabel: "3–5 min",
-          audienceLabel: "Issuers, advisors, platforms",
-        },
+        id: "tour_report_walkthrough",
+        title: "Walkthrough: a real TVAC report (structure → logic → value)",
+        subtitle: "A visual tour through what makes a TVAC output decision-grade (not a generic LLM response).",
         steps: [
           {
             id: "s1",
-            kicker: "What you’re about to see",
-            title: "Decision-grade output — not “AI vibes”",
+            kicker: "START",
+            title: "What you are looking at",
             body:
-              "TVAC is built around a fixed five-factor rubric and explicit assumptions. This tour shows how a real report is structured and why it becomes case-specific: inputs → factor logic → blockers/levers → action plan.",
-            bullets: [
-              "Fixed five-factor model (NO, CS, RR, TC, NR)",
-              "Conservative scoring under uncertainty",
-              "Explicit assumptions + missing inputs",
-              "Actionable levers (how to improve the design)",
-            ],
-            callouts: [
-              {
-                title: "Why this matters",
-                text:
-                  "Professional stakeholders need traceable logic. TVAC’s value is the structure + reasoning chain — not just prose.",
-              },
-            ],
+              "This is a real TVAC deep assessment output (typically ~6,000 words / 15–20 pages). " +
+              "The goal is to make tokenization decisions defensible: clear verdict logic, explicit assumptions, and concrete levers.",
+            image: "/assets/tvac-report-toc-result.png",
+            imageAlt: "TVAC report: table of contents + result snapshot"
           },
-
           {
             id: "s2",
-            kicker: "Report map",
-            title: "The report is navigable (A–Z), like a case file",
+            kicker: "STRUCTURE",
+            title: "Why structure matters",
             body:
-              "A TVAC report is organized to support internal sharing: snapshot, rationale, assumptions, risks, and concrete next steps.",
-            image: {
-              src: IMG_TOC,
-              alt: "TVAC report table of contents / structure screenshot",
-              caption: "Example: report structure (TOC) showing the full A–Z flow.",
-            },
-            callouts: [
-              {
-                title: "Not a chat transcript",
-                text:
-                  "This structure is consistent across cases, so teams can compare outputs and align stakeholders.",
-              },
-            ],
+              "A decision-grade report must be navigable and shareable. " +
+              "TVAC outputs a repeatable structure so teams can compare cases and explain decisions internally.",
+            image: "/assets/tvac-report-toc-result.png",
+            imageAlt: "TVAC report structure (TOC)"
           },
-
           {
             id: "s3",
-            kicker: "Risk focus",
-            title: "Risk heatmap: where to mitigate first",
+            kicker: "RUBRIC",
+            title: "The five-factor model is fixed",
             body:
-              "The heatmap highlights where execution risk is highest (impact × likelihood). It turns ‘risk talk’ into prioritized mitigation focus.",
-            image: {
-              src: IMG_HEATMAP,
-              alt: "TVAC risk heatmap screenshot",
-              caption: "Example: risk heatmap used to prioritize mitigation work.",
-            },
-            callouts: [
-              {
-                title: "Execution-oriented",
-                text:
-                  "Instead of generic warnings, the report shows what to de-risk first to move the case from borderline → viable.",
-              },
-            ],
+              "TVAC does not improvise a new scoring model per case. " +
+              "It applies the same five factors every time: New Opportunities, Cost Savings, Risk Reduction, Tokenization Costs, New Risks — " +
+              "and makes assumptions explicit when inputs are missing.",
+            image: "/assets/tvac-report-factor-breakdown.png",
+            imageAlt: "Factor breakdown excerpt"
           },
-
           {
             id: "s4",
-            kicker: "Core logic",
-            title: "Five-factor rubric + explicit formula",
+            kicker: "CASE-SPECIFIC",
+            title: "How it becomes case-specific (not generic)",
             body:
-              "TVAC scores five dimensions and applies the formula: (NO + CS + RR) − (TC + NR). The report explains why each score is what it is — tied to the case inputs.",
-            bullets: [
-              "New Opportunities: distribution, liquidity pathways, investor access, programmability",
-              "Cost Savings: automation, operational efficiency, simplification over time",
-              "Risk Reduction: controls, transparency, settlement/counterparty improvements (when real)",
-              "Tokenization Costs: build/integration, legal/compliance, vendor/platform dependencies",
-              "New Risks: regulatory friction, governance complexity, tech/custody risks, attack surface",
-            ],
-            callouts: [
-              {
-                title: "Case-specific scoring",
-                text:
-                  "Scores are not arbitrary: each factor is justified and connected to the submitted design choices and constraints.",
-              },
-            ],
+              "The factor rationale ties back to your exact inputs: jurisdictions, investor scope, liquidity approach, custody/venue constraints, " +
+              "and operational setup. That is why the output is not a generic 'prompt answer'.",
+            image: "/assets/tvac-report-factor-breakdown.png",
+            imageAlt: "Case-specific factor breakdown excerpt"
           },
-
           {
             id: "s5",
-            kicker: "Why not just prompt an LLM?",
-            title: "Structure beats ‘nice text’",
+            kicker: "RISK",
+            title: "Risk focus is explicit and actionable",
             body:
-              "A generic LLM response can sound plausible, but it doesn’t enforce a consistent rubric, conservative scoring, or a repeatable decision framework. TVAC turns messy inputs into a comparable evaluation.",
-            bullets: [
-              "Repeatable framework across pipeline cases",
-              "Comparable scoring across variants (what-if runs)",
-              "Explicit assumptions and missing inputs",
-              "Concrete blockers + mitigation path",
-              "Action plan style recommendations (not just commentary)",
-            ],
-            callouts: [
-              {
-                title: "What users actually buy",
-                text:
-                  "They buy a structured decision artifact — something they can share internally and act on.",
-              },
-            ],
+              "Instead of vague warnings, the report highlights the most material risks and where mitigation creates the highest impact.",
+            image: "/assets/tvac-report-risk-heatmap.png",
+            imageAlt: "Risk heatmap excerpt"
           },
-
           {
             id: "s6",
-            kicker: "What’s next",
-            title: "From verdict → implementation planning",
+            kicker: "VALUE",
+            title: "The output helps planning — not just deciding",
             body:
-              "The deep report goes beyond screening: it supports planning and execution with design options, constraints discovery, and stakeholder alignment insight (who pays vs who benefits).",
-            bullets: [
-              "Top blockers + practical mitigation steps",
-              "Design levers that move viability",
-              "Regulatory & operational workstreams to validate",
-              "Stakeholder alignment and next-step roadmap",
-            ],
-            ctas: [
-              { label: "See plans & pricing →", href: "#pricing" },
-              { label: "Download Methodology PDF ↓", href: "tvac-methodology-v1.1.pdf" },
-            ],
-            callouts: [
-              {
-                title: "Want two example cases later?",
-                text:
-                  "We can add a second tour with a very different asset class/design to show contrast (same rubric, different logic).",
-              },
-            ],
-          },
+              "A good tokenization evaluation should also help plan execution: what to clarify next, what blockers to remove, " +
+              "and which design changes move the score in a defensible way.",
+            image: "/assets/tvac-report-toc-result.png",
+            imageAlt: "Report snapshot"
+          }
         ],
-      },
-    ],
+        cta: {
+          primaryLabel: "Request a Deep Assessment →",
+          primaryHref: "mailto:michael@tvacai.com?subject=TVAC%20Deep%20Assessment%20request",
+          secondaryLabel: "Ask a question",
+          secondaryHref: "mailto:michael@tvacai.com?subject=Question%20about%20TVAC%20Guided%20Tour"
+        }
+      }
+    ]
   };
 })();
