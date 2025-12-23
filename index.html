@@ -885,30 +885,38 @@
       </div>
     </section>
 
-    <!-- ---------- QUICK VERDICT ---------- -->
+    <!-- ---------- GUIDED TOUR (REPLACES QUICK VERDICT) ---------- -->
     <section class="padMid" id="quickverdict">
       <div class="container sectionInner">
         <div class="frameWrap">
-          <p class="eyebrow">Quick Verdict</p>
-          <h2>Get a fast, decision-grade snapshot</h2>
+          <p class="eyebrow">Guided tour</p>
+          <h2>A guided walkthrough of a real 6,000-word TVAC report</h2>
           <p class="lead">
-            Submit your case in a structured format and receive a conservative verdict (Go / Borderline / No-Go),
-            the five factor scores, top blockers, and the most effective design levers.
+            Instead of a fragile “mini-evaluation” widget, this is a <b>visual, step-by-step tour</b> through a concrete tokenization case report —
+            showing the <b>structure</b>, the <b>five-factor logic</b>, the <b>assumptions</b>, and how the analysis becomes <b>case-specific</b>
+            (not a generic LLM prompt response).
           </p>
 
-          <div id="qv-app" aria-label="TVAC Quick Verdict widget"></div>
+          <div id="guided-tour-app" aria-label="TVAC Guided Tour"></div>
+
+          <!-- Keep qv-app in DOM (hidden) so quickverdict.js won’t crash if it expects it. -->
+          <div id="qv-app" style="display:none !important;"></div>
 
           <div class="qvFallback">
-            If the widget fails to load, you can still request it by email:
-            <a href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">michael@tvacai.com</a>.
+            If the tour fails to load, email:
+            <a href="mailto:michael@tvacai.com?subject=TVAC%20Guided%20Tour%20access">michael@tvacai.com</a>.
           </div>
 
           <noscript>
             <div class="qvFallback">
-              JavaScript is required for Quick Verdict. Please email:
-              <a href="mailto:michael@tvacai.com?subject=TVAC%20Quick%20Verdict%20request">michael@tvacai.com</a>.
+              JavaScript is required for the Guided Tour. Please email:
+              <a href="mailto:michael@tvacai.com?subject=TVAC%20Guided%20Tour%20access">michael@tvacai.com</a>.
             </div>
           </noscript>
+
+          <!-- Guided Tour scripts (frontend-only, landing page repo) -->
+          <script src="guided-tour/guidedTourData.js"></script>
+          <script src="guided-tour/GuidedCaseTour.js"></script>
         </div>
       </div>
     </section>
