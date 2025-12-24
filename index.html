@@ -778,13 +778,13 @@
             <a class="pill" href="#methodology">Methodology</a>
             <a class="pill" href="#model">Model</a>
             <a class="pill" href="#pricing">Pricing</a>
-            <a class="pill" href="#quickverdict">Guided Tour</a>
+            <a class="pill" href="#quickverdict">Product Tour</a>
 
             <button class="themeBtn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
               <span id="themeIcon" aria-hidden="true">🌙</span>
             </button>
 
-            <a class="pill pillStrong" href="#quickverdict">View Guided Tour →</a>
+            <a class="pill pillStrong" href="#product-tour" onclick="return (window.TVACProductTour&&window.TVACProductTour.open?window.TVACProductTour.open('case-a'):(window.TVAC_START_GUIDED_TOUR?window.TVAC_START_GUIDED_TOUR('case-a'):false));">View Product Tour →</a>
           </div>
         </div>
       </div>
@@ -885,12 +885,12 @@
       </div>
     </section>
 
-    <!-- ---------- GUIDED TOUR (REPLACES QUICK VERDICT) ---------- -->
+    <!-- ---------- PRODUCT TOUR (REPLACES QUICK VERDICT) ---------- -->
     <section class="padMid" id="quickverdict">
       <div class="container sectionInner">
         <div class="frameWrap">
           <p class="eyebrow">Guided tour</p>
-          <h2>A guided walkthrough of a real 6,000-word TVAC report</h2>
+          <h2>A product tour of a real 6,000‑word TVAC report</h2>
           <p class="lead">
             Instead of a fragile “mini-evaluation” widget, this is a <b>visual, step-by-step tour</b> through a concrete tokenization case report —
             showing the <b>structure</b>, the <b>five-factor logic</b>, the <b>assumptions</b>, and how the analysis becomes <b>case-specific</b>
@@ -926,6 +926,7 @@
           <!-- Guided Tour scripts (frontend-only, landing page repo) -->
           <script src="guided-tour/guidedTourData.js"></script>
           <script src="guided-tour/GuidedCaseTour.js"></script>
+  <script src="patch-cta.js"></script>
         </div>
       </div>
     </section>
@@ -1313,7 +1314,7 @@
           <div class="btnRow">
             <a class="btn btnPrimary" href="/tvac-methodology-v1.1.pdf" download>Download PDF ↓</a>
             <a class="btn" href="#pricing">Pricing</a>
-            <a class="btn" href="#quickverdict">Guided Tour</a>
+            <a class="btn" href="#quickverdict">Product Tour</a>
           </div>
         </div>
       </div>
