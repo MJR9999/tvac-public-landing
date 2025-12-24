@@ -1,9 +1,9 @@
 /* guided-tour/patch-cta.js
    Robust patching for:
-   - Guided Tour start buttons (card + header)
+   - Product Tour start buttons (card + header)
    - Stripe payment links in Pricing section
+   This is a safety net if HTML changes later.
 */
-
 (function () {
   const STRIPE = {
     singleReport: "https://buy.stripe.com/7sYdR91YJcM2cfG5OW2ZO02",
@@ -12,102 +12,60 @@
   };
 
   function ready(fn) {
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", fn);
-    } else fn();
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
+    else fn();
   }
 
   function openTourCaseA(e) {
     if (e) e.preventDefault();
+    // Support both APIs (old/new)
     if (window.TVACProductTour && typeof window.TVACProductTour.open === "function") {
-      window.TVACProductTour.open("case-a");
-    } else {
-      // failsafe: don't break UX
-      alert("Product Tour failed to load. Please refresh, or email michael@tvacai.com.");
+      try { window.TVACProductTour.open("case-a"); return; } catch (_) {}
     }
+    if (typeof window.TVAC_START_GUIDED_TOUR === "function") {
+      try { window.TVAC_START_GUIDED_TOUR("case-a"); return; } catch (_) {}
+      try { window.TVAC_START_GUIDED_TOUR(); return; } catch (_) {}
+    }
+    alert("Product Tour failed to load. Please refresh, or email michael@tvacai.com.");
   }
 
-  function patchGuidedTourButtons() {
-    // 1) Button inside the Guided Tour card
-    // We match by common patterns (text + class + href)
-    const candidates = Array.from(document.querySelectorAll("a, button")).filter((node) => {
+  function patchTourButtons() {
+    const nodes = Array.from(document.querySelectorAll("a,button"));
+    nodes.forEach((node) => {
       const t = (node.textContent || "").trim().toLowerCase();
-      if (t.includes("start guided tour")) return true;
-      if (t.includes("view guided tour")) return true;
-      if (t.includes("guided tour (see real output)")) return true;
-      return false;
-    });
-
-    candidates.forEach((node) => {
-      node.addEventListener("click", openTourCaseA);
-      // If it is an <a>, neutralize mailto/# behaviour
-      if (node.tagName === "A") node.setAttribute("href", "#product-tour");
-    });
-
-    // 2) Header CTA "View Guided Tour →" (often an <a>)
-    const headerLinks = Array.from(document.querySelectorAll("a")).filter((a) => {
-      const t = (a.textContent || "").trim().toLowerCase();
-      return t === "view guided tour →" || t === "guided tour" || t.includes("guided tour");
-    });
-
-    // We only attach to those that point to guided tour section or are nav items
-    headerLinks.forEach((a) => {
-      const href = (a.getAttribute("href") || "").toLowerCase();
-      if (href.startsWith("mailto:")) return;
-      // allow other anchors, but still open modal on click
-      a.addEventListener("click", openTourCaseA);
+      if (t.includes("start product tour") || t.includes("start guided tour") || t.includes("view product tour") || t.includes("view guided tour")) {
+        node.addEventListener("click", openTourCaseA);
+        if (node.tagName === "A") node.setAttribute("href", "#product-tour");
+      }
     });
   }
 
   function patchPricingLinks() {
-    // Strategy:
-    // - Find anchors/buttons with key phrases and set href to Stripe URLs
-    // - Also fix any "mailto:michael@tvacai.com" that sits on pricing CTAs
-
     const anchors = Array.from(document.querySelectorAll("a"));
-
-    function setHrefIfMatch(matchFn, href) {
-      anchors.forEach((a) => {
-        const txt = (a.textContent || "").trim().toLowerCase();
-        if (matchFn(txt)) {
-          a.setAttribute("href", href);
-          a.setAttribute("target", "_blank");
-          a.setAttribute("rel", "noopener noreferrer");
-        }
-      });
-    }
-
-    setHrefIfMatch((t) => t.includes("order deep assessment") || t.includes("order deep report"), STRIPE.singleReport);
-    setHrefIfMatch((t) => t.includes("start 6-month pro") || t.includes("6-month pro") || t.includes("€325"), STRIPE.pro6);
-    setHrefIfMatch((t) => t.includes("start 12-month pro") || t.includes("12-month pro") || t.includes("€275"), STRIPE.pro12);
-
-    // Failsafe: if pricing CTAs are mailto, replace them
     anchors.forEach((a) => {
-      const href = (a.getAttribute("href") || "").toLowerCase();
       const txt = (a.textContent || "").trim().toLowerCase();
+      const href = (a.getAttribute("href") || "").toLowerCase();
+      const isMail = href.startsWith("mailto:");
+      const set = (url) => {
+        a.setAttribute("href", url);
+        a.setAttribute("target", "_blank");
+        a.setAttribute("rel", "noopener noreferrer");
+      };
 
-      if (href.startsWith("mailto:")) {
-        if (txt.includes("order")) {
-          a.setAttribute("href", STRIPE.singleReport);
-          a.setAttribute("target", "_blank");
-          a.setAttribute("rel", "noopener noreferrer");
-        }
-        if (txt.includes("12-month") || txt.includes("€275")) {
-          a.setAttribute("href", STRIPE.pro12);
-          a.setAttribute("target", "_blank");
-          a.setAttribute("rel", "noopener noreferrer");
-        }
-        if (txt.includes("6-month") || txt.includes("€325")) {
-          a.setAttribute("href", STRIPE.pro6);
-          a.setAttribute("target", "_blank");
-          a.setAttribute("rel", "noopener noreferrer");
-        }
+      if (txt.includes("order deep assessment") || txt.includes("single tvac report")) {
+        if (isMail) set(STRIPE.singleReport);
+      }
+      if (txt.includes("6-month") || txt.includes("€325") || txt.includes("eur 325")) {
+        if (isMail) set(STRIPE.pro6);
+      }
+      if (txt.includes("12-month") || txt.includes("€275") || txt.includes("eur 275")) {
+        if (isMail) set(STRIPE.pro12);
       }
     });
   }
 
   ready(() => {
-    patchGuidedTourButtons();
+    patchTourButtons();
     patchPricingLinks();
   });
 })();
