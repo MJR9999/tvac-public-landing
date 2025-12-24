@@ -1,78 +1,113 @@
-/* patch-cta.js — Ensure CTAs point to Stripe (not mailto) + expose TVAC_OPEN_ORDER()
-   Safe for static landing pages. No dependencies.
+/* guided-tour/patch-cta.js
+   Robust patching for:
+   - Guided Tour start buttons (card + header)
+   - Stripe payment links in Pricing section
 */
 
 (function () {
   const STRIPE = {
-    single: "https://buy.stripe.com/7sYdR91YJcM2cfG5OW2ZO02",
+    singleReport: "https://buy.stripe.com/7sYdR91YJcM2cfG5OW2ZO02",
     pro6: "https://buy.stripe.com/28EaEX7j3fYe0wYdho2ZO01",
-    pro12: "https://buy.stripe.com/7sYbJ10UF3bsfrS7X42ZO00"
+    pro12: "https://buy.stripe.com/7sYbJ10UF3bsfrS7X42ZO00",
   };
 
-  // Used by the tour CTA step
-  window.TVAC_OPEN_ORDER = function () {
-    window.open(STRIPE.single, "_blank", "noopener,noreferrer");
-  };
-
-  function normalize(s) {
-    return (s || "").toLowerCase().replace(/\s+/g, " ").trim();
+  function ready(fn) {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else fn();
   }
 
-  function patchAnchors() {
-    const links = Array.from(document.querySelectorAll("a, button"));
-    links.forEach((el) => {
-      const tag = el.tagName.toLowerCase();
-      const text = normalize(el.textContent);
+  function openTourCaseA(e) {
+    if (e) e.preventDefault();
+    if (window.TVACProductTour && typeof window.TVACProductTour.open === "function") {
+      window.TVACProductTour.open("case-a");
+    } else {
+      // failsafe: don't break UX
+      alert("Product Tour failed to load. Please refresh, or email michael@tvacai.com.");
+    }
+  }
 
-      // If it's a button acting as a link (data-href pattern)
-      const href =
-        tag === "a" ? el.getAttribute("href") :
-        el.getAttribute("data-href");
+  function patchGuidedTourButtons() {
+    // 1) Button inside the Guided Tour card
+    // We match by common patterns (text + class + href)
+    const candidates = Array.from(document.querySelectorAll("a, button")).filter((node) => {
+      const t = (node.textContent || "").trim().toLowerCase();
+      if (t.includes("start guided tour")) return true;
+      if (t.includes("view guided tour")) return true;
+      if (t.includes("guided tour (see real output)")) return true;
+      return false;
+    });
 
-      // Only patch mailto-ish or missing links for pricing CTAs
-      const looksBroken = !href || href.startsWith("mailto:");
+    candidates.forEach((node) => {
+      node.addEventListener("click", openTourCaseA);
+      // If it is an <a>, neutralize mailto/# behaviour
+      if (node.tagName === "A") node.setAttribute("href", "#product-tour");
+    });
 
-      if (!looksBroken) return;
+    // 2) Header CTA "View Guided Tour →" (often an <a>)
+    const headerLinks = Array.from(document.querySelectorAll("a")).filter((a) => {
+      const t = (a.textContent || "").trim().toLowerCase();
+      return t === "view guided tour →" || t === "guided tour" || t.includes("guided tour");
+    });
 
-      // Match by visible label (adjust if you rename buttons)
-      if (text.includes("single tvac report") || text.includes("deep assessment") || text.includes("order deep")) {
-        setLink(el, STRIPE.single);
-        return;
-      }
-      if (text.includes("tvac pro") && text.includes("6")) {
-        setLink(el, STRIPE.pro6);
-        return;
-      }
-      if (text.includes("tvac pro") && text.includes("12")) {
-        setLink(el, STRIPE.pro12);
-        return;
-      }
+    // We only attach to those that point to guided tour section or are nav items
+    headerLinks.forEach((a) => {
+      const href = (a.getAttribute("href") || "").toLowerCase();
+      if (href.startsWith("mailto:")) return;
+      // allow other anchors, but still open modal on click
+      a.addEventListener("click", openTourCaseA);
+    });
+  }
 
-      // Optional: match by custom attributes if you later add them
-      const key = el.getAttribute("data-stripe");
-      if (key && STRIPE[key]) {
-        setLink(el, STRIPE[key]);
-        return;
+  function patchPricingLinks() {
+    // Strategy:
+    // - Find anchors/buttons with key phrases and set href to Stripe URLs
+    // - Also fix any "mailto:michael@tvacai.com" that sits on pricing CTAs
+
+    const anchors = Array.from(document.querySelectorAll("a"));
+
+    function setHrefIfMatch(matchFn, href) {
+      anchors.forEach((a) => {
+        const txt = (a.textContent || "").trim().toLowerCase();
+        if (matchFn(txt)) {
+          a.setAttribute("href", href);
+          a.setAttribute("target", "_blank");
+          a.setAttribute("rel", "noopener noreferrer");
+        }
+      });
+    }
+
+    setHrefIfMatch((t) => t.includes("order deep assessment") || t.includes("order deep report"), STRIPE.singleReport);
+    setHrefIfMatch((t) => t.includes("start 6-month pro") || t.includes("6-month pro") || t.includes("€325"), STRIPE.pro6);
+    setHrefIfMatch((t) => t.includes("start 12-month pro") || t.includes("12-month pro") || t.includes("€275"), STRIPE.pro12);
+
+    // Failsafe: if pricing CTAs are mailto, replace them
+    anchors.forEach((a) => {
+      const href = (a.getAttribute("href") || "").toLowerCase();
+      const txt = (a.textContent || "").trim().toLowerCase();
+
+      if (href.startsWith("mailto:")) {
+        if (txt.includes("order")) {
+          a.setAttribute("href", STRIPE.singleReport);
+          a.setAttribute("target", "_blank");
+          a.setAttribute("rel", "noopener noreferrer");
+        }
+        if (txt.includes("12-month") || txt.includes("€275")) {
+          a.setAttribute("href", STRIPE.pro12);
+          a.setAttribute("target", "_blank");
+          a.setAttribute("rel", "noopener noreferrer");
+        }
+        if (txt.includes("6-month") || txt.includes("€325")) {
+          a.setAttribute("href", STRIPE.pro6);
+          a.setAttribute("target", "_blank");
+          a.setAttribute("rel", "noopener noreferrer");
+        }
       }
     });
   }
 
-  function setLink(el, url) {
-    if (!url) return;
-    const tag = el.tagName.toLowerCase();
-
-    if (tag === "a") {
-      el.setAttribute("href", url);
-      el.setAttribute("target", "_blank");
-      el.setAttribute("rel", "noopener noreferrer");
-    } else {
-      // button
-      el.addEventListener("click", function () {
-        window.open(url, "_blank", "noopener,noreferrer");
-      });
-      el.setAttribute("data-href", url);
-    }
-  }
-
-  document.addEventListener("DOMContentLoaded", patchAnchors);
+  ready(() => {
+    patchGuidedTourButtons();
+    patchPricingLinks();
+  });
 })();
