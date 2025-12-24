@@ -1,139 +1,104 @@
 /* guided-tour/guidedTourData.js
-   Guided Tour data (Case A live, Case B coming soon)
-   Paths are relative to site root (index.html).
+   Case A (Live) — Product Tour steps
+   Uses absolute /assets/... paths to avoid relative-path issues on Render.
 */
 
 (function () {
-  const STRIPE = {
-    singleReport: "https://buy.stripe.com/7sYdR91YJcM2cfG5OW2ZO02",
-    pro6: "https://buy.stripe.com/28EaEX7j3fYe0wYdho2ZO01",
-    pro12: "https://buy.stripe.com/7sYbJ10UF3bsfrS7X42ZO00",
-  };
+  const IMG = (p) => `/assets/${p}`;
 
-  // Case A: max 9 steps, WOW first
+  // Max 9 steps. "WOW" first.
   const CASE_A = {
     id: "case-a",
-    title: "Case A — Private company STO (example)",
-    badge: "Live",
-    description:
-      "A visual, step-by-step Product Tour through a real TVAC report structure — showing why TVAC is case-specific and decision-grade.",
+    label: "Case A — Private company STO (example) (Live)",
     steps: [
       {
         id: "wow",
-        label: "WOW: Structure + result snapshot",
-        kicker: "PRODUCT TOUR",
-        title: "A real report — structured for decisions",
-        body: [
-          "Start with the actual report structure and the top-level result snapshot.",
-          "This is not a generic LLM answer — it’s navigable, shareable, and built for stakeholder alignment.",
+        title: "Report structure + top-level result (WOW)",
+        subtitle: "Start with what decision-makers care about: structure + the outcome at a glance.",
+        image: IMG("tvac-report-toc-result.png"),
+        bullets: [
+          "A real, decision-grade report — not a generic LLM answer.",
+          "Clear structure, shareable snapshot, and rationale you can defend internally.",
         ],
-        image: "assets/tvac-report-toc-result.png",
-        imageAlt: "TVAC report excerpt: table of contents and result snapshot",
       },
       {
-        id: "asset-context",
-        label: "Asset class & market context",
-        kicker: "REPORT SECTION",
+        id: "asset-class-context",
         title: "Asset class & market context",
-        body: [
-          "Positions the case in its typical tokenization landscape (market phase, recurring frictions, realistic expectations).",
-          "Helps stakeholders understand what is “normal” vs what is case-specific.",
+        subtitle: "Grounds the case in market structure, constraints, and typical pathways.",
+        image: IMG("guided-tour_assets_02-asset-class-market-context.png"),
+        bullets: [
+          "Context matters: tokenization value is case-specific.",
+          "Shows how assumptions are anchored in the case type.",
         ],
-        image: "assets/guided-tour_assets_02-asset-class-market-context.png",
-        imageAlt: "Asset class & market context — TVAC report screenshot",
+      },
+      {
+        id: "factor-breakdown",
+        title: "Five-factor model",
+        subtitle: "The core logic behind the verdict — transparently explained.",
+        image: IMG("tvac-report-factor-breakdown.png"),
+        bullets: [
+          "Added Value = (NO + CS + RR) – (TC + NR).",
+          "Score is decomposed — so teams can improve it deliberately.",
+        ],
+      },
+      {
+        id: "investors-plus-minus",
+        title: "Investors: value vs costs & risks",
+        subtitle: "Who benefits, who pays, and where friction appears.",
+        image: IMG("guided-tour_assets_06-investors-plus-minus.png"),
+        bullets: [
+          "Separates stakeholder upside from execution burdens.",
+          "Makes trade-offs explicit — not hidden in prose.",
+        ],
       },
       {
         id: "risk-heatmap",
-        label: "Risk register & heatmap",
-        kicker: "RISK VIEW",
         title: "Risk register & heatmap",
-        body: [
-          "A structured risk view: what can go wrong, likelihood × impact, and where mitigations matter first.",
-          "Designed for practical execution planning, not just commentary.",
+        subtitle: "Concrete risk mapping — severity × likelihood with mitigations.",
+        image: IMG("tvac-report-risk-heatmap.png"),
+        bullets: [
+          "Not generic: risks are linked to this case design.",
+          "Supports governance and internal alignment.",
         ],
-        image: "assets/tvac-report-risk-heatmap.png",
-        imageAlt: "TVAC report excerpt: risk heatmap",
-      },
-      {
-        id: "core-logic",
-        label: "Five-factor model",
-        kicker: "CORE LOGIC",
-        title: "The five-factor model (Added Value)",
-        body: [
-          "Separates upside drivers from downside costs/risks.",
-          "Forces explicit trade-offs instead of hype — and makes the verdict auditable.",
-        ],
-        image: "assets/tvac-report-factor-breakdown.png",
-        imageAlt: "TVAC report excerpt: factor breakdown",
-      },
-      {
-        id: "investors",
-        label: "Investors: value vs costs & risks",
-        kicker: "STAKEHOLDER VIEW",
-        title: "Investors: expected value vs costs & risks",
-        body: [
-          "Shows where investors get real upside (and under which enforceability conditions).",
-          "Makes frictions explicit: transfer restrictions, cross-border compliance, information asymmetry.",
-        ],
-        image: "assets/guided-tour_assets_06-investors-plus-minus.png",
-        imageAlt: "Investors section — expected value and costs/risks screenshot",
       },
       {
         id: "recommendations",
-        label: "Recommendations & next steps",
-        kicker: "WHAT TO DO NEXT",
         title: "Recommendations & next steps",
-        body: [
-          "Turns the evaluation into a practical plan.",
-          "Calls out the most important design moves and the key blockers to address first.",
+        subtitle: "What to do next — and what to fix before proceeding.",
+        image: IMG("guided-tour_assets_10-recommendations-next-steps.png"),
+        bullets: [
+          "Turns analysis into an execution plan.",
+          "Actionable steps prioritized for impact on the score.",
         ],
-        image: "assets/guided-tour_assets_10-recommendations-next-steps.png",
-        imageAlt: "Recommendations & next steps screenshot",
       },
       {
-        id: "roadmap",
-        label: "Implementation roadmap",
-        kicker: "IMPLEMENTATION",
-        title: "Indicative implementation roadmap",
-        body: [
-          "A phased roadmap: concept → legal/regulatory → technical/operational architecture.",
-          "Helps teams scope and sequence workstreams realistically.",
+        id: "implementation-roadmap",
+        title: "Implementation roadmap",
+        subtitle: "A staged view of how the project can be executed safely.",
+        image: IMG("guided-tour_assets_11-implementation-roadmap.png"),
+        bullets: [
+          "Shows sequencing, dependencies, and realistic delivery flow.",
+          "Highlights where compliance and ops need early attention.",
         ],
-        image: "assets/guided-tour_assets_11-implementation-roadmap.png",
-        imageAlt: "Indicative implementation roadmap screenshot",
       },
       {
         id: "cta",
-        label: "Order Deep Assessment",
-        kicker: "NEXT STEP",
-        title: "Want the full Deep Assessment for your case?",
-        body: [
-          "Order a full Deep Assessment Report (typically 15–20 pages / ~6,000 words).",
-          "You’ll get a decision-grade verdict, assumptions, blockers, levers, and concrete next steps.",
+        title: "Order a Deep Assessment Report",
+        subtitle: "Use TVAC to evaluate your own case and receive a full decision-grade report.",
+        image: null,
+        bullets: [
+          "Single report purchase or Pro plans (6/12 months).",
+          "If you want, we can add Case B later (“Coming soon” for now).",
         ],
-        cta: {
-          label: "Order Deep Assessment Report",
-          href: STRIPE.singleReport,
-          note: "Opens secure Stripe checkout.",
-        },
+        cta: { text: "Order Deep Assessment Report", href: "STRIPE_SINGLE_REPORT" },
       },
     ],
   };
 
-  const CASE_B = {
-    id: "case-b",
-    title: "Case B — Coming soon",
-    badge: "Coming soon",
-    description:
-      "A second Product Tour case will be added soon. (Shown here as a placeholder.)",
-    comingSoon: true,
-    steps: [],
-  };
-
+  // Export in the simplest way for your GuidedCaseTour.js to consume.
+  // If your tour engine expects a specific global name, keep it stable:
   window.TVACTourData = {
-    version: "1.0",
-    stripe: STRIPE,
-    cases: [CASE_A, CASE_B],
+    cases: [CASE_A],
     defaultCaseId: "case-a",
   };
 })();
