@@ -1,51 +1,78 @@
-// patch-cta.js
-// Safe patcher for tvac-public-landing/index.html (no manual edits)
-// - Converts mailto CTAs related to Quick Verdict into #quickverdict
-// - Adds an id to the primary hero CTA if missing (optional)
-// - Keeps everything else untouched
+/* patch-cta.js — Ensure CTAs point to Stripe (not mailto) + expose TVAC_OPEN_ORDER()
+   Safe for static landing pages. No dependencies.
+*/
 
-import fs from "fs";
+(function () {
+  const STRIPE = {
+    single: "https://buy.stripe.com/7sYdR91YJcM2cfG5OW2ZO02",
+    pro6: "https://buy.stripe.com/28EaEX7j3fYe0wYdho2ZO01",
+    pro12: "https://buy.stripe.com/7sYbJ10UF3bsfrS7X42ZO00"
+  };
 
-const INPUT = "index.html";
-const OUTPUT = "index.html";
+  // Used by the tour CTA step
+  window.TVAC_OPEN_ORDER = function () {
+    window.open(STRIPE.single, "_blank", "noopener,noreferrer");
+  };
 
-let html = fs.readFileSync(INPUT, "utf8");
-
-// 1) Replace any mailto links that look like Quick Verdict CTA with #quickverdict
-// This is deliberately conservative: we only rewrite mailto:... when the surrounding button/link mentions Quick Verdict.
-const before = html;
-
-// A) Replace mailto in anchors that contain "Quick Verdict" text
-html = html.replace(
-  /<a\b([^>]*?)href=["']mailto:[^"']+["']([^>]*?)>([\s\S]*?Quick\s*Verdict[\s\S]*?)<\/a>/gi,
-  (m, a1, a2, inner) => {
-    // preserve existing classes/attrs, only change href
-    let attrs = `${a1}href="#quickverdict"${a2}`;
-    // optional: ensure it doesn't open new tab
-    attrs = attrs.replace(/\btarget=["'][^"']*["']/gi, "");
-    return `<a${attrs}>${inner}</a>`;
+  function normalize(s) {
+    return (s || "").toLowerCase().replace(/\s+/g, " ").trim();
   }
-);
 
-// B) Replace mailto in anchors that have a known CTA label in aria-label/title/data-*
-html = html.replace(
-  /<a\b([^>]*?)(aria-label|title)=["']([^"']*Quick\s*Verdict[^"']*)["']([^>]*?)href=["']mailto:[^"']+["']([^>]*?)>/gi,
-  (m, a1, k, v, a2, a3) => `<a${a1}${k}="${v}"${a2}href="#quickverdict"${a3}>`
-);
+  function patchAnchors() {
+    const links = Array.from(document.querySelectorAll("a, button"));
+    links.forEach((el) => {
+      const tag = el.tagName.toLowerCase();
+      const text = normalize(el.textContent);
 
-// 2) Optional: If there is a top nav CTA "Request Quick Verdict" as an <a> with mailto, rewrite similarly
-html = html.replace(
-  /<a\b([^>]*?)href=["']mailto:[^"']+["']([^>]*?)>([\s\S]*?Request[\s\S]*?Quick\s*Verdict[\s\S]*?)<\/a>/gi,
-  (m, a1, a2, inner) => {
-    let attrs = `${a1}href="#quickverdict"${a2}`;
-    attrs = attrs.replace(/\btarget=["'][^"']*["']/gi, "");
-    return `<a${attrs}>${inner}</a>`;
+      // If it's a button acting as a link (data-href pattern)
+      const href =
+        tag === "a" ? el.getAttribute("href") :
+        el.getAttribute("data-href");
+
+      // Only patch mailto-ish or missing links for pricing CTAs
+      const looksBroken = !href || href.startsWith("mailto:");
+
+      if (!looksBroken) return;
+
+      // Match by visible label (adjust if you rename buttons)
+      if (text.includes("single tvac report") || text.includes("deep assessment") || text.includes("order deep")) {
+        setLink(el, STRIPE.single);
+        return;
+      }
+      if (text.includes("tvac pro") && text.includes("6")) {
+        setLink(el, STRIPE.pro6);
+        return;
+      }
+      if (text.includes("tvac pro") && text.includes("12")) {
+        setLink(el, STRIPE.pro12);
+        return;
+      }
+
+      // Optional: match by custom attributes if you later add them
+      const key = el.getAttribute("data-stripe");
+      if (key && STRIPE[key]) {
+        setLink(el, STRIPE[key]);
+        return;
+      }
+    });
   }
-);
 
-if (html === before) {
-  console.log("⚠️ No matching Quick Verdict mailto-CTAs found. Nothing changed.");
-} else {
-  fs.writeFileSync(OUTPUT, html, "utf8");
-  console.log("✅ Patched Quick Verdict CTAs: mailto -> #quickverdict");
-}
+  function setLink(el, url) {
+    if (!url) return;
+    const tag = el.tagName.toLowerCase();
+
+    if (tag === "a") {
+      el.setAttribute("href", url);
+      el.setAttribute("target", "_blank");
+      el.setAttribute("rel", "noopener noreferrer");
+    } else {
+      // button
+      el.addEventListener("click", function () {
+        window.open(url, "_blank", "noopener,noreferrer");
+      });
+      el.setAttribute("data-href", url);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", patchAnchors);
+})();
