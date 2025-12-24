@@ -1,167 +1,139 @@
-/* guidedTourData.js — Product Tour data (2 cases, Case B optional)
-   Image paths are relative to site root (same as other assets usage).
+/* guided-tour/guidedTourData.js
+   Guided Tour data (Case A live, Case B coming soon)
+   Paths are relative to site root (index.html).
 */
 
-export const TVAC_TOUR_CASES = [
-  {
+(function () {
+  const STRIPE = {
+    singleReport: "https://buy.stripe.com/7sYdR91YJcM2cfG5OW2ZO02",
+    pro6: "https://buy.stripe.com/28EaEX7j3fYe0wYdho2ZO01",
+    pro12: "https://buy.stripe.com/7sYbJ10UF3bsfrS7X42ZO00",
+  };
+
+  // Case A: max 9 steps, WOW first
+  const CASE_A = {
     id: "case-a",
-    name: "Case A (Real estate SPV – EU)",
-    status: "ready",
-    blurb:
-      "A concrete, real-world style TVAC report walkthrough: structure, model logic, stakeholder views, and decision outputs.",
+    title: "Case A — Private company STO (example)",
+    badge: "Live",
+    description:
+      "A visual, step-by-step Product Tour through a real TVAC report structure — showing why TVAC is case-specific and decision-grade.",
     steps: [
       {
-        key: "wow",
-        label: "Start here",
-        kind: "intro",
-        eyebrow: "PRODUCT TOUR",
-        title: "A guided walkthrough of a real 6,000-word TVAC report",
-        subtitle:
-          "A visual, step-by-step tour that shows structure, logic, rubrics, and why TVAC is case-specific (not a generic LLM prompt response).",
-        bullets: [
-          "You’ll see the actual report structure (what comes first, what comes later).",
-          "You’ll see how TVAC separates 'value pathways' from 'risks & frictions' and 'what to do next'.",
-          "You’ll see outputs designed for decisions, internal alignment, and implementation planning."
+        id: "wow",
+        label: "WOW: Structure + result snapshot",
+        kicker: "PRODUCT TOUR",
+        title: "A real report — structured for decisions",
+        body: [
+          "Start with the actual report structure and the top-level result snapshot.",
+          "This is not a generic LLM answer — it’s navigable, shareable, and built for stakeholder alignment.",
         ],
-        image: null
+        image: "assets/tvac-report-toc-result.png",
+        imageAlt: "TVAC report excerpt: table of contents and result snapshot",
       },
-
       {
-        key: "toc",
-        label: "Report structure",
-        kind: "report_structure",
-        eyebrow: "REPORT STRUCTURE",
-        title: "Report table of contents",
-        subtitle:
-          "TVAC reports are long because they are structured for decisions: what it is, why it scores, what blocks it, and what to do next.",
-        bullets: [
-          "Clickable section map for fast navigation and internal sharing.",
-          "Clear separation of analysis, frictions, recommendations, and roadmap.",
-          "Designed for decision-making under uncertainty."
-        ],
-        image: "assets/tvac-report-toc-result.png"
-      },
-
-      {
-        key: "asset_context",
-        label: "Market context",
-        kind: "report_section",
-        eyebrow: "REPORT SECTION",
+        id: "asset-context",
+        label: "Asset class & market context",
+        kicker: "REPORT SECTION",
         title: "Asset class & market context",
-        subtitle:
-          "A high-level market/asset-class perspective based on inputs — positioning the case in its typical tokenization landscape.",
-        bullets: [
-          "Frames the segment’s typical tokenization behavior (not a full issuer-specific model).",
-          "Highlights current market phase, strengths, and recurring frictions.",
-          "Sets expectations for what is realistically achievable and what usually breaks projects."
+        body: [
+          "Positions the case in its typical tokenization landscape (market phase, recurring frictions, realistic expectations).",
+          "Helps stakeholders understand what is “normal” vs what is case-specific.",
         ],
-        image: "assets/guided-tour_assets_02-asset-class-market-context.png"
+        image: "assets/guided-tour_assets_02-asset-class-market-context.png",
+        imageAlt: "Asset class & market context — TVAC report screenshot",
       },
-
       {
-        key: "five_factor",
-        label: "Core logic",
-        kind: "core_logic",
-        eyebrow: "CORE LOGIC",
-        title: "The five-factor model (Added Value)",
-        subtitle:
-          "Added Value = (New Opportunities + Cost Savings + Risk Reduction) − (Tokenization Costs + New Risks).",
-        bullets: [
-          "Separates upside drivers from downside costs/risks.",
-          "Forces explicit trade-offs instead of hype.",
-          "Makes 'why this verdict' auditable."
-        ],
-        image: "assets/tvac-report-factor-breakdown.png"
-      },
-
-      {
-        key: "risk_heatmap",
-        label: "Risk view",
-        kind: "risk_view",
-        eyebrow: "RISK VIEW",
+        id: "risk-heatmap",
+        label: "Risk register & heatmap",
+        kicker: "RISK VIEW",
         title: "Risk register & heatmap",
-        subtitle:
-          "A structured risk view: what can go wrong, how severe it is, and what mitigations matter.",
-        bullets: [
-          "Case-specific risks mapped by likelihood × impact.",
-          "Helps prioritize mitigations before legal/tech spend.",
-          "Makes 'new risks' concrete and actionable."
+        body: [
+          "A structured risk view: what can go wrong, likelihood × impact, and where mitigations matter first.",
+          "Designed for practical execution planning, not just commentary.",
         ],
-        image: "assets/tvac-report-risk-heatmap.png"
+        image: "assets/tvac-report-risk-heatmap.png",
+        imageAlt: "TVAC report excerpt: risk heatmap",
       },
-
       {
-        key: "investors",
-        label: "Stakeholders",
-        kind: "stakeholder_view",
-        eyebrow: "STAKEHOLDER VIEW",
+        id: "core-logic",
+        label: "Five-factor model",
+        kicker: "CORE LOGIC",
+        title: "The five-factor model (Added Value)",
+        body: [
+          "Separates upside drivers from downside costs/risks.",
+          "Forces explicit trade-offs instead of hype — and makes the verdict auditable.",
+        ],
+        image: "assets/tvac-report-factor-breakdown.png",
+        imageAlt: "TVAC report excerpt: factor breakdown",
+      },
+      {
+        id: "investors",
+        label: "Investors: value vs costs & risks",
+        kicker: "STAKEHOLDER VIEW",
         title: "Investors: expected value vs costs & risks",
-        subtitle:
-          "TVAC breaks out value and friction per stakeholder — helping you design a credible, investable operating model.",
-        bullets: [
-          "Clarifies where investors get real upside (and enforceability conditions).",
+        body: [
+          "Shows where investors get real upside (and under which enforceability conditions).",
           "Makes frictions explicit: transfer restrictions, cross-border compliance, information asymmetry.",
-          "Ends with concrete 'what to agree / do next' items for diligence and term design."
         ],
-        image: "assets/guided-tour_assets_06-investors-plus-minus.png"
+        image: "assets/guided-tour_assets_06-investors-plus-minus.png",
+        imageAlt: "Investors section — expected value and costs/risks screenshot",
       },
-
       {
-        key: "next_steps",
-        label: "What to do next",
-        kind: "next_steps",
-        eyebrow: "WHAT TO DO NEXT",
+        id: "recommendations",
+        label: "Recommendations & next steps",
+        kicker: "WHAT TO DO NEXT",
         title: "Recommendations & next steps",
-        subtitle:
-          "Non-binding, action-oriented pointers that turn the evaluation into a practical plan.",
-        bullets: [
-          "Summarises the project’s most important next moves and design priorities.",
-          "Calls out regulatory fit & friction and investor-profile implications.",
-          "Adds practical levers that typically improve viability."
+        body: [
+          "Turns the evaluation into a practical plan.",
+          "Calls out the most important design moves and the key blockers to address first.",
         ],
-        image: "assets/guided-tour_assets_10-recommendations-next-steps.png"
+        image: "assets/guided-tour_assets_10-recommendations-next-steps.png",
+        imageAlt: "Recommendations & next steps screenshot",
       },
-
       {
-        key: "roadmap",
-        label: "Implementation",
-        kind: "implementation",
-        eyebrow: "IMPLEMENTATION",
+        id: "roadmap",
+        label: "Implementation roadmap",
+        kicker: "IMPLEMENTATION",
         title: "Indicative implementation roadmap",
-        subtitle:
-          "A phased, realistic roadmap that helps you plan scope, sequencing, governance, and provider workstreams.",
-        bullets: [
-          "Phase 1: concept + internal alignment (decision gates).",
-          "Phase 2: legal/tax/regulatory design (perimeter, exemptions, licensing, prospectus).",
-          "Phase 3: technical + operational architecture (platform, custody, venue, reporting)."
+        body: [
+          "A phased roadmap: concept → legal/regulatory → technical/operational architecture.",
+          "Helps teams scope and sequence workstreams realistically.",
         ],
-        image: "assets/guided-tour_assets_11-implementation-roadmap.png"
+        image: "assets/guided-tour_assets_11-implementation-roadmap.png",
+        imageAlt: "Indicative implementation roadmap screenshot",
       },
-
       {
-        key: "cta",
-        label: "Order report",
-        kind: "cta",
-        eyebrow: "NEXT STEP",
-        title: "Ready for a Deep Assessment Report?",
-        subtitle:
-          "If you want the full, case-specific assessment (15+ pages / 6,000+ words), order a Deep Assessment and we’ll deliver a complete report package.",
-        bullets: [
-          "Case-specific report with evidence, assumptions, and concrete decision levers.",
-          "Designed for internal decision-making and stakeholder alignment.",
-          "Delivered as a structured PDF-style report output."
+        id: "cta",
+        label: "Order Deep Assessment",
+        kicker: "NEXT STEP",
+        title: "Want the full Deep Assessment for your case?",
+        body: [
+          "Order a full Deep Assessment Report (typically 15–20 pages / ~6,000 words).",
+          "You’ll get a decision-grade verdict, assumptions, blockers, levers, and concrete next steps.",
         ],
-        image: null
-      }
-    ]
-  },
+        cta: {
+          label: "Order Deep Assessment Report",
+          href: STRIPE.singleReport,
+          note: "Opens secure Stripe checkout.",
+        },
+      },
+    ],
+  };
 
-  {
+  const CASE_B = {
     id: "case-b",
-    name: "Case B (Coming soon)",
-    status: "coming_soon",
-    blurb:
-      "Upload Case B screenshots and we’ll enable a second tour with the same polished UX.",
-    steps: []
-  }
-];
+    title: "Case B — Coming soon",
+    badge: "Coming soon",
+    description:
+      "A second Product Tour case will be added soon. (Shown here as a placeholder.)",
+    comingSoon: true,
+    steps: [],
+  };
+
+  window.TVACTourData = {
+    version: "1.0",
+    stripe: STRIPE,
+    cases: [CASE_A, CASE_B],
+    defaultCaseId: "case-a",
+  };
+})();
