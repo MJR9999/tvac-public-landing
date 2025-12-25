@@ -218,7 +218,7 @@
   flex-wrap: wrap;
 }
 
-#tvac-pt-notes .pt-cta a {
+#tvac-pt-notes .pt-cta button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -227,10 +227,10 @@
   border: 1px solid rgba(0,0,0,0.12);
   background: #fff;
   font-weight: 700;
-  text-decoration: none;
+  cursor: pointer;
 }
 
-#tvac-pt-notes .pt-cta a.primary {
+#tvac-pt-notes .pt-cta button.primary {
   border-color: rgba(255, 138, 0, 0.50);
   box-shadow: 0 0 0 3px rgba(255, 138, 0, 0.10);
 }
@@ -297,7 +297,7 @@
   display: block;
 }
 
-/* Mobile: maximize space (your “valg 1” + hide thumb strip) */
+/* Mobile: maximize space */
 @media (max-width: 900px) {
   #tvac-pt-modal {
     width: calc(100vw - 24px);
@@ -341,13 +341,46 @@
     return Math.max(min, Math.min(max, n));
   }
 
+  let _state = null;
+
+  function close() {
+    if (!_state) return;
+    try {
+      if (_state._esc) document.removeEventListener("keydown", _state._esc);
+      if (_state.overlay && _state.overlay.parentNode) _state.overlay.parentNode.removeChild(_state.overlay);
+    } finally {
+      _state = null;
+    }
+  }
+
+  function jumpTo(id) {
+    close();
+    setTimeout(() => {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        location.hash = "#" + id;
+      }
+    }, 60);
+  }
+
+  function getCase(state) {
+    const cases = DATA()?.cases || [];
+    return cases.find((c) => c.id === state.caseId) || cases.find((c) => c.status === "live") || cases[0];
+  }
+
+  function getSteps(state) {
+    const c = getCase(state);
+    return (c && Array.isArray(c.steps) ? c.steps : []).slice(0, 9);
+  }
+
   function buildOverlay(state) {
     injectStylesOnce();
 
     const overlay = el("div", { id: "tvac-pt-overlay", role: "dialog", "aria-modal": "true" });
     const modal = el("div", { id: "tvac-pt-modal" });
 
-    // Topbar
     const title = el("div", { class: "pt-title", text: STRINGS.title });
 
     const select = el("select", { "aria-label": STRINGS.caseChooserAria });
@@ -376,11 +409,9 @@
       closeBtn,
     ]);
 
-    // Body (tabs + content)
     const tabs = el("div", { id: "tvac-pt-tabs" });
     const content = el("div", { id: "tvac-pt-content" });
 
-    // Footer
     const backBtn = el("button", { type: "button", text: STRINGS.back });
     const nextBtn = el("button", { type: "button", text: STRINGS.next });
 
@@ -398,7 +429,6 @@
       el("div", { class: "pt-nav" }, [backBtn, nextBtn]),
     ]);
 
-    // Thumbs
     const thumbs = el("div", { id: "tvac-pt-thumbs" }, [el("div", { class: "strip" })]);
 
     const body = el("div", { id: "tvac-pt-body" }, [tabs, content, footer, thumbs]);
@@ -407,28 +437,16 @@
     modal.appendChild(body);
     overlay.appendChild(modal);
 
-    // Close on backdrop click
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) close();
     });
 
-    // ESC closes
     document.addEventListener("keydown", state._esc = (e) => {
       if (e.key === "Escape") close();
     });
 
     state._nodes = { overlay, modal, tabs, content, footer, backBtn, nextBtn, thumbsStrip: thumbs.querySelector(".strip") };
     return overlay;
-  }
-
-  function getCase(state) {
-    const cases = DATA()?.cases || [];
-    return cases.find((c) => c.id === state.caseId) || cases.find((c) => c.status === "live") || cases[0];
-  }
-
-  function getSteps(state) {
-    const c = getCase(state);
-    return (c && Array.isArray(c.steps) ? c.steps : []).slice(0, 9); // max 9 steps
   }
 
   function renderTabs(state) {
@@ -450,17 +468,8 @@
       tabs.appendChild(b);
     });
 
-    // CTA tab
     const cta = el("button", { class: "pt-tab", type: "button", text: "Order a Deep Assessment Report" });
-    cta.addEventListener("click", () => {
-      // closes modal and scrolls to pricing
-      close();
-      setTimeout(() => {
-        const elPricing = document.getElementById("pricing");
-        if (elPricing) elPricing.scrollIntoView({ behavior: "smooth", block: "start" });
-        else location.hash = "#pricing";
-      }, 50);
-    });
+    cta.addEventListener("click", () => jumpTo("pricing"));
     tabs.appendChild(cta);
   }
 
@@ -490,17 +499,21 @@
     const right = el("div", { id: "tvac-pt-panel" }, [
       el("div", { id: "tvac-pt-notes" }, [
         el("ul", {}, (step?.bullets || []).map((b) => el("li", {}, [b]))),
+
         el("div", { class: "pt-cta" }, [
-          el("a", { class: "primary", href: "#pricing" }, ["Order a Deep Assessment Report"]),
-          el("a", { href: "#methodology" }, ["Methodology"]),
+          el("button", { type: "button", class: "primary", text: "Order a Deep Assessment Report" }),
+          el("button", { type: "button", text: "Methodology" }),
         ]),
       ]),
     ]);
 
+    const [btnOrder, btnMeth] = right.querySelectorAll(".pt-cta button");
+    btnOrder.addEventListener("click", () => jumpTo("pricing"));
+    btnMeth.addEventListener("click", () => jumpTo("methodology"));
+
     const grid = el("div", { id: "tvac-pt-grid" }, [left, right]);
     content.appendChild(grid);
 
-    // image load fallback (avoid “blank” if path wrong)
     const img = left.querySelector("img");
     img.addEventListener("error", () => {
       img.replaceWith(
@@ -548,8 +561,6 @@
     renderThumbs(state);
   }
 
-  let _state = null;
-
   function open(caseId = "case-a") {
     const live = (DATA()?.cases || []).find((c) => c.id === caseId && c.status !== "coming_soon");
     const fallback = (DATA()?.cases || []).find((c) => c.status === "live");
@@ -572,16 +583,5 @@
     renderAll(_state);
   }
 
-  function close() {
-    if (!_state) return;
-    try {
-      if (_state._esc) document.removeEventListener("keydown", _state._esc);
-      if (_state.overlay && _state.overlay.parentNode) _state.overlay.parentNode.removeChild(_state.overlay);
-    } finally {
-      _state = null;
-    }
-  }
-
-  // Expose API
   window.TVACProductTour = { open, close };
 })();
