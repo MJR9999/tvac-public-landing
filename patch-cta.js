@@ -1,10 +1,8 @@
-/* guided-tour/patch-cta.js (v2)
+/* guided-tour/patch-cta.js
    Robust patching for:
-   - Product Tour start buttons (hero/card/header/nav)
+   - Product Tour buttons (hero + card)
    - Stripe payment links in Pricing section
-   - Stripe CTA inside the Product Tour modal
-
-   Works even if buttons/anchors change slightly.
+   - In-tour buttons + copy polish (Step 1 titles, remove 'WOW' etc.)
 */
 
 (function () {
@@ -19,128 +17,176 @@
     else fn();
   }
 
+  function safeOpenTour(caseId) {
+    if (window.TVACProductTour && typeof window.TVACProductTour.open === "function") {
+      window.TVACProductTour.open(caseId || "case-a");
+      return true;
+    }
+    return false;
+  }
+
   function openTourCaseA(e) {
     if (e) e.preventDefault();
-    if (window.TVACProductTour && typeof window.TVACProductTour.open === "function") {
-      window.TVACProductTour.open("case-a");
-      return;
+    if (!safeOpenTour("case-a")) {
+      alert("Product Tour failed to load. Please refresh and try again.");
     }
-    alert("Product Tour failed to load. Please refresh, or email michael@tvacai.com.");
   }
 
-  function norm(s) {
-    return (s || "").replace(/\s+/g, " ").trim().toLowerCase();
-  }
-
-  function setAsExternalLink(a, href) {
-    a.setAttribute("href", href);
-    a.setAttribute("target", "_blank");
-    a.setAttribute("rel", "noopener noreferrer");
-  }
-
-  function patchTourButtons() {
-    // Match all likely tour-launch CTAs (header + hero + card)
-    const nodes = Array.from(document.querySelectorAll("a,button"));
-
-    nodes.forEach((node) => {
-      const t = norm(node.textContent);
-      const isTour =
-        t.includes("start guided tour") ||
-        t.includes("start product tour") ||
-        t === "view guided tour →" ||
-        t === "view product tour →" ||
-        t === "guided tour (see real output) →" ||
-        t.includes("guided tour") ||
-        t.includes("product tour");
-
-      if (!isTour) return;
-
-      // Avoid hijacking genuine nav anchors like "#pricing" etc, but allow #product-tour
-      if (node.tagName === "A") {
-        const href = (node.getAttribute("href") || "").toLowerCase();
-        if (href.startsWith("mailto:")) return; // keep email links intact
-        // force it to look like an anchor but actually open the modal
-        node.setAttribute("href", "#product-tour");
-      }
-
+  function patchTourEntryButtons() {
+    // Explicit targets (preferred)
+    document.querySelectorAll('[data-gt="start"], [data-gt="toc"]').forEach((node) => {
       node.addEventListener("click", openTourCaseA);
+      if (node.tagName === "A") node.setAttribute("href", "#product-tour");
+    });
+
+    // Fallback matching by text (in case markup changes)
+    const candidates = Array.from(document.querySelectorAll("a, button")).filter((node) => {
+      const t = (node.textContent || "").trim().toLowerCase();
+      return (
+        t.includes("start guided tour") ||
+        t.includes("view product tour") ||
+        t.includes("view guided tour") ||
+        t.includes("guided tour (see real output)") ||
+        (t === "product tour") ||
+        t.includes("see report structure (toc)")
+      );
+    });
+
+    candidates.forEach((node) => {
+      node.addEventListener("click", openTourCaseA);
+      if (node.tagName === "A") node.setAttribute("href", "#product-tour");
     });
   }
 
   function patchPricingLinks() {
-    const pricing = document.getElementById("pricing");
-    if (!pricing) return;
+    const anchors = Array.from(document.querySelectorAll("a"));
 
-    // Only touch pricing-area anchors so we don't mess with email links elsewhere
-    const anchors = Array.from(pricing.querySelectorAll("a"));
+    function applyToText(matchFn, href) {
+      anchors.forEach((a) => {
+        const txt = (a.textContent || "").trim().toLowerCase();
+        if (matchFn(txt)) {
+          a.setAttribute("href", href);
+          a.setAttribute("target", "_blank");
+          a.setAttribute("rel", "noopener noreferrer");
+        }
+      });
+    }
 
+    applyToText(
+      (t) => t.includes("order deep assessment") || t.includes("order a deep assessment"),
+      STRIPE.singleReport
+    );
+    applyToText((t) => t.includes("start 6-month pro") || t.includes("6-month") || t.includes("€325"), STRIPE.pro6);
+    applyToText((t) => t.includes("start 12-month pro") || t.includes("12-month") || t.includes("€275"), STRIPE.pro12);
+
+    // Failsafe: replace mailto: links on pricing CTAs
     anchors.forEach((a) => {
       const href = (a.getAttribute("href") || "").toLowerCase();
-      const t = norm(a.textContent);
+      const txt = (a.textContent || "").trim().toLowerCase();
+      if (!href.startsWith("mailto:")) return;
 
-      // If CTA is already a stripe link, keep it
-      if (href.includes("buy.stripe.com")) return;
-
-      // Replace mailto on pricing CTAs
-      if (href.startsWith("mailto:") || href === "" || href === "#") {
-        // Decide which product based on nearby text
-        if (t.includes("12-month") || t.includes("12 month") || t.includes("€275") || t.includes("275")) {
-          setAsExternalLink(a, STRIPE.pro12);
-          return;
-        }
-        if (t.includes("6-month") || t.includes("6 month") || t.includes("€325") || t.includes("325")) {
-          setAsExternalLink(a, STRIPE.pro6);
-          return;
-        }
-        if (t.includes("order") || t.includes("deep assessment") || t.includes("deep report") || t.includes("single")) {
-          setAsExternalLink(a, STRIPE.singleReport);
-          return;
-        }
+      if (txt.includes("order")) {
+        a.setAttribute("href", STRIPE.singleReport);
+      } else if (txt.includes("12-month") || txt.includes("€275")) {
+        a.setAttribute("href", STRIPE.pro12);
+      } else if (txt.includes("6-month") || txt.includes("€325")) {
+        a.setAttribute("href", STRIPE.pro6);
+      } else {
+        return;
       }
+      a.setAttribute("target", "_blank");
+      a.setAttribute("rel", "noopener noreferrer");
+    });
+  }
+
+  // ---- In-tour polish ----
+
+  function inTourRoot() {
+    // The tour is injected as a lightbox modal. We try multiple selectors.
+    return (
+      document.querySelector('#lightbox[aria-hidden="false"]') ||
+      document.querySelector("#lightbox:not([aria-hidden])") ||
+      document.querySelector('.lightbox:not([aria-hidden])') ||
+      null
+    );
+  }
+
+  function polishTourCopy(root) {
+    // Remove "(WOW)" if present
+    root.querySelectorAll("h2, h3, .stepTitle").forEach((el) => {
+      const t = (el.textContent || "").trim();
+      if (t.includes("(WOW)")) el.textContent = t.replace("(WOW)", "").trim();
     });
 
-    // Extra failsafe: if pricing cards have buttons (not anchors), wrap with click-to-open
-    const buttons = Array.from(pricing.querySelectorAll("button"));
-    buttons.forEach((btn) => {
-      const t = norm(btn.textContent);
-      if (t.includes("12-month") || t.includes("12 month") || t.includes("€275") || t.includes("275")) {
-        btn.addEventListener("click", () => window.open(STRIPE.pro12, "_blank", "noopener"));
+    // Replace internal-sounding lead lines (best-effort; only if exact-ish match)
+    root.querySelectorAll("p, li").forEach((el) => {
+      const t = (el.textContent || "").trim();
+      if (!t) return;
+
+      if (t === "Start with the actual report structure and the top-level result snapshot.") {
+        el.textContent = "A decision-maker friendly snapshot of the report structure and outcome.";
       }
-      if (t.includes("6-month") || t.includes("6 month") || t.includes("€325") || t.includes("325")) {
-        btn.addEventListener("click", () => window.open(STRIPE.pro6, "_blank", "noopener"));
-      }
-      if (t.includes("order") || t.includes("deep assessment") || t.includes("deep report") || t.includes("single")) {
-        btn.addEventListener("click", () => window.open(STRIPE.singleReport, "_blank", "noopener"));
+      if (t === "Start with what decision-makers care about: the structure and the result snapshot.") {
+        el.textContent = "This first screen shows the report structure and the top-level outcome snapshot.";
       }
     });
   }
 
-  function patchTourModalStripeCTA() {
-    // The modal is injected dynamically; use event delegation.
-    document.addEventListener("click", function (e) {
-      const el = e.target && e.target.closest ? e.target.closest("a,button") : null;
-      if (!el) return;
+  function wireTourInternalButtons(root) {
+    const btns = Array.from(root.querySelectorAll("a, button"));
 
-      const t = norm(el.textContent);
-      if (!t.includes("order deep assessment")) return;
+    btns.forEach((b) => {
+      const label = (b.textContent || "").trim().toLowerCase();
 
-      // if it's an <a> currently pointing to mailto, fix it
-      if (el.tagName === "A") {
-        e.preventDefault();
-        setAsExternalLink(el, STRIPE.singleReport);
-        window.open(STRIPE.singleReport, "_blank", "noopener");
-        return;
+      // Order button inside the tour (right panel)
+      if (
+        label === "order a deep assessment report" ||
+        label === "order deep assessment" ||
+        label === "order a deep assessment"
+      ) {
+        b.addEventListener("click", (e) => {
+          e.preventDefault();
+          window.open(STRIPE.singleReport, "_blank", "noopener,noreferrer");
+        });
+        if (b.tagName === "A") b.setAttribute("href", STRIPE.singleReport);
       }
 
-      // if it's a <button>, open Stripe
-      e.preventDefault();
-      window.open(STRIPE.singleReport, "_blank", "noopener");
+      // Methodology button inside the tour (right panel)
+      if (label === "methodology") {
+        b.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          // close the tour if possible (click Close)
+          const closeBtn = btns.find((x) => (x.textContent || "").toLowerCase().includes("close"));
+          if (closeBtn) closeBtn.click();
+
+          // jump to methodology section
+          setTimeout(() => {
+            const target = document.querySelector("#methodology") || document.querySelector('[id*="methodology"]');
+            if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+            else window.location.hash = "#methodology";
+          }, 60);
+        });
+
+        if (b.tagName === "A") b.setAttribute("href", "#methodology");
+      }
     });
+  }
+
+  function observeTourOpen() {
+    const obs = new MutationObserver(() => {
+      const root = inTourRoot();
+      if (!root) return;
+      polishTourCopy(root);
+      wireTourInternalButtons(root);
+    });
+
+    obs.observe(document.documentElement, { childList: true, subtree: true });
   }
 
   ready(() => {
-    patchTourButtons();
+    patchTourEntryButtons();
     patchPricingLinks();
-    patchTourModalStripeCTA();
+    observeTourOpen();
   });
 })();
