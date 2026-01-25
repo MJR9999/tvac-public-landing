@@ -6,7 +6,7 @@
     <title>TVAC — Tokenization Value-Add Calculator</title>
     <meta
       name="description"
-      content="TVAC is an AI-driven evaluation engine that produces decision-grade, case-specific tokenization reports (15–20 pages) with a clear verdict, factor logic, assumptions, risk register, and concrete next steps."
+      content="TVAC is an AI-driven evaluation engine that produces decision-grade, case-specific tokenization reports (30+ pages) with a clear verdict, factor logic, assumptions, risk register, and concrete next steps."
     />
 
     <style>
@@ -471,7 +471,13 @@
         font-size: 12px;
         font-weight: 650;
       }
-      .bars {
+      
+      .verdictWarn {
+        border: 1px solid rgba(255,178,95,0.45);
+        color: var(--accent-2);
+      }
+      .verdictWarn span:first-child { background: var(--accent-2) !important; }
+.bars {
         margin-top: 10px;
         border-radius: 14px;
         background: rgba(0,0,0,0.22);
@@ -764,7 +770,7 @@
             <a class="pill" href="#methodology">Methodology</a>
             <a class="pill" href="#model">Model</a>
             <a class="pill" href="#pricing">Pricing</a>
-            <a class="pill" href="#quickverdict">Product Tour</a>
+            <a class="pill" href="#product-tour">Product Tour</a>
 
             <button class="themeBtn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
               <span id="themeIcon" aria-hidden="true">🌙</span>
@@ -789,7 +795,7 @@
 
             <p class="lead">
               TVAC evaluates whether a specific tokenization design creates <b>net added value</b> versus a conventional structure —
-              and delivers a <b>solid, case-specific deep report</b> (typically <b>15–20 pages</b>, ~<b>6,000 words</b>) with the full rationale,
+              and delivers a <b>solid, case-specific deep report</b> (typically <b>30+ pages</b>, ~<b>9,000 words</b>) with the full rationale,
               assumptions, risk focus, and concrete next steps.
             </p>
 
@@ -800,7 +806,7 @@
             </div>
 
             <div class="ctaRow">
-              <a class="btn btnPrimary" href="#quickverdict">Guided Tour (see real output) →</a>
+              <a class="btn btnPrimary" href="#product-tour">Guided Tour (see real output) →</a>
               <a class="btn" href="#pricing">Order Deep Assessment</a>
             </div>
           </div>
@@ -813,8 +819,9 @@
               </div>
 
               <div class="snapScore">
-                <div style="font-size: 34px; letter-spacing:-0.5px;">8.6</div>
-                <span class="verdict"><span style="width:8px;height:8px;border-radius:99px;background:var(--ok);display:inline-block;"></span> Verdict: go</span>
+                <div style="font-size: 34px; letter-spacing:-0.5px;">3.5</div>
+                <span class="verdict verdictWarn"><span style="width:8px;height:8px;border-radius:99px;background:var(--ok);display:inline-block;"></span> Verdict: conditional go</span>
+                <div class="small" style="margin-top:6px; color: var(--muted-2);">Input completeness: 95%</div>
               </div>
             </div>
 
@@ -823,32 +830,32 @@
 
               <div class="barRow">
                 <div>New Opportunities</div>
-                <div class="barTrack"><div class="barFill" style="width:82%"></div></div>
-                <div style="text-align:right;">8.2</div>
+                <div class="barTrack"><div class="barFill" style="width:65%"></div></div>
+                <div style="text-align:right;">6.5</div>
               </div>
 
               <div class="barRow">
                 <div>Cost Savings</div>
-                <div class="barTrack"><div class="barFill" style="width:64%"></div></div>
-                <div style="text-align:right;">6.4</div>
+                <div class="barTrack"><div class="barFill" style="width:40%"></div></div>
+                <div style="text-align:right;">4.0</div>
               </div>
 
               <div class="barRow">
                 <div>Risk Reduction</div>
-                <div class="barTrack"><div class="barFill" style="width:58%"></div></div>
-                <div style="text-align:right;">5.8</div>
+                <div class="barTrack"><div class="barFill" style="width:45%"></div></div>
+                <div style="text-align:right;">4.5</div>
               </div>
 
               <div class="barRow">
                 <div>Tokenization Costs</div>
-                <div class="barTrack"><div class="barFill barFillNeg" style="width:38%"></div></div>
-                <div style="text-align:right;">3.8</div>
+                <div class="barTrack"><div class="barFill barFillNeg" style="width:60%"></div></div>
+                <div style="text-align:right;">6.0</div>
               </div>
 
               <div class="barRow">
                 <div>New Risks</div>
-                <div class="barTrack"><div class="barFill barFillNeg" style="width:31%"></div></div>
-                <div style="text-align:right;">3.1</div>
+                <div class="barTrack"><div class="barFill barFillNeg" style="width:55%"></div></div>
+                <div style="text-align:right;">5.5</div>
               </div>
 
               <div class="formula">
@@ -864,8 +871,8 @@
       </div>
     </section>
 
-    <!-- ---------- PRODUCT TOUR (REPLACES Product tour) ---------- -->
-    <section class="padMid" id="quickverdict">
+    <!-- ---------- PRODUCT TOUR ---------- -->
+    <section class="padMid" id="product-tour">
       <div class="container sectionInner">
         <div class="frameWrap">
           <p class="eyebrow">Guided tour</p>
@@ -1003,7 +1010,7 @@
             <div class="cardPlain cardPadLg">
               <div class="small" style="letter-spacing:2px; text-transform:uppercase; color:var(--muted-2); font-weight:700;">Step 3</div>
               <h3 style="margin-top:10px;">You get a verdict + a deep report</h3>
-              <p class="small">A decision-grade, case-specific report (15–20 pages, ~6,000 words) with rationale, assumptions, blockers and levers.</p>
+              <p class="small">A decision-grade, case-specific report (30+ pages, ~9,000 words) with rationale, assumptions, blockers and levers.</p>
             </div>
 
             <div class="cardPlain cardPadLg">
@@ -1138,7 +1145,7 @@
 
             <p class="small" style="margin-top:10px;">
               A full, structured report: verdict, factor scores, rationale, blockers, levers, and practical next steps —
-              typically <b>15–20 pages</b> (~<b>6,000 words</b>) depending on case complexity.
+              typically <b>30+ pages</b> (~<b>9,000 words</b>) depending on case complexity.
             </p>
 
             <ul class="mutedList">
@@ -1183,28 +1190,28 @@
       <div class="container sectionInner">
         <p class="eyebrow">FAQ</p>
         <h2>Frequently asked questions</h2>
-        <p class="lead">TVAC is structured decision support: conservative, consistent, and explicit about assumptions and uncertainty.</p>
+        <p class="lead">Clear, neutral answers—so you can decide if TVAC fits your use case.</p>
 
         <div class="faqGrid">
-          <details class="faqItem">
+          <details class="faqItem" open>
             <summary>What is TVAC?</summary>
             <div class="faqA">
-              <p>TVAC (Tokenization Value-Add Calculator) is an informational decision-support tool that helps you assess whether a specific tokenization design is likely to create <strong>net added value</strong> versus a conventional structure.</p>
+              <p><strong>TVAC (Tokenization Value‑Add Calculator)</strong> is an informational decision‑support tool. It helps you evaluate whether a specific tokenization design is likely to create <strong>net added value</strong> versus a conventional structure—and it produces a structured, shareable report.</p>
             </div>
           </details>
 
           <details class="faqItem">
-            <summary>How does TVAC create value for you?</summary>
+            <summary>What does TVAC help you do?</summary>
             <div class="faqA">
-              <p>TVAC helps you make trade-offs explicit earlier—before you spend significant time and money on structuring, legal work, vendor selection, or procurement.</p>
-              <p>You get a clear verdict, a factor-by-factor rationale, the key assumptions that drive the outcome, and concrete levers to improve the design.</p>
+              <p>TVAC helps you make trade‑offs explicit early—before you spend significant time and money on structuring, legal work, vendor selection, or procurement.</p>
+              <p>You get a clear verdict, a factor‑by‑factor rationale, explicit assumptions, and concrete design levers you can use to improve feasibility and added value.</p>
             </div>
           </details>
 
           <details class="faqItem">
-            <summary>Who can use TVAC?</summary>
+            <summary>Who is TVAC for?</summary>
             <div class="faqA">
-              <p>TVAC is useful if you are evaluating, designing, or reviewing a tokenization initiative—whether you sit with an asset owner, an issuer/project team, an investment team, legal/compliance, or a service provider.</p>
+              <p>TVAC is useful if you are evaluating, designing, or reviewing a tokenization initiative—as an asset owner/issuer, project team, investment team, legal/compliance function, or service provider.</p>
               <p>It is especially helpful when multiple stakeholders need a shared, structured basis for discussion.</p>
             </div>
           </details>
@@ -1212,78 +1219,78 @@
           <details class="faqItem">
             <summary>How does TVAC evaluate “added value”?</summary>
             <div class="faqA">
-              <p>TVAC uses a consistent five-factor model:</p>
+              <p>TVAC uses a consistent five‑factor model:</p>
               <p><strong>Added Value = (New Opportunities + Cost Savings + Risk Reduction) – (Tokenization Costs + New Risks)</strong></p>
-              <p>Each factor is scored using defined criteria, and the assessment is complemented by a stakeholder lens (at minimum: Asset Owner, Investor, Service Providers) to highlight who benefits, who bears costs/risks, and where alignment breaks.</p>
+              <p>Each factor is scored on a 0–10 scale using predefined criteria. TVAC also applies a stakeholder lens (at minimum: Asset Owner, Investor, Service Providers) to highlight who captures upside and who bears costs/risks.</p>
             </div>
           </details>
 
           <details class="faqItem">
-            <summary>What inputs do you need to run an assessment?</summary>
+            <summary>How does TVAC derive the verdict?</summary>
             <div class="faqA">
-              <p>Typically: asset type, target participants/investors, jurisdictions, a short description of the proposed structure (issuance, custody, trading/settlement, governance), and any key constraints (regulatory, operational, or commercial).</p>
-              <p>You can keep inputs high-level at first, and add detail as you iterate.</p>
+              <p>The verdict is derived from the Added Value profile <em>and</em> the internal consistency of the design (jurisdictions, investor scope, custody, venue, settlement, disclosure, and operating model).</p>
+              <p>Typical outcomes include <em>Go</em>, <em>Conditional Go</em>, <em>Borderline</em>, or <em>No‑Go</em>—with clear “conditions to proceed” when relevant.</p>
             </div>
           </details>
 
           <details class="faqItem">
-            <summary>How can TVAC give a verdict—what is the method?</summary>
+            <summary>What inputs do you need?</summary>
             <div class="faqA">
-              <p>The verdict is driven by the five-factor model and the scoring criteria. TVAC makes the reasoning transparent by tying scores to specific value drivers, risks, costs, and assumptions.</p>
-              <p>Outcomes are typically <em>Go</em>, <em>Conditional Go</em>, or <em>No-Go</em>, with clear “conditions to proceed” where relevant.</p>
+              <p>Typically: asset type, jurisdictions, investor scope, legal wrapper, custody and venue assumptions, settlement/cash‑leg approach, distribution thesis, and key constraints.</p>
+              <p>TVAC also reports an <strong>input completeness</strong> score and lists missing fields and explicit assumptions—so thin or contradictory inputs are treated more cautiously.</p>
             </div>
           </details>
 
           <details class="faqItem">
-            <summary>What does the output look like?</summary>
+            <summary>What do you receive in a Deep Assessment?</summary>
             <div class="faqA">
-              <p>You receive a structured, shareable report designed for internal review (often suitable for committees and decision-makers). It includes the verdict, factor breakdown, stakeholder implications, key assumptions, risk focus, and recommended next steps.</p>
-              <p>Report length varies with case complexity; the goal is clarity and decision usefulness—not volume.</p>
+              <p>A Deep Assessment is a board‑ready report (typically <strong>30+ pages</strong>) that includes:</p>
+              <ul class="mutedList" style="margin-top:10px;">
+                <li>Executive summary (verdict, key drivers, “conditions to proceed”)</li>
+                <li>Asset‑class & market context</li>
+                <li>Analysis result (assumptions, value pathways, investor segmentation, operational costs, regulatory path, custody/venue fit, risk register)</li>
+                <li>How the assessment was produced + how Added Value is computed</li>
+                <li>Stakeholder added value (who benefits, who pays, who bears risk)</li>
+                <li>Factor breakdown, risk heatmap, and mitigation focus</li>
+                <li>Recommendations, what‑if scenarios, and an indicative implementation roadmap</li>
+              </ul>
             </div>
           </details>
 
           <details class="faqItem">
-            <summary>Can you trust the correctness of TVAC’s assessment?</summary>
+            <summary>Can you trust the output?</summary>
             <div class="faqA">
-              <p>TVAC is designed to be consistent and explainable, but it is still decision support based on the information provided and the assumptions stated in the report.</p>
-              <p>Use it to improve decision quality and documentation—then validate jurisdiction-specific, legal, financial, and operational conclusions with qualified professionals before execution.</p>
+              <p>TVAC is designed for consistency and defensibility: fixed factor definitions, calibrated scoring criteria, and transparent reasoning tied to your inputs.</p>
+              <p>It is also intentionally conservative: when a case sits between verdict bands, the more cautious interpretation is usually chosen.</p>
             </div>
           </details>
 
           <details class="faqItem">
-            <summary>How is AI used—and how do you avoid “confident nonsense”?</summary>
+            <summary>Is TVAC legal, tax, investment, or regulatory advice?</summary>
             <div class="faqA">
-              <p>AI is used to help turn structured inputs and scored factors into a readable, well-structured report. The assessment is constrained by the TVAC model, required sections, and explicit assumptions.</p>
-              <p>If information is missing or uncertain, the report is expected to say so and to express the outcome as conditional rather than overstating confidence.</p>
+              <p>No. TVAC provides <strong>informational decision‑support</strong> only. Jurisdiction‑specific matters must always be validated with qualified professionals.</p>
             </div>
           </details>
 
           <details class="faqItem">
-            <summary>Is TVAC legal, financial, tax, or investment advice?</summary>
+            <summary>How should you handle confidentiality?</summary>
             <div class="faqA">
-              <p>No. TVAC provides informational decision support only. It does not provide legal, financial, investment, tax, or regulatory advice, and it does not assume responsibility for decisions or outcomes.</p>
-              <p>Always seek qualified professional advice for jurisdiction-specific matters.</p>
+              <p>You should avoid entering sensitive personal data or confidential commercial details. Use anonymised placeholders where possible, and share only what is necessary to evaluate structure and feasibility.</p>
+              <p>If you have strict procurement or data‑handling requirements, treat TVAC as part of a governed workflow and apply your internal controls.</p>
             </div>
           </details>
 
           <details class="faqItem">
-            <summary>How do you handle data security and confidentiality?</summary>
+            <summary>Can TVAC help improve a design (not just grade it)?</summary>
             <div class="faqA">
-              <p>TVAC is designed around data minimization. You can often anonymize a case and still get a useful assessment.</p>
-              <p>For sensitive use cases, keep inputs strictly necessary and avoid personal data. If you have enterprise requirements (e.g., stricter access controls or governance constraints), those can be handled as part of the deployment and process setup.</p>
-            </div>
-          </details>
-
-          <details class="faqItem">
-            <summary>What kinds of cases is TVAC best suited for—and when is it not a fit?</summary>
-            <div class="faqA">
-              <p>TVAC is best suited for cases where tokenization could plausibly change the opportunity set, cost base, or risk profile—often in situations with complex stakeholder coordination, multi-jurisdiction flows, or a need for auditable governance.</p>
-              <p>If tokenization adds complexity without a clear value driver, TVAC will usually surface that quickly and recommend a conventional approach or a redesign.</p>
+              <p>Yes. The report surfaces the few levers most likely to move the outcome: how to reduce costs/risks, tighten the operating model, and make distribution/liquidity assumptions more credible.</p>
+              <p>It also includes structured next steps and an indicative roadmap you can use for planning and stakeholder alignment.</p>
             </div>
           </details>
         </div>
       </div>
     </section>
+
 
 <section class="padTight" id="about">
       <div class="container sectionInner">
@@ -1308,7 +1315,7 @@
           <div class="btnRow">
             <a class="btn btnPrimary" href="/tvac-methodology-v1.1.pdf" download>Download PDF ↓</a>
             <a class="btn" href="#pricing">Pricing</a>
-            <a class="btn" href="#quickverdict">Product Tour</a>
+            <a class="btn" href="#product-tour">Product Tour</a>
           </div>
         </div>
       </div>
