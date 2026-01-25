@@ -431,9 +431,12 @@
 
     const thumbs = el("div", { id: "tvac-pt-thumbs" }, [el("div", { class: "strip" })]);
 
-    const body = el("div", { id: "tvac-pt-body" }, [tabs, content, footer, thumbs]);
+    const progressWrap = el("div", { class: "ptProgressWrap", "aria-hidden": "true" }, [
+      el("div", { class: "ptProgress", id: "tvac-pt-progress" })
+    ]);
 
-    modal.appendChild(topbar);
+    const body = el("div", { id: "tvac-pt-body" }, [tabs, progressWrap, content, footer, thumbs]);
+modal.appendChild(topbar);
     modal.appendChild(body);
     overlay.appendChild(modal);
 
@@ -445,7 +448,7 @@
       if (e.key === "Escape") close();
     });
 
-    state._nodes = { overlay, modal, tabs, content, footer, backBtn, nextBtn, thumbsStrip: thumbs.querySelector(".strip") };
+    state._nodes = { overlay, modal, tabs, content, progress: overlay.querySelector("#tvac-pt-progress"), footer, backBtn, nextBtn, thumbsStrip: thumbs.querySelector(".strip") };
     return overlay;
   }
 
@@ -534,7 +537,34 @@
     nextBtn.disabled = state.stepIndex >= steps.length - 1;
 
     const label = footer.querySelector("div");
-    label.textContent = `Step ${state.stepIndex + 1} of ${steps.length}`;
+    label.textContent = `Step ${state.stepIndex + 1} of ${steps.length}
+.ptProgressWrap{
+  height: 6px;
+  margin: 10px 22px 0;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  overflow: hidden;
+}
+.ptProgress{
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,178,95,1), rgba(255,154,60,1));
+  box-shadow: 0 10px 26px rgba(255,154,60,0.18);
+  transition: width 240ms ease;
+}
+.ptContent.enter-next{ animation: ptEnterNext 220ms ease both; }
+.ptContent.enter-back{ animation: ptEnterBack 220ms ease both; }
+@keyframes ptEnterNext{
+  from{ opacity: 0; transform: translateX(14px); }
+  to{ opacity: 1; transform: translateX(0); }
+}
+@keyframes ptEnterBack{
+  from{ opacity: 0; transform: translateX(-14px); }
+  to{ opacity: 1; transform: translateX(0); }
+}
+`;
   }
 
   function renderThumbs(state) {
@@ -559,6 +589,25 @@
     renderContent(state);
     renderFooter(state);
     renderThumbs(state);
+
+    // Progress bar
+    const steps = getSteps(state);
+    if (state._nodes.progress) {
+      const pct = Math.round(((state.stepIndex + 1) / Math.max(1, steps.length)) * 100);
+      state._nodes.progress.style.width = pct + "%";
+    }
+
+    // Subtle entrance animation for content on step change
+    const dir = (state._prevIndex == null || state.stepIndex >= state._prevIndex) ? "next" : "back";
+    state._prevIndex = state.stepIndex;
+    if (state._nodes.content) {
+      state._nodes.content.classList.remove("enter-next", "enter-back");
+      // force reflow so animation restarts
+      void state._nodes.content.offsetWidth;
+      state._nodes.content.classList.add(dir === "next" ? "enter-next" : "enter-back");
+    }
+
+
   }
 
   function open(caseId = "case-a") {
