@@ -14,7 +14,7 @@
             id: "overview",
             title: "Report overview & verdict snapshot",
             subtitle: "A structured report with an executive snapshot and a clear, defensible verdict.",
-            image: "assets/tvac-report-toc-result.png",
+            image: "assets/guided-tour_assets_01-report-overview.png",
             bullets: [
               "Decision-grade output: clear structure, clear conclusion.",
               "Shareable snapshot for internal alignment and faster decision-making.",
@@ -91,6 +91,22 @@
               href: "#pricing",
             },
           },
+          {
+            id: "order",
+            title: "Order a Deep Assessment Report",
+            subtitle: "Get a structured PDF report for your case.",
+            image: "assets/guided-tour_assets_01-report-overview.png",
+            bullets: [
+              "Send a short case description (asset, jurisdictions, investor scope, and constraints).",
+              "You receive a 30+ page report (~9,000 words) with verdict logic, assumptions, risk focus, and next steps.",
+              "Optional human review is available for sanity-check notes and clarifying questions."
+            ],
+            cta: {
+              label: "Order a Deep Assessment Report →",
+              href: "mailto:michael@tvacai.com?subject=Order%20TVAC%20Deep%20Assessment"
+            }
+          },
+
         ],
       },
 
