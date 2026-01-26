@@ -604,7 +604,19 @@ will-change: transform;
         gap: 6px;
       }
 
-      /* ---------- LIGHTBOX ---------- */
+  /* TOC-only mode (editorial decision): show only the TOC preview here */
+  .proofFrame .gallery{ grid-template-columns: 1fr; }
+  .proofFrame .gallery .shotCard:not(.shotCard--toc){ display: none; }
+
+  /* Make the TOC preview readable (avoid awkward crops) */
+  .proofFrame .shotCard--toc .shotFrame{ height: 420px; }
+  .proofFrame .shotCard--toc .shotFrame img{
+    object-fit: contain;
+    object-position: top center;
+    padding: 10px;
+  }
+
+/* ---------- LIGHTBOX ---------- */
       .lightbox {
         position: fixed;
         inset: 0;
