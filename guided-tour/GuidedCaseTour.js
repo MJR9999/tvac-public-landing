@@ -127,6 +127,35 @@
   box-shadow: 0 0 0 3px rgba(255, 138, 0, 0.12);
 }
 
+.ptProgressWrap{
+  height: 6px;
+  margin: 10px 14px 0;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.ptProgress{
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,178,95,1), rgba(255,154,60,1));
+  box-shadow: 0 10px 26px rgba(255,154,60,0.18);
+  transition: width 240ms ease;
+}
+
+/* Subtle entrance animation for step changes */
+#tvac-pt-content.enter-next{ animation: ptEnterNext 220ms ease both; }
+#tvac-pt-content.enter-back{ animation: ptEnterBack 220ms ease both; }
+@keyframes ptEnterNext{
+  from{ opacity: 0; transform: translateX(14px); }
+  to{ opacity: 1; transform: translateX(0); }
+}
+@keyframes ptEnterBack{
+  from{ opacity: 0; transform: translateX(-14px); }
+  to{ opacity: 1; transform: translateX(0); }
+}
+
 #tvac-pt-content {
   flex: 1;
   min-height: 0;
@@ -293,7 +322,8 @@
 #tvac-pt-thumbs img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: #f6f7fb;
   display: block;
 }
 
@@ -436,7 +466,7 @@
     ]);
 
     const body = el("div", { id: "tvac-pt-body" }, [tabs, progressWrap, content, footer, thumbs]);
-modal.appendChild(topbar);
+    modal.appendChild(topbar);
     modal.appendChild(body);
     overlay.appendChild(modal);
 
@@ -448,7 +478,18 @@ modal.appendChild(topbar);
       if (e.key === "Escape") close();
     });
 
-    state._nodes = { overlay, modal, tabs, content, progress: overlay.querySelector("#tvac-pt-progress"), footer, backBtn, nextBtn, thumbsStrip: thumbs.querySelector(".strip") };
+    state._nodes = {
+      overlay,
+      modal,
+      tabs,
+      content,
+      progress: overlay.querySelector("#tvac-pt-progress"),
+      footer,
+      backBtn,
+      nextBtn,
+      thumbsStrip: thumbs.querySelector(".strip")
+    };
+
     return overlay;
   }
 
@@ -537,34 +578,7 @@ modal.appendChild(topbar);
     nextBtn.disabled = state.stepIndex >= steps.length - 1;
 
     const label = footer.querySelector("div");
-    label.textContent = `Step ${state.stepIndex + 1} of ${steps.length}
-.ptProgressWrap{
-  height: 6px;
-  margin: 10px 22px 0;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
-  overflow: hidden;
-}
-.ptProgress{
-  height: 100%;
-  width: 0%;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(255,178,95,1), rgba(255,154,60,1));
-  box-shadow: 0 10px 26px rgba(255,154,60,0.18);
-  transition: width 240ms ease;
-}
-.ptContent.enter-next{ animation: ptEnterNext 220ms ease both; }
-.ptContent.enter-back{ animation: ptEnterBack 220ms ease both; }
-@keyframes ptEnterNext{
-  from{ opacity: 0; transform: translateX(14px); }
-  to{ opacity: 1; transform: translateX(0); }
-}
-@keyframes ptEnterBack{
-  from{ opacity: 0; transform: translateX(-14px); }
-  to{ opacity: 1; transform: translateX(0); }
-}
-`;
+    label.textContent = `Step ${state.stepIndex + 1} of ${steps.length}`;
   }
 
   function renderThumbs(state) {
@@ -606,8 +620,6 @@ modal.appendChild(topbar);
       void state._nodes.content.offsetWidth;
       state._nodes.content.classList.add(dir === "next" ? "enter-next" : "enter-back");
     }
-
-
   }
 
   function open(caseId = "case-a") {
