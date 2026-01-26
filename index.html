@@ -1026,7 +1026,7 @@
       </div>
     </section>
 
-    <!-- ---------- BEHIND THE SCENES (PROCESS) ---------- -->
+   <!-- ---------- BEHIND THE SCENES (PROCESS) ---------- -->
 <section class="padTight" id="process">
   <div class="container sectionInner">
     <div class="frameWrap">
@@ -1042,25 +1042,30 @@
           <h3>Process overview (high level)</h3>
           <ul class="mutedList">
             <li>You describe the case in free text and answer structured questions.</li>
-            <li>The web app validates inputs and packages them into a case payload.</li>
-            <li>On “Generate report,” the payload is sent securely to the TVAC API.</li>
-            <li>The backend applies TVAC’s methodology, guardrails, and report structure.</li>
-            <li>A structured instruction set is assembled to ensure consistent output formatting.</li>
-            <li>The model produces: verdict, rationale, factor breakdown, risks, recommendations.</li>
-            <li>TVAC consolidates results into the Added Value framework and supporting sections.</li>
-            <li>Outputs are sanity-checked, normalized, and prepared for publication.</li>
-            <li>The API returns the report content and data to the browser.</li>
-            <li>The UI renders the final report (TOC, chapters, visuals) and supports print-to-PDF.</li>
+            <li>The app validates inputs and packages them into a single case payload.</li>
+            <li>On “Generate report,” the payload is sent securely to the TVAC backend (API).</li>
+            <li>The backend applies TVAC’s fixed methodology: Added Value formula, criteria, and report structure.</li>
+            <li>A tightly structured request (with strict format and evaluation rules) is sent via API to an AI model.</li>
+            <li>The model returns a structured analysis: verdict, rationale, factor breakdown, risks, recommendations.</li>
+            <li>TVAC parses, consolidates, and sanity-checks the output against required sections and consistency rules.</li>
+            <li>Results are normalized into a report-ready structure (chapters, tables, visuals).</li>
+            <li>The API returns the full report content/data to your browser.</li>
+            <li>The UI renders the final report and supports print-to-PDF.</li>
           </ul>
+
+          <p class="small" style="margin-top:12px;">
+            <b>Important:</b> TVAC does not publish raw model output. The model is constrained by TVAC’s methodology and required structure,
+            and the results are checked and normalized before rendering.
+          </p>
         </div>
 
         <div class="cardPlain cardPadLg">
           <h3>Why this matters</h3>
           <ul class="mutedList">
+            <li><b>Method-governed:</b> outputs follow a fixed framework, criteria, and required sections—not ad hoc generation.</li>
             <li><b>Consistency:</b> comparable outputs across cases (same structure, same factor logic).</li>
-            <li><b>Explainability:</b> reasoning is tied to your inputs and explicit assumptions.</li>
+            <li><b>Explainability:</b> reasoning is tied to your inputs, explicit assumptions, and the Added Value formula.</li>
             <li><b>Conservative checks:</b> missing or contradictory inputs are handled cautiously.</li>
-            <li><b>Decision support:</b> designed for internal discussion—not as professional advice.</li>
           </ul>
 
           <p class="small" style="margin-top:12px;">
