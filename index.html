@@ -547,13 +547,14 @@
       }
       [data-theme="light"] .shotFrame { background: rgba(0,0,0,0.04); }
 
-      .shotFrame img{
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        display: block;
-        background: transparent;
-      }
+     .shotFrame img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;        /* ← FIX */
+  object-position: top;     /* ← FIX (rapporter starter oppe) */
+  display: block;
+  background: transparent;
+}
 
       .shotMeta {
         padding: 12px 12px 14px;
