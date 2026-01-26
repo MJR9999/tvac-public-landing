@@ -1026,6 +1026,52 @@
       </div>
     </section>
 
+    <!-- ---------- BEHIND THE SCENES (PROCESS) ---------- -->
+<section class="padTight" id="process">
+  <div class="container sectionInner">
+    <div class="frameWrap">
+      <p class="eyebrow">Behind the scenes</p>
+      <h2>How TVAC turns your inputs into a decision-grade report</h2>
+      <p class="lead">
+        TVAC is not a “single prompt.” It is a structured workflow that validates inputs, applies a fixed methodology,
+        and assembles a consistent, board-ready report layout.
+      </p>
+
+      <div class="splitCard" style="margin-top:14px;">
+        <div class="cardPlain cardPadLg">
+          <h3>Process overview (high level)</h3>
+          <ul class="mutedList">
+            <li>You describe the case in free text and answer structured questions.</li>
+            <li>The web app validates inputs and packages them into a case payload.</li>
+            <li>On “Generate report,” the payload is sent securely to the TVAC API.</li>
+            <li>The backend applies TVAC’s methodology, guardrails, and report structure.</li>
+            <li>A structured instruction set is assembled to ensure consistent output formatting.</li>
+            <li>The model produces: verdict, rationale, factor breakdown, risks, recommendations.</li>
+            <li>TVAC consolidates results into the Added Value framework and supporting sections.</li>
+            <li>Outputs are sanity-checked, normalized, and prepared for publication.</li>
+            <li>The API returns the report content and data to the browser.</li>
+            <li>The UI renders the final report (TOC, chapters, visuals) and supports print-to-PDF.</li>
+          </ul>
+        </div>
+
+        <div class="cardPlain cardPadLg">
+          <h3>Why this matters</h3>
+          <ul class="mutedList">
+            <li><b>Consistency:</b> comparable outputs across cases (same structure, same factor logic).</li>
+            <li><b>Explainability:</b> reasoning is tied to your inputs and explicit assumptions.</li>
+            <li><b>Conservative checks:</b> missing or contradictory inputs are handled cautiously.</li>
+            <li><b>Decision support:</b> designed for internal discussion—not as professional advice.</li>
+          </ul>
+
+          <p class="small" style="margin-top:12px;">
+            <b>Note:</b> Please avoid submitting sensitive personal data or highly confidential details.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
     <!-- ---------- PRODUCT PROOF ---------- -->
     <section class="band padMid" id="methodology">
       <div class="container sectionInner">
