@@ -559,6 +559,22 @@ will-change: transform;
   padding: 10px;
   border-radius: calc(var(--radius) - 6px);
 }
+
+  /* TOC preview – special handling */
+.shotCard--toc .shotFrame {
+  height: 360px;
+}
+
+.shotCard--toc .shotFrame img {
+  object-fit: contain;
+  object-position: top center;
+}
+
+/* De-emphasize non-TOC previews */
+.shotCard:not(.shotCard--toc) {
+  opacity: 0.55;
+  filter: saturate(0.85);
+}
       
       .shotMeta {
         padding: 12px 12px 14px;
@@ -1095,7 +1111,7 @@ will-change: transform;
         <div class="splitCard card cardPadLg proofFrame">
           <div>
             <div class="gallery" aria-label="Report excerpts gallery">
-              <div class="shotCard" role="button" tabindex="0"
+              <div class="shotCard shotCard--toc" role="button" tabindex="0"
                    data-title="Table of contents + result snapshot"
                    data-src="assets/tvac-report-toc-result.png"
                    data-fallback="/tvac-report-toc-result.png">
