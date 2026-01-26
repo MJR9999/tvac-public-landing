@@ -560,7 +560,7 @@ will-change: transform;
   border-radius: calc(var(--radius) - 6px);
 }
 
-  /* TOC preview – special handling */
+/* TOC preview – special handling */
 .shotCard--toc .shotFrame {
   height: 360px;
 }
@@ -568,6 +568,12 @@ will-change: transform;
 .shotCard--toc .shotFrame img {
   object-fit: contain;
   object-position: top center;
+}
+
+/* Non-TOC previews: editorial crop */
+.shotCard:not(.shotCard--toc) .shotFrame img {
+  object-fit: cover;
+  object-position: center;
 }
 
 /* De-emphasize non-TOC previews */
