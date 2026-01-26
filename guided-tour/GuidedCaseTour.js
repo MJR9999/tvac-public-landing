@@ -36,6 +36,7 @@
 }
 
 #tvac-pt-modal {
+  color: #0f172a;
   width: min(1280px, calc(100vw - 36px));
   height: min(820px, calc(100vh - 36px));
   background: #fff;
@@ -246,6 +247,9 @@
   gap: 10px;
   flex-wrap: wrap;
 }
+#tvac-pt-notes, #tvac-pt-notes li { color: #0f172a; }
+#tvac-pt-notes { font-size: 14px; line-height: 1.5; }
+
 
 #tvac-pt-notes .pt-cta button {
   display: inline-flex;
@@ -330,6 +334,7 @@
 /* Mobile: maximize space */
 @media (max-width: 900px) {
   #tvac-pt-modal {
+  color: #0f172a;
     width: calc(100vw - 24px);
     height: calc(100vh - 24px);
     border-radius: 18px;
@@ -511,11 +516,7 @@
       });
       tabs.appendChild(b);
     });
-
-    const cta = el("button", { class: "pt-tab", type: "button", text: "Order a Deep Assessment Report" });
-    cta.addEventListener("click", () => jumpTo("pricing"));
-    tabs.appendChild(cta);
-  }
+}
 
   function renderContent(state) {
     const steps = getSteps(state);
@@ -542,7 +543,7 @@
 
     const right = el("div", { id: "tvac-pt-panel" }, [
       el("div", { id: "tvac-pt-notes" }, [
-        el("ul", {}, (step?.bullets || []).map((b) => el("li", {}, [b]))),
+        el("ul", {}, ((step?.bullets || step?.points || step?.notes || [])).map((b) => el("li", {}, [b]))),
 
         el("div", { class: "pt-cta" }, [
           el("button", { type: "button", class: "primary", text: "Order a Deep Assessment Report" }),
