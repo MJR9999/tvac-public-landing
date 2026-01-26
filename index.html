@@ -533,12 +533,13 @@
         background: rgba(255,255,255,0.03);
         overflow: hidden;
         cursor: pointer;
-        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+will-change: transform;
 
       }
       [data-theme="light"] .shotCard { background: rgba(0,0,0,0.02); }
-      .shotCard:hover { transform: translateY(-4px); border-color: var(--border-2); box-shadow: 0 18px 50px rgba(0,0,0,.45); }
-      
+      .shotCard:hover { transform: translateY(-10px); border-color: var(--border-2); box-shadow: 0 28px 80px rgba(0,0,0,.60); }
+
       .shotFrame {
         height: 250px;
         display: flex;
