@@ -36,7 +36,7 @@
             id: "risk-heatmap",
             title: "Risk register & heatmap",
             subtitle: "A practical risk view: deal-breakers, mitigations, and priority actions.",
-            image: "assets/tvac-report-risk-heatmap.png",
+            image: "assets/guided-tour_assets_03-risk-register-heatmap.png",
             bullets: [
               "Highlights deal-breakers and mitigation priorities.",
               "Maps execution risks to what must be true for success.",
@@ -56,13 +56,13 @@
           },
           {
             id: "investors",
-            title: "Investors: value vs costs & risks",
-            subtitle: "Shows how upside is weighed against frictions for this design.",
+            title: "Stakeholder Added Value",
+            subtitle: "Shows the degree of added value for each primary stakeholder.",
             image: "assets/guided-tour_assets_06-investors-plus-minus.png",
             bullets: [
-              "Clarifies who benefits and who pays (issuer, investors, ecosystem).",
-              "Makes tradeoffs explicit: access, liquidity, constraints, compliance.",
-              "Supports stakeholder alignment: fewer surprises later.",
+              "Shows who gains and who carries the frictions (issuer, investors, providers).",
+              "Reveals incentive alignment and potential misalignment across the ecosystem.",
+              "Useful for stakeholder strategy: pricing, governance, and go/no-go thresholds.",
             ],
           },
           {
