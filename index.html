@@ -346,9 +346,9 @@
       }
 
       /* ---------- LAYOUT ---------- */
-      .padTop { padding: 58px 0; }
-      .padMid { padding: 52px 0; }
-      .padTight { padding: 42px 0; }
+      .padTop { padding: 48px 0; }
+      .padMid { padding: 42px 0; }
+      .padTight { padding: 34px 0; }
 
       .grid2 {
         display: grid;
@@ -839,6 +839,50 @@ will-change: transform;
         .logoBox{ padding: 8px 6px 8px 10px; }
       }
 
+/* ---------- Responsive refinements (mobile-only) ---------- */
+/* Prevent horizontal clipping on narrow screens */
+html, body { overflow-x: hidden; }
+
+/* Mobile: hide the “Sample evaluation snapshot” to keep the hero compact */
+@media (max-width: 560px) {
+  /* Keep everything centered and avoid right-edge clipping */
+  .grid2 { grid-template-columns: 1fr; gap: 16px; }
+  .grid2 > * { min-width: 0; }
+
+  /* Mobile: hide the “Sample evaluation snapshot” to keep the hero compact */
+  .snapshot[aria-label="Sample evaluation snapshot"] { display: none !important; }
+
+  /* Show shorter process overview on phones */
+  .mutedListMobile { display: block; }
+  #process .mutedList:not(.mutedListMobile) { display: none; }
+}
+
+/* Also hide snapshot on short-height landscape phones */
+@media (max-width: 900px) and (max-height: 520px) {
+  .grid2 { grid-template-columns: 1fr; gap: 14px; }
+  .grid2 > * { min-width: 0; }
+
+  .snapshot[aria-label="Sample evaluation snapshot"] { display: none !important; }
+  .mutedListMobile { display: block; }
+  #process .mutedList:not(.mutedListMobile) { display: none; }
+}
+
+/* Default: mobile-short list is hidden */
+.mutedListMobile { display: none; }
+
+/* Dark theme: tone down the TOC screenshot so it doesn’t “glare” */
+[data-theme="dark"] .shotCard--toc .shotFrame {
+  background: rgba(255,255,255,0.035);
+}
+[data-theme="dark"] .shotCard--toc .shotFrame img {
+  filter: brightness(0.88) contrast(0.96) saturate(0.92);
+}
+
+/* Dark theme: slightly soften lightbox images overall (prevents harsh white panels) */
+[data-theme="dark"] .lightboxBody img{
+  filter: brightness(0.92) contrast(0.98) saturate(0.95);
+}
+
 </style>
   </head>
 
@@ -1137,6 +1181,13 @@ will-change: transform;
             <li>Results are normalized into a report-ready structure (chapters, tables, visuals).</li>
             <li>The API returns the full report content/data to your browser.</li>
             <li>The UI renders the final report and supports print-to-PDF.</li>
+          </ul>
+
+          <ul class="mutedList mutedListMobile">
+            <li>You describe the case in free text and answer structured questions.</li>
+            <li>The app validates inputs and packages them into a single case payload.</li>
+            <li>The payload is processed by the TVAC backend using a fixed methodology and strict evaluation rules (including an AI model step).</li>
+            <li>TVAC consolidates and sanity-checks the results, then returns a board-ready report you can print to PDF.</li>
           </ul>
 
           <p class="small" style="margin-top:12px;">
