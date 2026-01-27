@@ -620,6 +620,17 @@ will-change: transform;
     object-fit: contain;
     object-position: top center;
     padding: 10px;
+
+  /* Product Proof: keep the TOC thumbnail calm and compact (preview only) */
+  .proofFrame .shotCard--toc { max-width: 780px; margin: 0 auto; }
+  .proofFrame .shotCard--toc .shotFrame { height: 320px; }
+  @media (max-width: 900px) { .proofFrame .shotCard--toc .shotFrame { height: 220px; } }
+
+  /* Tone down the very white TOC thumbnail in dark mode (lightbox remains unfiltered) */
+  [data-theme="dark"] .proofFrame .shotCard--toc .shotFrame img{
+    filter: brightness(0.88) contrast(0.95) saturate(0.92);
+  }
+
   }
 
 /* ---------- LIGHTBOX ---------- */
@@ -690,6 +701,24 @@ will-change: transform;
         max-height: 78vh;
         object-fit: contain;
         display: block;
+      }
+
+      /* Lightbox: allow tap-to-zoom (scroll/pan when zoomed) */
+      .lightboxBody { overflow: hidden; }
+      .lightboxBody img { cursor: zoom-in; filter: none !important; }
+
+      .lightbox.zoomed .lightboxBody{
+        overflow: auto;
+        padding: 0;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x pan-y;
+      }
+      .lightbox.zoomed .lightboxBody img{
+        cursor: zoom-out;
+        width: auto;
+        height: auto;
+        max-width: none;
+        max-height: none;
       }
 
       /* ---------- FAQ ---------- */
@@ -849,9 +878,11 @@ html, body { overflow-x: hidden; }
 .mobileValueBullets li { margin: 6px 0; color: var(--muted); line-height: 1.35; }
 
 /* Mobile: hide non-clickable hero badges (they add noise on phones) */
-.miniBadges { }
-
-
+@media (max-width: 900px) {
+  #top .miniBadges { display: none !important; }
+  /* Hide the full “Behind the scenes” section on phones (kept on desktop) */
+  #process { display: none !important; }
+}
 
 /* Mobile: hide the “Sample evaluation snapshot” to keep the hero compact */
 @media (max-width: 560px) {
@@ -956,6 +987,7 @@ html, body { overflow-x: hidden; }
             </h1>
 
             <p class="lead">
+              TVAC helps you decide whether tokenization is actually worth it.
               TVAC evaluates whether a specific tokenization design creates <b>net added value</b> versus a conventional structure —
               and delivers a <b>solid, case-specific deep report</b> (typically <b>30+ pages</b>, ~<b>9,000 words</b>) with the full rationale,
               assumptions, risk focus, and concrete next steps.
@@ -1265,7 +1297,7 @@ html, body { overflow-x: hidden; }
         <h2>Not just a verdict — a concrete, case-specific report</h2>
         <p class="lead">
           TVAC produces structured output you can share internally: factor logic, explicit assumptions, risk focus, and clear next steps.
-          Click any screenshot to open it full-size.
+          Tap the screenshot to view the full report structure (Table of Contents).
         </p>
 
         <div class="splitCard card cardPadLg proofFrame">
@@ -1621,6 +1653,7 @@ html, body { overflow-x: hidden; }
 
         function openLightbox(title, src, fallback) {
           lbTitle.textContent = title || "Preview";
+          lb.classList.remove("zoomed");
           lb.classList.add("open");
           lb.setAttribute("aria-hidden", "false");
 
@@ -1636,6 +1669,7 @@ html, body { overflow-x: hidden; }
 
         function closeLightbox() {
           lb.classList.remove("open");
+          lb.classList.remove("zoomed");
           lb.setAttribute("aria-hidden", "true");
           lbImg.src = "";
         }
@@ -1652,6 +1686,11 @@ html, body { overflow-x: hidden; }
               openLightbox(title, src, fallback);
             }
           });
+        });
+
+        lbImg.addEventListener("click", () => {
+          if (!lb.classList.contains("open")) return;
+          lb.classList.toggle("zoomed");
         });
 
         closeBtn.addEventListener("click", closeLightbox);
