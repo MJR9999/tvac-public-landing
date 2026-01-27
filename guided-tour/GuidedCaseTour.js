@@ -361,6 +361,36 @@
     font-size: 12.5px;
     line-height: 1.25;
   }
+  /* Mobile topbar: stack title + intro, pin Close, clamp intro */
+  #tvac-pt-topbar {
+    position: relative;
+    padding-right: 92px; /* reserve space for Close button */
+  }
+  #tvac-pt-topbar .pt-left {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  #tvac-pt-topbar .pt-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    padding: 8px 12px;
+  }
+  #tvac-pt-topbar .pt-intro {
+    max-width: none;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+}
+
+/* Even tighter: landscape / low-height phones */
+@media (max-width: 900px) and (max-height: 520px) {
+  #tvac-pt-topbar .pt-intro {
+    -webkit-line-clamp: 1;
+  }
 }
     `.trim();
 
