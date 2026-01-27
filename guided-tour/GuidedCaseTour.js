@@ -388,8 +388,67 @@
 
 /* Even tighter: landscape / low-height phones */
 @media (max-width: 900px) and (max-height: 520px) {
+  /* Landscape / low-height phones: reclaim vertical space */
+  #tvac-pt-topbar {
+    padding: 10px 12px;
+    padding-right: 86px;
+  }
+  #tvac-pt-topbar .pt-close {
+    top: 8px;
+    right: 10px;
+    padding: 7px 11px;
+  }
+  #tvac-pt-topbar .pt-left {
+    gap: 4px;
+  }
   #tvac-pt-topbar .pt-intro {
     -webkit-line-clamp: 1;
+    font-size: 12px;
+  }
+
+  /* Keep tabs in a single row */
+  #tvac-pt-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  #tvac-pt-tabs .pt-tab {
+    padding: 7px 9px;
+    font-size: 12.5px;
+  }
+
+  /* Tighten progress + paddings */
+  .ptProgressWrap{
+    margin: 8px 10px 0;
+    height: 5px;
+  }
+
+  #tvac-pt-content {
+    padding: 10px;
+    overflow: auto;
+  }
+  #tvac-pt-grid {
+    gap: 10px;
+  }
+
+  /* Reduce header height inside the left panel */
+  #tvac-pt-imageHeader {
+    padding: 10px 12px;
+  }
+  #tvac-pt-imageHeader h2 {
+    font-size: 16px;
+  }
+  #tvac-pt-imageHeader p {
+    display: none;
+  }
+
+  #tvac-pt-footer {
+    padding: 10px 12px;
+  }
+  #tvac-pt-footer button {
+    padding: 8px 12px;
   }
 }
     `.trim();
