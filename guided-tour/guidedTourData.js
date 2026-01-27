@@ -36,7 +36,7 @@
             id: "risk-heatmap",
             title: "Risk register & heatmap",
             subtitle: "A practical risk view: deal-breakers, mitigations, and priority actions.",
-            image: "assets/guided-tour_assets_03-risk-register-heatmap.png",
+            image: "assets/guided-tour_assets_11-implementation-roadmap.png",
             bullets: [
               "Highlights deal-breakers and mitigation priorities.",
               "Maps execution risks to what must be true for success.",
@@ -55,14 +55,14 @@
             ],
           },
           {
-            id: "investors",
+            id: "stakeholder-added-value",
             title: "Stakeholder Added Value",
             subtitle: "Shows the degree of added value for each primary stakeholder.",
             image: "assets/guided-tour_assets_06-investors-plus-minus.png",
             bullets: [
-              "Shows who gains and who carries the frictions (issuer, investors, providers).",
-              "Reveals incentive alignment and potential misalignment across the ecosystem.",
-              "Useful for stakeholder strategy: pricing, governance, and go/no-go thresholds.",
+              "Shows who benefits most: issuer vs investors vs infrastructure providers.",
+              "Highlights misalignment: where incentives may need rebalancing.",
+              "Useful for negotiation: pricing, fees, governance, and role design.",
             ],
           },
           {
@@ -80,7 +80,7 @@
             id: "roadmap",
             title: "Implementation roadmap",
             subtitle: "A pragmatic roadmap: sequencing, dependencies, and milestones.",
-            image: "assets/guided-tour_assets_11-implementation-roadmap.png",
+            image: "assets/guided-tour_assets_12-implementation-roadmap.png",
             bullets: [
               "Sequenced plan: what comes first, and what can wait.",
               "Dependencies and critical path are explicit.",
