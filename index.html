@@ -843,6 +843,16 @@ will-change: transform;
 /* Prevent horizontal clipping on narrow screens */
 html, body { overflow-x: hidden; }
 
+/* Mobile hero clarity: swap in shorter copy + value bullets */
+.leadMobile { display: none; }
+.mobileValueBullets { display: none; margin: 12px 0 0 0; padding-left: 18px; }
+.mobileValueBullets li { margin: 6px 0; color: var(--muted); line-height: 1.35; }
+
+/* Mobile: hide non-clickable hero badges (they add noise on phones) */
+.miniBadges { }
+
+
+
 /* Mobile: hide the “Sample evaluation snapshot” to keep the hero compact */
 @media (max-width: 560px) {
   /* Keep everything centered and avoid right-edge clipping */
@@ -851,6 +861,18 @@ html, body { overflow-x: hidden; }
 
   /* Mobile: hide the “Sample evaluation snapshot” to keep the hero compact */
   .snapshot[aria-label="Sample evaluation snapshot"] { display: none !important; }
+
+  /* Mobile: keep hero compact + focused */
+  #top .lead { display: none; }
+  #top .leadMobile { display: block; }
+  #top .mobileValueBullets { display: block; }
+
+  /* Mobile: remove non-clickable hero badges */
+  #top .miniBadges { display: none !important; }
+
+  /* Mobile: hide Behind the scenes section entirely */
+  #process { display: none !important; }
+
 
   /* Show shorter process overview on phones */
   .mutedListMobile { display: block; }
@@ -863,6 +885,16 @@ html, body { overflow-x: hidden; }
   .grid2 > * { min-width: 0; }
 
   .snapshot[aria-label="Sample evaluation snapshot"] { display: none !important; }
+
+  /* Landscape phone: keep hero compact + focused */
+  #top .lead { display: none; }
+  #top .leadMobile { display: block; }
+  #top .mobileValueBullets { display: block; }
+  #top .miniBadges { display: none !important; }
+
+  /* Landscape phone: hide Behind the scenes section entirely */
+  #process { display: none !important; }
+
   .mutedListMobile { display: block; }
   #process .mutedList:not(.mutedListMobile) { display: none; }
 }
@@ -928,6 +960,18 @@ html, body { overflow-x: hidden; }
               and delivers a <b>solid, case-specific deep report</b> (typically <b>30+ pages</b>, ~<b>9,000 words</b>) with the full rationale,
               assumptions, risk focus, and concrete next steps.
             </p>
+
+
+            <p class="lead leadMobile">
+              TVAC helps you decide whether tokenization is actually worth it — in minutes, not months.
+              You get a structured, decision-grade report that makes costs, risks, and value transparent before you spend time and money.
+            </p>
+
+            <ul class="mobileValueBullets" aria-label="What you get">
+              <li><b>Weeks → minutes</b> — a structured assessment instead of months of workshops.</li>
+              <li><b>Avoid costly dead ends</b> — spot weak cases before legal, technical, and advisory spend.</li>
+              <li><b>Decision-grade output</b> — a shareable report with explicit rationale and assumptions.</li>
+            </ul>
 
             <div class="miniBadges" aria-label="Key report properties">
               <span class="miniBadge">Case-specific (not generic)</span>
