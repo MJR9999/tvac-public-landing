@@ -50,7 +50,7 @@
 
 #tvac-pt-topbar {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
   padding: 14px 16px;
@@ -61,7 +61,7 @@
 
 #tvac-pt-topbar .pt-left {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   min-width: 0;
 }
@@ -74,6 +74,15 @@
   opacity: 0.7;
   white-space: nowrap;
 }
+
+#tvac-pt-topbar .pt-intro {
+  max-width: 820px;
+  font-size: 13px;
+  line-height: 1.25;
+  opacity: 0.9;
+  min-width: 0;
+}
+
 
 #tvac-pt-topbar select {
   max-width: 520px;
@@ -348,6 +357,10 @@
   #tvac-pt-topbar select {
     max-width: 56vw;
   }
+  #tvac-pt-topbar .pt-intro {
+    font-size: 12.5px;
+    line-height: 1.25;
+  }
 }
     `.trim();
 
@@ -418,29 +431,13 @@
 
     const title = el("div", { class: "pt-title", text: STRINGS.title });
 
-    const select = el("select", { "aria-label": STRINGS.caseChooserAria });
-    const cases = DATA()?.cases || [];
-    cases.forEach((c) => {
-      const opt = el("option", {
-        value: c.id,
-        text: c.status === "coming_soon" ? `${c.label} — ${STRINGS.comingSoon}` : c.label,
-        ...(c.status === "coming_soon" ? { disabled: "disabled" } : {}),
-      });
-      select.appendChild(opt);
-    });
-    select.value = state.caseId;
-
-    select.addEventListener("change", () => {
-      state.caseId = select.value;
-      state.stepIndex = 0;
-      renderAll(state);
-    });
+    const intro = el("div", { class: "pt-intro", text: "Product Tour – A quick preview of how TVAC structures a tokenization assessment. You’ll see selected report excerpts that explain the methodology and decision logic. The full report includes deeper sections that depend on your specific structure, jurisdictions, investor scope, and constraints. All TVAC reports are case-specific and typically 30+ pages (~9,000 words)." });
 
     const closeBtn = el("button", { class: "pt-close", type: "button", text: STRINGS.close });
     closeBtn.addEventListener("click", () => close());
 
     const topbar = el("div", { id: "tvac-pt-topbar" }, [
-      el("div", { class: "pt-left" }, [title, select]),
+      el("div", { class: "pt-left" }, [title, intro]),
       closeBtn,
     ]);
 
