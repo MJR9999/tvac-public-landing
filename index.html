@@ -546,8 +546,9 @@ will-change: transform;
       /* Product Proof (TOC) — mobile: smaller thumbnail + dark-mode toning (thumbnail only) */
       @media (max-width: 600px) {
         .gallery { justify-items: center; }
-        .shotCard--toc { width: min(380px, 100%); margin-inline: auto; position: relative; }
-        .shotCard--toc .shotFrame { height: 240px; padding: 12px; }
+        .shotCard--toc { width: min(320px, 92%); margin-inline: auto; position: relative; }
+        .shotCard--toc .shotFrame { height: 180px; padding: 10px; }
+
         /* Subtle “tap” hint on mobile to replace the old multi-screenshot instruction */
         .shotCard--toc::after{
           content: "Tap to open full-size";
@@ -567,7 +568,7 @@ will-change: transform;
         [data-theme="dark"] .shotCard--toc .shotFrame img { filter: brightness(0.82) contrast(0.92) saturate(0.85); }
       }
       @media (max-width: 600px) and (max-height: 520px) {
-        .shotCard--toc .shotFrame { height: 200px; }
+        .shotCard--toc .shotFrame { height: 160px; }
         .shotCard--toc::after { bottom: 10px; }
       }
 
