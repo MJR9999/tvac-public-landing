@@ -68,7 +68,7 @@
 
 #tvac-pt-topbar .pt-title {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   opacity: 0.7;
@@ -431,7 +431,7 @@
 
     const title = el("div", { class: "pt-title", text: STRINGS.title });
 
-    const intro = el("div", { class: "pt-intro", text: "Product Tour – A quick preview of how TVAC structures a tokenization assessment. You’ll see selected report excerpts that explain the methodology and decision logic. The full report includes deeper sections that depend on your specific structure, jurisdictions, investor scope, and constraints. All TVAC reports are case-specific and typically 30+ pages (~9,000 words)." });
+    const intro = el("div", { class: "pt-intro", text: "A quick preview of how TVAC structures a tokenization assessment. You’ll see selected report excerpts that explain the methodology and decision logic. The full report includes deeper sections that depend on your specific structure, jurisdictions, investor scope, and constraints. All TVAC reports are case-specific and typically 30+ pages (~9,000 words)." });
 
     const closeBtn = el("button", { class: "pt-close", type: "button", text: STRINGS.close });
     closeBtn.addEventListener("click", () => close());
