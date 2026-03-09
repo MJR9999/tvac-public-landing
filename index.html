@@ -99,33 +99,68 @@
       .brand {
         display: flex;
         align-items: center;
-        gap: 14px;
-        min-width: 260px;
+        gap: 18px;
+        min-width: 360px;
+        flex: 0 1 auto;
       }
 
-      /* LOGO: sharp corners, tighter right padding + slightly less letter spacing */
-      .logoBox {
+      .brandLockup {
         display: inline-flex;
-        align-items: center;
+        flex-direction: column;
         justify-content: center;
-        padding: 10px 7px 10px 12px; /* top right bottom left (tighter right side) */
-        border: 2px solid var(--accent);
-        border-radius: 0px;          /* sharp corners */
-        letter-spacing: 5px;         /* slightly tighter */
-        font-weight: 700;
-        font-size: 14px;
-        line-height: 1;
-        min-width: 78px;             /* slightly smaller */
+        gap: 6px;
+        min-width: 0;
+        padding: 1px 0;
+      }
+
+      .brandTop {
+        display: inline-flex;
+        align-items: flex-end;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .brandLogo {
+        display: block;
+        font-size: 48px;
+        line-height: 0.9;
+        font-weight: 520;
+        letter-spacing: 0.02em;
+        color: rgba(255,255,255,0.98);
+        text-shadow: 0 6px 24px rgba(0,0,0,0.16);
+        white-space: nowrap;
       }
 
       .brandName {
+        display: block;
         font-size: 15px;
-        font-weight: 600;
-        opacity: 0.9;
+        line-height: 1.1;
+        font-weight: 400;
+        color: rgba(255,255,255,0.84);
+        letter-spacing: -0.15px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 240px;
+      }
+
+      .brandDivider {
+        flex: 0 0 152px;
+        width: 152px;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(255,154,60,0.95), rgba(255,154,60,0.44), transparent);
+        transform: translateY(-10px);
+      }
+
+      [data-theme="light"] .brandLogo {
+        color: rgba(10,12,18,0.94);
+        text-shadow: none;
+      }
+
+      [data-theme="light"] .brandName {
+        color: rgba(10,12,18,0.74);
+      }
+
+      [data-theme="light"] .brandDivider {
+        background: linear-gradient(90deg, rgba(255,154,60,0.96), rgba(255,154,60,0.34), transparent);
       }
 
       .navLinks {
@@ -372,8 +407,25 @@
         .grid2 { grid-template-columns: 1fr; }
         .grid3 { grid-template-columns: 1fr; }
         .grid4 { grid-template-columns: 1fr; }
-        .brand { min-width: auto; }
-        .brandName { display: none; }
+        .brand {
+          min-width: 0;
+          gap: 12px;
+        }
+        .brandTop {
+          gap: 12px;
+        }
+        .brandLogo {
+          font-size: 40px;
+          letter-spacing: 0.02em;
+        }
+        .brandName {
+          font-size: 13.5px;
+        }
+        .brandDivider {
+          flex-basis: 122px;
+          width: 122px;
+          transform: translateY(-8px);
+        }
       }
 
       /* ---------- CARDS ---------- */
@@ -887,7 +939,29 @@ will-change: transform;
           align-items: flex-start;
           padding: 12px 0;
         }
-        .brand{ min-width: 0; }
+        .brand{
+          min-width: 0;
+          width: 100%;
+        }
+        .brandLockup{
+          width: 100%;
+        }
+        .brandTop{
+          gap: 10px;
+        }
+        .brandLogo{
+          font-size: 34px;
+          letter-spacing: 0.02em;
+        }
+        .brandName{
+          font-size: 12.5px;
+          white-space: normal;
+        }
+        .brandDivider{
+          flex-basis: 96px;
+          width: 96px;
+          transform: translateY(-6px);
+        }
         .navLinks{
           width: 100%;
           justify-content: flex-start;
@@ -912,7 +986,10 @@ will-change: transform;
       @media (max-width: 900px) and (max-height: 450px){
         .navInner{ padding: 10px 0; }
         .pill{ padding: 8px 10px; font-size: 12.5px; }
-        .logoBox{ padding: 8px 6px 8px 10px; }
+        .brandTop{ gap: 9px; }
+        .brandLogo{ font-size: 31px; letter-spacing: 0.02em; }
+        .brandName{ font-size: 12px; }
+        .brandDivider{ flex-basis: 86px; width: 86px; transform: translateY(-6px); }
       }
 
 /* ---------- Responsive refinements (mobile-only) ---------- */
@@ -1001,9 +1078,14 @@ html, body { overflow-x: hidden; }
     <div class="nav">
       <div class="container">
         <div class="navInner">
-          <div class="brand">
-            <div class="logoBox" aria-label="TVAC logo">TVAC</div>
-            <div class="brandName">Tokenization Value-Add Calculator</div>
+          <div class="brand" aria-label="TVAC logo">
+            <div class="brandLockup">
+              <div class="brandTop">
+                <span class="brandLogo">TVAC</span>
+                <span class="brandDivider" aria-hidden="true"></span>
+              </div>
+              <span class="brandName">Tokenization Value-Add Calculator</span>
+            </div>
           </div>
 
           <div class="navLinks">
