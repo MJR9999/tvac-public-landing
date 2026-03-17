@@ -6,11 +6,11 @@
 */
 
 (function () {
-  const STRIPE = {
-    singleReport: "https://buy.stripe.com/7sYdR91YJcM2cfG5OW2ZO02",
-    pro6: "https://buy.stripe.com/28EaEX7j3fYe0wYdho2ZO01",
-    pro12: "https://buy.stripe.com/7sYbJ10UF3bsfrS7X42ZO00",
-  };
+ const STRIPE = {
+  singleReport: "https://buy.stripe.com/28E4gz6eZ8vM7Zq2CK2ZO08",
+  pro6: "https://buy.stripe.com/cNieVd1YJ4fwgvW9182ZO0a",
+  pro12: "https://buy.stripe.com/3cIdR932NcM24Nefpw2ZO0b",
+};
 
   function ready(fn) {
     if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn);
