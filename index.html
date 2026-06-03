@@ -55,7 +55,7 @@
     <title>TVAC — Tokenization Value-Add Calculator</title>
     <meta
       name="description"
-      content="TVAC is an independent, formula-first pre-tokenization decision-support tool that helps serious teams assess whether tokenization creates genuine added value compared with conventional alternatives before platform selection or implementation spend."
+      content="TVAC is an independent, formula-first pre-tokenization decision-support tool that helps serious teams assess whether tokenization creates genuine added value compared with conventional alternatives before platform selection, settlement design or implementation spend."
     />
 
     <style>
@@ -1140,6 +1140,7 @@ html, body { overflow-x: hidden; }
           <div class="navLinks">
             <a class="pill" href="#methodology">Methodology</a>
             <a class="pill" href="#model">Model</a>
+            <a class="pill" href="#cash-leg">Cash leg</a>
             <a class="pill" href="#scenario-lab">Scenario Lab</a>
             <a class="pill" href="#pricing">Pricing</a>
             <a class="pill" href="#product-tour">Product Tour</a>
@@ -1170,7 +1171,7 @@ html, body { overflow-x: hidden; }
   TVAC is an <b>independent, formula-first value-add assessment engine</b> that evaluates whether a specific tokenization design creates
   <b>net added value</b> compared with conventional alternatives before you commit to legal structuring, platform selection, vendor engagement or implementation spend.
   It is designed for both capital-raising and non-capital-raising cases — including funds, financial-institution use cases, asset-owner projects,
-  operational tokenization, custody, settlement and lifecycle structures.
+  operational tokenization, custody, payment/cash-leg readiness, settlement and lifecycle structures.
 </p>
 
             <p class="lead leadMobile">
@@ -1189,6 +1190,7 @@ html, body { overflow-x: hidden; }
   <span class="miniBadge">Formula-first methodology</span>
   <span class="miniBadge">Yield-neutral by design</span>
   <span class="miniBadge">Capital-raise + non-capital-raise cases</span>
+  <span class="miniBadge">Settlement & cash-leg readiness</span>
   <span class="miniBadge">Before platform selection</span>
   <span class="miniBadge">Case-specific output</span>
   <span class="miniBadge">Reports in 6 languages</span>
@@ -1291,6 +1293,51 @@ html, body { overflow-x: hidden; }
             <div class="small" style="color:var(--muted);">
               A <b>TVAC Viable</b> verdict means that tokenization appears to create net added value under the stated assumptions.
               It does <b>not</b> mean that the investment is sound, the yield is realistic, the issuer is creditworthy, or the instrument is suitable for investors.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ---------- SETTLEMENT & CASH LEG ---------- -->
+    <section class="padTight" id="cash-leg">
+      <div class="container sectionInner">
+        <div class="frameWrap">
+          <p class="eyebrow">Settlement & cash-leg readiness</p>
+          <h2>Tokenization is not only about the asset.</h2>
+          <p class="lead">
+            TVAC now also assesses whether the payment and settlement layer is credible for the specific case. A tokenized asset may offer limited practical value if the cash leg still depends on slow, manual or poorly integrated payment rails — especially where the case claims faster settlement, DvP, automated payments, secondary liquidity or collateral mobility.
+          </p>
+
+          <div class="grid3" style="margin-top:18px;">
+            <div class="cardPlain cardPadLg">
+              <h3>Payment model fit</h3>
+              <p class="small">
+                TVAC considers whether the case uses traditional fiat rails, bank or custodian settlement, stablecoins, tokenized cash, deposit tokens, DvP workflows or another payment model — and whether that model is realistic for the target users and jurisdictions.
+              </p>
+            </div>
+
+            <div class="cardPlain cardPadLg">
+              <h3>Cash-leg dependency</h3>
+              <p class="small">
+                The assessment distinguishes between cases where cash leg is marginal and cases where it is central. A closed administrative ownership-record use case is treated differently from a tokenized bond, collateral workflow or secondary-market structure.
+              </p>
+            </div>
+
+            <div class="cardPlain cardPadLg">
+              <h3>Proportional treatment</h3>
+              <p class="small">
+                Cash-leg readiness is not a new universal hurdle. TVAC evaluates whether the settlement design is proportionate to the value proposition. Weak cash-leg design becomes critical only when the case itself depends on settlement-sensitive benefits.
+              </p>
+            </div>
+          </div>
+
+          <div class="formulaBox" style="margin-top:18px;">
+            <p class="formulaKicker">Important distinction</p>
+            <div class="small" style="color:var(--muted);">
+              TVAC does <b>not</b> assume that every tokenization project needs a stablecoin, deposit token or CBDC solution from day one.
+              It asks whether the asset leg, cash leg, custody, compliance and settlement process are coherent enough for the claimed tokenization benefits to be credible.
             </div>
           </div>
         </div>
@@ -1425,7 +1472,7 @@ html, body { overflow-x: hidden; }
             TVAC does not treat available market data, vendor experience or anecdotal industry patterns as sufficient proof of viability.
             Instead, every assessment starts with a fixed added-value formula and asks whether tokenization creates genuine net benefit
             compared with conventional alternatives. The assessment is anchored in structured input parameters such as jurisdictions,
-            investor scope, disclosure, custody, settlement, venue and transfer restrictions — so results do not depend on ad hoc judgment,
+            investor scope, disclosure, custody, payment/cash-leg model, settlement, venue and transfer restrictions — so results do not depend on ad hoc judgment,
             but on a consistent method where you can see exactly which design choices drive the outcome.
           </p>
 
@@ -1433,7 +1480,7 @@ html, body { overflow-x: hidden; }
             <div class="cardPlain cardPadLg">
               <h3>What the five factors capture</h3>
               <ul class="mutedList">
-                <li><b>New Opportunities</b>: distribution, liquidity pathways, new investor access, programmability.</li>
+                <li><b>New Opportunities</b>: distribution, liquidity pathways, new investor access, programmability, settlement utility.</li>
                 <li><b>Cost Savings</b>: operational efficiency, automation, simpler processes over time.</li>
                 <li><b>Risk Reduction</b>: improved controls, transparency, settlement/counterparty improvements (when real).</li>
                 <li><b>Tokenization Costs</b>: build/integration, legal/compliance work, vendor/platform dependencies.</li>
@@ -1909,8 +1956,17 @@ html, body { overflow-x: hidden; }
           <details class="faqItem">
             <summary>What inputs do you need?</summary>
             <div class="faqA">
-              <p>Typically: asset type, jurisdictions, investor scope, legal wrapper, custody and venue assumptions, settlement/cash‑leg approach, distribution thesis, and key constraints.</p>
+              <p>Typically: asset type, jurisdictions, investor scope, legal wrapper, custody and venue assumptions, payment/settlement or cash‑leg approach, distribution thesis, and key constraints.</p>
               <p>TVAC also reports an <strong>input completeness</strong> score and lists missing fields and explicit assumptions—so thin or contradictory inputs are treated more cautiously.</p>
+            </div>
+          </details>
+
+
+          <details class="faqItem">
+            <summary>Does every tokenization case need a digital cash or stablecoin solution?</summary>
+            <div class="faqA">
+              <p>No. TVAC does not assume that every project needs stablecoins, deposit tokens, tokenized deposits or CBDC-based settlement from day one.</p>
+              <p>Instead, TVAC assesses whether the proposed payment and settlement model is proportionate to the value proposition. If a case mainly concerns ownership records, transfer controls or administration, a simple cash-leg model may be sufficient. If the case claims DvP, automated coupons, secondary liquidity, collateral mobility or 24/7 settlement, cash-leg readiness becomes a much more important design condition.</p>
             </div>
           </details>
 
