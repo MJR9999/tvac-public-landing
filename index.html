@@ -1119,6 +1119,93 @@ html, body { overflow-x: hidden; }
   filter: brightness(0.92) contrast(0.98) saturate(0.95);
 }
 
+      /* ---------- LEGAL / SUPPORT MODALS ---------- */
+      .legalLinks {
+        margin: 12px 0 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .legalLinkBtn {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: var(--accent);
+        font: inherit;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .legalLinkBtn:hover { color: var(--accent-2); }
+
+      .legalModal {
+        position: fixed;
+        inset: 0;
+        z-index: 1100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 22px;
+        background: rgba(0,0,0,0.72);
+      }
+      .legalModal.open { display: flex; }
+      .legalModalDialog {
+        width: min(860px, 100%);
+        max-height: 88vh;
+        overflow: auto;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: rgba(10,12,18,0.96);
+        color: var(--text);
+        box-shadow: 0 30px 110px rgba(0,0,0,0.55);
+      }
+      [data-theme="light"] .legalModalDialog {
+        background: rgba(255,255,255,0.98);
+        border-color: rgba(0,0,0,0.14);
+      }
+      .legalModalHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 16px 18px 12px;
+        border-bottom: 1px solid rgba(255,255,255,0.10);
+      }
+      [data-theme="light"] .legalModalHeader { border-bottom-color: rgba(0,0,0,0.10); }
+      .legalModalHeader h2 {
+        margin: 0;
+        font-size: 20px;
+        line-height: 1.2;
+      }
+      .legalUpdated {
+        margin-top: 4px;
+        color: var(--muted-2);
+        font-size: 12.5px;
+      }
+      .legalModalBody {
+        padding: 16px 18px 18px;
+        color: var(--muted);
+        font-size: 13.5px;
+        line-height: 1.58;
+      }
+      .legalModalBody h3 {
+        margin: 16px 0 6px;
+        font-size: 14px;
+        color: var(--text);
+      }
+      .legalModalBody p { margin: 0 0 10px; }
+      .legalModalBody ul { margin: 0 0 10px 18px; padding: 0; }
+      .legalModalBody li { margin: 5px 0; }
+      .legalModalFooter {
+        display: flex;
+        justify-content: flex-end;
+        padding: 0 18px 18px;
+      }
+
 </style>
   </head>
 
@@ -1531,7 +1618,7 @@ html, body { overflow-x: hidden; }
           <noscript>
             <div class="qvFallback">
               JavaScript is required for the Guided Tour. Please email:
-              <a href="mailto:michael@tvacai.com?subject=TVAC%20Guided%20Tour%20access">michael@tvacai.com</a>.
+              <a href="mailto:support@tvacai.com?subject=TVAC%20Guided%20Tour%20access">support@tvacai.com</a>.
             </div>
           </noscript>
 
@@ -1786,8 +1873,8 @@ html, body { overflow-x: hidden; }
             </ul>
 
             <div class="btnRow">
-              <a class="btn" id="pricing-link-single" href="mailto:michael@tvacai.com?subject=Order%20TVAC%20Deep%20Assessment">Order deep report →</a>
-              <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20question">Ask a question</a>
+              <a class="btn" id="pricing-link-single" href="mailto:support@tvacai.com?subject=Order%20TVAC%20Deep%20Assessment">Order deep report →</a>
+              <a class="btn" href="mailto:support@tvacai.com?subject=TVAC%20question">Ask a question</a>
             </div>
           </div>
 
@@ -1819,7 +1906,7 @@ html, body { overflow-x: hidden; }
 
             <div class="btnRow">
               <a class="btn btnPrimary" href="https://buy.stripe.com/28E4gz6eZ8vM7Zq2CK2ZO08" target="_blank" rel="noreferrer">Start with a Deep Assessment →</a>
-              <a class="btn" href="mailto:michael@tvacai.com?subject=TVAC%20Scenario%20Lab%20question">Ask about Scenario Lab</a>
+              <a class="btn" href="mailto:support@tvacai.com?subject=TVAC%20Scenario%20Lab%20question">Ask about Scenario Lab</a>
             </div>
 
             <p class="small" style="margin-top:10px;">
@@ -1840,19 +1927,19 @@ html, body { overflow-x: hidden; }
             </ul>
 
             <div class="btnRow" style="margin-top:14px;">
-              <a class="btn btnPrimary" id="pricing-link-pro12" href="mailto:michael@tvacai.com?subject=Start%2012-month%20TVAC%20Pro">Start 12-month Pro — €3,900 total →</a>
-              <a class="btn" id="pricing-link-pro6" href="mailto:michael@tvacai.com?subject=Start%206-month%20TVAC%20Pro">Start 6-month Pro — €2,400 total</a>
+              <a class="btn btnPrimary" id="pricing-link-pro12" href="mailto:support@tvacai.com?subject=Start%2012-month%20TVAC%20Pro">Start 12-month Pro — €3,900 total →</a>
+              <a class="btn" id="pricing-link-pro6" href="mailto:support@tvacai.com?subject=Start%206-month%20TVAC%20Pro">Start 6-month Pro — €2,400 total</a>
             </div>
 
             <p class="small" style="margin-top:10px;"><b>12-month Pro</b>: €325/month equivalent. <b>6-month Pro</b>: €400/month equivalent.</p>
 
             <p class="small" style="margin-top:14px;">
   Partner, advisor or institutional use?
-  <a href="mailto:michael@tvacai.com?subject=Use%20TVAC%20with%20clients" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">Use TVAC with clients</a>
+  <a href="mailto:support@tvacai.com?subject=Use%20TVAC%20with%20clients" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">Use TVAC with clients</a>
   ·
-  <a href="mailto:michael@tvacai.com?subject=Discuss%20TVAC%20partner%20access" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">Discuss partner access</a>
+  <a href="mailto:support@tvacai.com?subject=Discuss%20TVAC%20partner%20access" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">Discuss partner access</a>
   ·
-  <a href="mailto:michael@tvacai.com?subject=Discuss%20TVAC%20institutional%20pilot" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">Discuss institutional pilot</a>
+  <a href="mailto:support@tvacai.com?subject=Discuss%20TVAC%20institutional%20pilot" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">Discuss institutional pilot</a>
 </p>
           </div>
         </div>
@@ -2011,7 +2098,7 @@ html, body { overflow-x: hidden; }
             <div class="faqA">
               <p>TVAC does not claim to know every final cost item with absolute precision. That level of detail usually only emerges later, after legal structuring, vendor selection, technical scoping, and implementation planning.</p>
               <p>What TVAC does provide is a structured, methodology-based evaluation of whether a project appears likely to generate net added value given the information available. It assesses the case based on its core characteristics, likely opportunity profile, probable cost and risk drivers, and the overall logic of the proposed tokenization model.</p>
-              <p>In short, TVAC is a decision-support tool for evaluating feasibility and value creation under real-world uncertainty — not a substitute for final budgeting, legal advice, or underwriting.</p>
+              <p>In short, TVAC is a decision-support tool for evaluating feasibility and value creation under real-world uncertainty — not a substitute for final budgeting or legal advice.</p>
             </div>
           </details>
 
@@ -2043,7 +2130,7 @@ html, body { overflow-x: hidden; }
           <details class="faqItem">
             <summary>Is TVAC legal, tax, investment, or regulatory advice?</summary>
             <div class="faqA">
-              <p>No. TVAC provides <strong>informational decision‑support</strong> only. It does not provide legal, regulatory, financial, investment, tax, credit, yield, valuation, underwriting, or suitability advice. Jurisdiction‑specific matters must always be validated with qualified professionals.</p>
+              <p>No. TVAC provides <strong>informational decision‑support</strong> only. It does not provide legal, regulatory, financial, investment, tax, credit, yield, valuation, or suitability advice. Jurisdiction‑specific matters must always be validated with qualified professionals.</p>
             </div>
           </details>
 
@@ -2088,7 +2175,7 @@ html, body { overflow-x: hidden; }
             style="color: var(--accent); text-decoration: underline; text-underline-offset: 3px;"
           >Asset Tokenization (2025)</a>
           — as a practical evaluation engine for real tokenization decisions.
-          Contact: <a href="mailto:michael@tvacai.com" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">michael@tvacai.com</a>
+          Contact &amp; Support: <a href="mailto:support@tvacai.com" style="color:var(--accent); text-decoration:underline; text-underline-offset:3px;">support@tvacai.com</a>
         </p>
 
         <div class="cardPlain cardPadLg">
@@ -2106,22 +2193,125 @@ html, body { overflow-x: hidden; }
     </section>
 
     <!-- ---------- FOOTER ---------- -->
-    <footer>
+    <footer id="contact-support">
       <div class="container">
         <p class="footLine">
-          Contact:
-          <a href="mailto:michael@tvacai.com">michael@tvacai.com</a>
-          &nbsp;·&nbsp;
-          <a href="https://www.linkedin.com/in/michaeljuulrugaard/" target="_blank" rel="noreferrer">LinkedIn</a>
+          <b>Contact &amp; Support</b><br />
+          For access, payment, or technical issues, contact:<br />
+          <a href="mailto:support@tvacai.com">support@tvacai.com</a>
+        </p>
+
+        <p class="footLine" style="font-size:13px; color:var(--muted-2);">
+          Support is provided by email. Response times may vary.
         </p>
 
         <div class="footDisc">
-          <b>Disclaimer.</b> TVAC provides methodology-based informational analysis and decision-support only. It evaluates tokenization added value, not investment merit. It is not legal, regulatory, financial, investment, tax, credit, yield, valuation, underwriting, or suitability advice. Outputs are based on user inputs, stated assumptions, and a fixed evaluation methodology, and do not guarantee accuracy, completeness, regulatory approval, commercial success, investment merit, credit quality, yield realism, issuer quality, or suitability for implementation. TVAC must not be relied upon as the sole basis for any structuring, issuance, investment, or implementation decision, and TVAC outputs must not be presented as investment approval, credit rating, yield validation, issuer endorsement, regulatory approval, due diligence report, or investor recommendation. Independent advice from qualified professionals in the relevant jurisdictions should always be obtained before acting.
+          <b>Disclaimer.</b> TVAC provides methodology-based informational analysis and decision-support only. It evaluates tokenization added value, not investment merit. It is not legal, regulatory, financial, investment, tax, credit, yield, valuation, or suitability advice. Outputs are based on user inputs, stated assumptions, and a fixed evaluation methodology, and do not guarantee accuracy, completeness, regulatory approval, commercial success, investment merit, credit quality, yield realism, issuer quality, or suitability for implementation. TVAC must not be relied upon as the sole basis for any structuring, issuance, investment, or implementation decision, and TVAC outputs must not be presented as investment approval, credit rating, yield validation, issuer endorsement, regulatory approval, due diligence report, or investor recommendation. Independent advice from qualified professionals in the relevant jurisdictions should always be obtained before acting.
         </div>
 
-        <div class="copyright">© 2026 Michael Juul Rugaard</div>
+        <div class="legalLinks" aria-label="Legal links">
+          <button class="legalLinkBtn" type="button" data-legal-open="terms">Terms of Service</button>
+          <span aria-hidden="true">·</span>
+          <button class="legalLinkBtn" type="button" data-legal-open="privacy">Privacy Policy</button>
+          <span aria-hidden="true">·</span>
+          <button class="legalLinkBtn" type="button" data-legal-open="disclaimer">Disclaimer</button>
+        </div>
+
+        <div class="copyright">© 2026 Michael Juul Rugaard · All rights reserved.</div>
       </div>
     </footer>
+
+
+    <!-- ---------- LEGAL MODALS ---------- -->
+    <div class="legalModal" id="legalModal-terms" aria-hidden="true">
+      <div class="legalModalDialog" role="dialog" aria-modal="true" aria-labelledby="legalTermsTitle">
+        <div class="legalModalHeader">
+          <div>
+            <h2 id="legalTermsTitle">Terms of Service</h2>
+            <div class="legalUpdated">Last updated: 15 June 2026</div>
+          </div>
+          <button class="closeBtn legalModalClose" type="button" data-legal-close aria-label="Close">Close ✕</button>
+        </div>
+        <div class="legalModalBody">
+            <h3>1. Scope of the service</h3>
+              <p>TVAC is an informational decision-support tool designed to help users assess whether a proposed tokenization case appears likely to create added value compared with conventional alternatives.</p>
+              <p>TVAC does not provide legal, regulatory, financial, tax, accounting, investment, credit, yield, valuation, technical structuring, or suitability advice. Outputs must be independently reviewed by qualified professionals before any decision is made.</p>            <h3>2. User responsibility</h3>
+              <p>You are responsible for the quality, accuracy, completeness, and lawfulness of the information you submit. TVAC outputs depend on the inputs provided and on assumptions that may be incomplete, uncertain, or later become outdated.</p>
+              <p>You must not use TVAC outputs as investment approval, legal opinion, regulatory approval, due diligence report, investor recommendation, credit assessment, valuation opinion, or confirmation of commercial feasibility.</p>            <h3>3. Access, payment, and report credits</h3>
+              <p>Access may be provided through single-report purchases, subscriptions, internal/staff access, or other access models made available by TVAC. Payment processing may be handled by Stripe or another payment provider.</p>
+              <p>Unless otherwise stated, a report credit is used when a full assessment is generated. Once a report has been generated, refunds are generally not available except where required by applicable law or where TVAC has made a clear billing or access error.</p>            <h3>4. Availability and support</h3>
+              <p>TVAC is provided on a best-efforts basis. The service may be unavailable, delayed, interrupted, or changed due to maintenance, hosting issues, third-party service outages, software updates, API limitations, or other technical factors.</p>
+              <p>Support is provided by email at support@tvacai.com. Response times may vary. No guaranteed response time, service level, uptime, or dedicated support team is promised unless separately agreed in writing.</p>            <h3>5. Third-party services</h3>
+              <p>TVAC may rely on third-party infrastructure and service providers, including hosting, database, payment, email, analytics, and AI model providers. These providers may process data as necessary to operate, secure, improve, and support the service.</p>
+              <p>TVAC is not responsible for third-party outages, delays, security events, or changes outside TVAC&#x27;s reasonable control.</p>            <h3>6. Intellectual property and permitted use</h3>
+              <p>TVAC, its methodology, software, scoring logic, user interface, report structure, text, branding, and related materials are protected by intellectual property rights. You may use generated reports for your own internal analysis and professional discussion, subject to these terms.</p>
+              <p>You may not copy, reverse engineer, resell, scrape, reproduce, publish, or commercially exploit TVAC, its methodology, or its outputs as a competing service without prior written permission.</p>            <h3>7. Limitation of liability</h3>
+              <p>To the maximum extent permitted by law, TVAC and Astoval are not liable for losses arising from reliance on TVAC outputs, including commercial losses, investment losses, regulatory outcomes, implementation choices, missed opportunities, data errors, service interruptions, or third-party provider issues.</p>
+              <p>Users remain solely responsible for all commercial, legal, regulatory, operational, investment, strategic, and implementation decisions related to any tokenization initiative.</p>            <h3>8. Contact</h3>
+              <p>For access, payment, or technical issues, contact support@tvacai.com.</p>
+        </div>
+        <div class="legalModalFooter">
+          <button class="closeBtn legalModalClose" type="button" data-legal-close>Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="legalModal" id="legalModal-privacy" aria-hidden="true">
+      <div class="legalModalDialog" role="dialog" aria-modal="true" aria-labelledby="legalPrivacyTitle">
+        <div class="legalModalHeader">
+          <div>
+            <h2 id="legalPrivacyTitle">Privacy Policy</h2>
+            <div class="legalUpdated">Last updated: 15 June 2026</div>
+          </div>
+          <button class="closeBtn legalModalClose" type="button" data-legal-close aria-label="Close">Close ✕</button>
+        </div>
+        <div class="legalModalBody">
+            <h3>1. Who operates TVAC</h3>
+              <p>For the current pre-launch/service phase, TVAC is operated by Michael Juul Rugaard / Astoval. This may later be updated to Astoval ApS or another legal entity if the service is formally transferred.</p>
+              <p>Contact: support@tvacai.com.</p>            <h3>2. What data TVAC may process</h3>
+              <p>TVAC may process information you submit or generate through the service, including email address, access/payment status, case descriptions, structured assessment inputs, report language, assessment outputs, support requests, and technical logs.</p>
+              <p>You should avoid submitting unnecessary personal data, confidential personal information, special-category personal data, passwords, private keys, wallet seed phrases, regulated client information, or information you are not authorised to share.</p>            <h3>3. Why the data is processed</h3>
+              <p>Data may be processed to provide access to TVAC, generate and display reports, manage report credits or subscriptions, process payments, troubleshoot errors, prevent misuse, improve service reliability, maintain security, respond to support requests, and keep basic business records.</p>
+              <p>Case inputs may be used to generate the requested analysis. They may also be retained for a limited period for security, debugging, support, auditability, quality control, and service-improvement purposes.</p>            <h3>4. Legal basis</h3>
+              <p>Depending on the situation, processing may be based on performance of a contract or pre-contractual steps, legitimate interests in operating and securing the service, compliance with legal obligations, or consent where consent is specifically requested.</p>            <h3>5. Service providers</h3>
+              <p>TVAC may use third-party service providers for hosting, database/storage, payment processing, AI processing, email delivery, monitoring, and support. Current or planned providers may include Render, Supabase, OpenAI, Stripe, Resend, Google Workspace, and related infrastructure providers.</p>
+              <p>Payment card details are handled by payment providers such as Stripe and are not intended to be stored directly by TVAC.</p>            <h3>6. International processing</h3>
+              <p>Because TVAC may use cloud, payment, email, and AI infrastructure providers, data may be processed in countries outside your own country or outside the European Economic Area. Where required, appropriate contractual or organisational safeguards should be used.</p>            <h3>7. Retention</h3>
+              <p>TVAC aims to retain personal data only for as long as reasonably necessary for access, payment, support, security, legal, accounting, troubleshooting, service-improvement, and auditability purposes.</p>
+              <p>Exact retention periods may depend on the type of data, the account or access model, support needs, legal requirements, and technical backup cycles.</p>            <h3>8. Your rights</h3>
+              <p>Depending on applicable law, you may have rights to request access, correction, deletion, restriction, portability, or objection to certain processing of your personal data, and you may have the right to lodge a complaint with a supervisory authority.</p>
+              <p>To make a privacy-related request, contact support@tvacai.com.</p>            <h3>9. Security</h3>
+              <p>TVAC uses reasonable technical and organisational measures to protect the service and the data processed through it. However, no online service can guarantee absolute security.</p>
+        </div>
+        <div class="legalModalFooter">
+          <button class="closeBtn legalModalClose" type="button" data-legal-close>Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="legalModal" id="legalModal-disclaimer" aria-hidden="true">
+      <div class="legalModalDialog" role="dialog" aria-modal="true" aria-labelledby="legalDisclaimerTitle">
+        <div class="legalModalHeader">
+          <div>
+            <h2 id="legalDisclaimerTitle">Disclaimer</h2>
+            <div class="legalUpdated">Last updated: 15 June 2026</div>
+          </div>
+          <button class="closeBtn legalModalClose" type="button" data-legal-close aria-label="Close">Close ✕</button>
+        </div>
+        <div class="legalModalBody">
+              <p>This report is provided for informational and decision-support purposes only. It does not constitute legal, regulatory, tax, accounting, investment, valuation, or financial advice, and it should not be relied upon as a substitute for professional advice tailored to the specific facts and circumstances of the case.</p>
+              <p>TVAC is a structured assessment tool designed to evaluate whether and when tokenization may create added value relative to conventional alternatives. Its outputs reflect a methodology-based analytical framework operating under uncertainty. They are not guarantees of commercial success, feasibility, investor demand, regulatory approval, liquidity, execution quality, budget outcome, or risk reduction.</p>
+              <p>Any scores, verdicts, scenarios, stakeholder assessments, suggested actions, implementation observations, and roadmap elements in this report are indicative only and depend on the quality, completeness, and interpretation of the input data, as well as on assumptions about structure, jurisdiction, service-provider readiness, market conditions, execution capability, and timing.</p>
+              <p>Tokenization outcomes can differ materially from this assessment if key conditions change, including legal structuring, investor scope, jurisdiction count, custody model, distribution pathway, settlement design, governance arrangements, servicing readiness, technology integration, cost allocation, evidence quality, or liquidity support.</p>
+              <p>A TVAC verdict is a tokenization added-value verdict only. It must not be presented or used as investment approval, credit rating, yield validation, issuer endorsement, regulatory approval, due diligence report, or investor recommendation. TVAC does not validate projected returns, coupon payments, credit quality, valuations, legal enforceability, tax treatment, or investor suitability.</p>
+              <p>This report does not replace formal legal analysis, regulatory review, tax analysis, technical architecture review, cybersecurity review, accounting assessment, operational diligence, commercial validation, or board-level decision processes. Independent advice should always be obtained before any structuring, issuance, distribution, investment, operational, or implementation decision is made.</p>
+              <p>Neither TVAC nor Astoval assumes responsibility for actions taken on the basis of this report alone. Users remain solely responsible for all commercial, legal, regulatory, operational, and strategic decisions related to any proposed tokenization initiative.</p>
+        </div>
+        <div class="legalModalFooter">
+          <button class="closeBtn legalModalClose" type="button" data-legal-close>Close</button>
+        </div>
+      </div>
+    </div>
 
     <!-- ---------- LIGHTBOX MODAL ---------- -->
     <div class="lightbox" id="lightbox" aria-hidden="true">
@@ -2162,6 +2352,53 @@ html, body { overflow-x: hidden; }
     </script>
 
     <script>
+
+      /* ---------- LEGAL MODALS ---------- */
+      (function () {
+        const modals = {
+          terms: document.getElementById("legalModal-terms"),
+          privacy: document.getElementById("legalModal-privacy"),
+          disclaimer: document.getElementById("legalModal-disclaimer")
+        };
+
+        function closeAllLegalModals() {
+          Object.values(modals).forEach((modal) => {
+            if (!modal) return;
+            modal.classList.remove("open");
+            modal.setAttribute("aria-hidden", "true");
+          });
+        }
+
+        function openLegalModal(type) {
+          closeAllLegalModals();
+          const modal = modals[type];
+          if (!modal) return;
+          modal.classList.add("open");
+          modal.setAttribute("aria-hidden", "false");
+          const closeButton = modal.querySelector("[data-legal-close]");
+          if (closeButton) closeButton.focus();
+        }
+
+        document.querySelectorAll("[data-legal-open]").forEach((button) => {
+          button.addEventListener("click", () => openLegalModal(button.getAttribute("data-legal-open")));
+        });
+
+        document.querySelectorAll("[data-legal-close]").forEach((button) => {
+          button.addEventListener("click", closeAllLegalModals);
+        });
+
+        Object.values(modals).forEach((modal) => {
+          if (!modal) return;
+          modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeAllLegalModals();
+          });
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeAllLegalModals();
+        });
+      })();
+
       /* ---------- THEME TOGGLE ---------- */
       (function () {
         const root = document.documentElement;
