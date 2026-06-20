@@ -2669,6 +2669,125 @@ html, body { overflow-x: hidden; }
           }
         }
 
+        function buildLocalizedHeroSnapshot(lang) {
+          const copy = {
+            de: {
+              aria: "Beispielhafte Bewertungsübersicht",
+              title: "Beispielhafte Bewertungsübersicht",
+              scoreLabel: "Gesamter Added-Value-Score",
+              verdictLabel: "Tokenization Value Verdict:",
+              verdict: "Bedingtes Go",
+              completeness: "Input-Vollständigkeit: 95%",
+              breakdown: "Faktorenprofil",
+              no: "Neue Chancen",
+              cs: "Kosteneinsparungen",
+              rr: "Risikoreduzierung",
+              tc: "Tokenisierungskosten",
+              nr: "Neue Risiken",
+              formula: "Basiert auf der Formel: (Neue Chancen + Kosteneinsparungen + Risikoreduzierung) − (Tokenisierungskosten + Neue Risiken).",
+              tagline: "Das Ergebnis ist für die interne Weitergabe strukturiert: Faktorenlogik, explizite Annahmen und konkrete Hebel zur Verbesserung des Scores."
+            },
+            fr: {
+              aria: "Aperçu d’évaluation",
+              title: "Aperçu d’évaluation",
+              scoreLabel: "Score global de valeur ajoutée",
+              verdictLabel: "Verdict de valeur de tokenisation :",
+              verdict: "Feu vert conditionnel",
+              completeness: "Complétude des données : 95 %",
+              breakdown: "Profil des facteurs",
+              no: "Nouvelles opportunités",
+              cs: "Économies de coûts",
+              rr: "Réduction des risques",
+              tc: "Coûts de tokenisation",
+              nr: "Nouveaux risques",
+              formula: "Basé sur la formule : (Nouvelles opportunités + Économies de coûts + Réduction des risques) − (Coûts de tokenisation + Nouveaux risques).",
+              tagline: "Le résultat est structuré pour un partage interne : logique des facteurs, hypothèses explicites et leviers concrets pour améliorer le score."
+            },
+            es: {
+              aria: "Resumen de evaluación de ejemplo",
+              title: "Resumen de evaluación de ejemplo",
+              scoreLabel: "Puntuación global de valor añadido",
+              verdictLabel: "Veredicto de valor de tokenización:",
+              verdict: "Avance condicional",
+              completeness: "Completitud del input: 95%",
+              breakdown: "Desglose de factores",
+              no: "Nuevas oportunidades",
+              cs: "Ahorro de costes",
+              rr: "Reducción de riesgos",
+              tc: "Costes de tokenización",
+              nr: "Nuevos riesgos",
+              formula: "Basado en la fórmula: (Nuevas oportunidades + Ahorro de costes + Reducción de riesgos) − (Costes de tokenización + Nuevos riesgos).",
+              tagline: "El resultado está estructurado para compartir internamente: lógica de factores, supuestos explícitos y palancas concretas para mejorar la puntuación."
+            },
+            "zh-Hans": {
+              aria: "评估示例概览",
+              title: "评估示例概览",
+              scoreLabel: "整体附加价值评分",
+              verdictLabel: "代币化价值结论：",
+              verdict: "有条件推进",
+              completeness: "输入完整度：95%",
+              breakdown: "五项因素评分",
+              no: "新增机会",
+              cs: "成本节约",
+              rr: "风险降低",
+              tc: "代币化成本",
+              nr: "新增风险",
+              formula: "基于公式：（新增机会 + 成本节约 + 风险降低）−（代币化成本 + 新增风险）。",
+              tagline: "输出适合内部分享：包含因素逻辑、明确假设，以及可改善评分的具体杠杆。"
+            }
+          };
+
+          const c = copy[lang] || copy.es;
+          return `
+            <div class="snapshot card" aria-label="${html(c.aria)}">
+              <div class="snapTop">
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <div class="small" style="letter-spacing:2px; text-transform:uppercase; color:var(--muted-2); font-weight:650;">${html(c.title)}</div>
+                  <div class="small">${html(c.scoreLabel)}</div>
+                </div>
+                <div class="snapScore">
+                  <div style="font-size:34px; letter-spacing:-0.5px;">3.5</div>
+                  <div class="small" style="margin-top:6px; color:var(--muted-2);"><b>${html(c.verdictLabel)}</b> ${html(c.verdict)}</div>
+                  <div class="small" style="margin-top:6px; color:var(--muted-2);">${html(c.completeness)}</div>
+                </div>
+              </div>
+
+              <div class="bars" aria-label="${html(c.breakdown)}">
+                <div class="small" style="letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; color:var(--muted-2); font-weight:650;">${html(c.breakdown)}</div>
+
+                <div class="barRow">
+                  <div>${html(c.no)}</div>
+                  <div class="barTrack"><div class="barFill" style="width:65%"></div></div>
+                  <div style="text-align:right;">6.5</div>
+                </div>
+                <div class="barRow">
+                  <div>${html(c.cs)}</div>
+                  <div class="barTrack"><div class="barFill" style="width:40%"></div></div>
+                  <div style="text-align:right;">4.0</div>
+                </div>
+                <div class="barRow">
+                  <div>${html(c.rr)}</div>
+                  <div class="barTrack"><div class="barFill" style="width:45%"></div></div>
+                  <div style="text-align:right;">4.5</div>
+                </div>
+                <div class="barRow">
+                  <div>${html(c.tc)}</div>
+                  <div class="barTrack"><div class="barFill barFillNeg" style="width:60%"></div></div>
+                  <div style="text-align:right;">6.0</div>
+                </div>
+                <div class="barRow">
+                  <div>${html(c.nr)}</div>
+                  <div class="barTrack"><div class="barFill barFillNeg" style="width:55%"></div></div>
+                  <div style="text-align:right;">5.5</div>
+                </div>
+
+                <div class="formula">${html(c.formula)}</div>
+              </div>
+
+              <div class="tagline">${html(c.tagline)}</div>
+            </div>`;
+        }
+
         function buildLocalizedPage(l, lang) {
           const isChinese = lang === "zh-Hans";
           const mailEnterprise = "mailto:support@tvacai.com?subject=TVAC%20Institutional%20API%20and%20White-Label%20Enquiry";
@@ -2706,20 +2825,7 @@ html, body { overflow-x: hidden; }
                       <a class="btn" href="#pricing">${html(l.cta_order)}</a>
                     </div>
                   </div>
-                  <div class="snapshot card" aria-label="TVAC">
-                    <div class="snapTop">
-                      <div>
-                        <div class="small" style="letter-spacing:2px;text-transform:uppercase;color:var(--muted-2);font-weight:650;">TVAC</div>
-                        <div class="small">${isChinese ? "结构化代币化决策支持" : "Structured tokenization decision support"}</div>
-                      </div>
-                      <div class="verdict verdictWarn"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span>Conditional Go</div>
-                    </div>
-                    <div class="formulaBox">
-                      <p class="formulaKicker">${html(l.formula_kicker)}</p>
-                      <div class="monoFormula"><b>Added Value</b> = (NO + CS + RR) − (TC + NR)</div>
-                    </div>
-                    <p class="tagline">${isChinese ? "以明确假设、因素逻辑和下一步建议，帮助团队在投入前做出更有依据的判断。" : "A structured report with explicit assumptions, factor logic and decision-relevant next steps."}</p>
-                  </div>
+                  ${buildLocalizedHeroSnapshot(lang)}
                 </div>
               </div>
             </section>
@@ -2888,7 +2994,10 @@ html, body { overflow-x: hidden; }
           if (description) description.setAttribute("content", meta.description);
 
           if (selector) selector.value = lang;
-          if (window.localStorage) window.localStorage.setItem("tvacLandingLanguage", lang);
+          if (window.localStorage) {
+            if (isEnglish) window.localStorage.removeItem("tvacLandingLanguage");
+            else window.localStorage.setItem("tvacLandingLanguage", lang);
+          }
 
           if (!isEnglish) {
             const locale = TVAC_LOCALES[lang];
@@ -2899,6 +3008,7 @@ html, body { overflow-x: hidden; }
           } else {
             // Reload to restore the canonical English source and all interactive English modules.
             if (updateUrl) {
+              if (window.localStorage) window.localStorage.removeItem("tvacLandingLanguage");
               const url = new URL(window.location.href);
               url.searchParams.delete("lang");
               window.location.href = url.pathname + (url.search ? url.search : "") + (url.hash || "");
@@ -2917,6 +3027,7 @@ html, body { overflow-x: hidden; }
           selector.addEventListener("change", (event) => {
             const next = event.target.value;
             if (next === "en") {
+              if (window.localStorage) window.localStorage.removeItem("tvacLandingLanguage");
               const url = new URL(window.location.href);
               url.searchParams.delete("lang");
               window.location.href = url.pathname + (url.search ? url.search : "") + (url.hash || "");
