@@ -1887,6 +1887,8 @@ html, body { overflow-x: hidden; }
           <p class="lead">Explore six full TVAC assessments based on hypothetical but realistic tokenization cases. The selection spans institutional capital markets, agricultural receivables, renewable-energy financing, permissioned digital lending and retail asset tokenization.</p>
           <p class="lead">The cases include positive, conditional and negative verdicts — because TVAC is designed to assess tokenization critically, not to justify it automatically. Each report begins with a decision-oriented summary and then provides the underlying factor analysis, assumptions, risks, stakeholder implications, decision gates and recommendations.</p>
 
+          <p class="small" style="max-width:900px; margin:4px 0 0; color:var(--muted);"><b style="color:var(--text);">Geography does not determine the verdict.</b> Each result reflects the specific case design, evidence, conventional baseline and implementation assumptions. Country or region is one input among many and does not determine whether a case is assessed as Viable, Conditional Go or Non-viable.</p>
+
           <div class="sampleIntroRow">
             <div class="sampleNotice"><b>About the sample cases.</b> These assessments are based on hypothetical but realistic cases created for testing and demonstration purposes. They do not describe actual clients or projects. The reports demonstrate TVAC’s methodology, analytical depth and output structure; they do not provide legal, regulatory, tax, financial or investment advice concerning any real transaction.</div>
             <div class="sampleSummary" aria-label="Sample verdict distribution">
@@ -1904,6 +1906,28 @@ html, body { overflow-x: hidden; }
           </div>
 
           <div class="sampleGrid">
+            <article class="sampleCard" data-sample-verdict="conditional">
+              <div class="sampleMetaTop">
+                <div class="sampleKicker">Brazil · Private credit</div>
+                <span class="sampleVerdict conditional">Conditional Go</span>
+              </div>
+              <h3>Agricultural Receivables Financing</h3>
+              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: 0</span><span class="sampleEquation">Plus 10 · Minus 10</span></div>
+              <p class="sampleWhyLabel">Why this case matters</p>
+              <p class="sampleWhy">A realistic early-stage receivables case with fragmented originator data, unresolved vehicle design and no confirmed investor demand. TVAC identifies meaningful potential but concludes that the available evidence does not yet establish net added value.</p>
+              <div class="sampleFacts">
+                <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
+                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Partial</div></div>
+              </div>
+              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are a Brazilian agricultural finance company working with midsized grain and input distributors. We purchase short-dated receivables arising from sales to farms and cooperatives, and we currently finance the portfolio through bank facilities and a small number of private investors. The portfolio has historical payment data, but the data is held across several originators and has not yet been standardized for external investors.
+
+We are considering a tokenized note or participation structure linked to a diversified pool of receivables. The objective is to broaden access to professional investors, improve reporting on collections and concentration limits, and reduce some of the manual administration between originators, servicers and investors. We have not decided whether the issuance should sit in a dedicated securitization vehicle, another SPV structure, or an existing fund arrangement.
+
+The initial idea is a Brazil-only professional-investor offering with whitelist-based onboarding. We do not need continuous trading, and a buy-and-hold structure may be sufficient. We have spoken informally with technology and custody providers, but we do not yet have binding quotations, a final registry model or a confirmed approach to secondary transfers.
+
+The key unresolved questions are the legal and operational link between the token and the receivables, assignment and servicing continuity, data quality across originators, cash-flow controls, tax treatment and whether investors will value tokenization enough to offset the additional structuring and provider costs. No legal opinion or investor commitment has been obtained yet.</div></details>
+              <div class="sampleActions"><a class="btn btnPrimary" href="samples/brazil-agricultural-receivables.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/brazil-agricultural-receivables.pdf" download>Download PDF ↓</a></div>
+            </article>
             <article class="sampleCard" data-sample-verdict="viable">
               <div class="sampleMetaTop">
                 <div class="sampleKicker">United States · Institutional market infrastructure</div>
@@ -1927,28 +1951,8 @@ The tokenization layer is used to implement (1) near-instant, controlled deliver
 
 Expected benefits are measurable at scale: fewer fails, fewer exception tickets, faster dispute resolution, tighter control over collateral release, and reduced reconciliation time per movement. Costs and risks remain real (legal/compliance scoping, integration, governance), but the scope is bounded: permissioned participants, regulated custody, conservative US-only perimeter, and no reliance on stablecoins or permissionless liquidity.</div></details>
               <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-repo-collateral-workflow.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-repo-collateral-workflow.pdf" download>Download PDF ↓</a></div>
-            </article><article class="sampleCard" data-sample-verdict="conditional">
-              <div class="sampleMetaTop">
-                <div class="sampleKicker">Brazil · Private credit</div>
-                <span class="sampleVerdict conditional">Conditional Go</span>
-              </div>
-              <h3>Agricultural Receivables Financing</h3>
-              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: 0</span><span class="sampleEquation">Plus 10 · Minus 10</span></div>
-              <p class="sampleWhyLabel">Why this case matters</p>
-              <p class="sampleWhy">A realistic early-stage receivables case with fragmented originator data, unresolved vehicle design and no confirmed investor demand. TVAC identifies meaningful potential but concludes that the available evidence does not yet establish net added value.</p>
-              <div class="sampleFacts">
-                <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
-                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Partial</div></div>
-              </div>
-              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are a Brazilian agricultural finance company working with midsized grain and input distributors. We purchase short-dated receivables arising from sales to farms and cooperatives, and we currently finance the portfolio through bank facilities and a small number of private investors. The portfolio has historical payment data, but the data is held across several originators and has not yet been standardized for external investors.
-
-We are considering a tokenized note or participation structure linked to a diversified pool of receivables. The objective is to broaden access to professional investors, improve reporting on collections and concentration limits, and reduce some of the manual administration between originators, servicers and investors. We have not decided whether the issuance should sit in a dedicated securitization vehicle, another SPV structure, or an existing fund arrangement.
-
-The initial idea is a Brazil-only professional-investor offering with whitelist-based onboarding. We do not need continuous trading, and a buy-and-hold structure may be sufficient. We have spoken informally with technology and custody providers, but we do not yet have binding quotations, a final registry model or a confirmed approach to secondary transfers.
-
-The key unresolved questions are the legal and operational link between the token and the receivables, assignment and servicing continuity, data quality across originators, cash-flow controls, tax treatment and whether investors will value tokenization enough to offset the additional structuring and provider costs. No legal opinion or investor commitment has been obtained yet.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/brazil-agricultural-receivables.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/brazil-agricultural-receivables.pdf" download>Download PDF ↓</a></div>
-            </article><article class="sampleCard" data-sample-verdict="nonviable">
+            </article>
+            <article class="sampleCard" data-sample-verdict="nonviable">
               <div class="sampleMetaTop">
                 <div class="sampleKicker">Chile · Renewable-energy financing</div>
                 <span class="sampleVerdict nonviable">Non-viable</span>
@@ -1969,28 +1973,8 @@ We do not currently assume continuous trading. Periodic transfers or redemptions
 
 The main uncertainties are rights mapping, project and vehicle cash-flow waterfalls, measurement and verification of environmental attributes, changes in registry treatment, construction risk for new assets, cross-border distribution, tax, and whether investors would prefer a conventional private placement.</div></details>
               <div class="sampleActions"><a class="btn btnPrimary" href="samples/chile-solar-revenue-participation.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/chile-solar-revenue-participation.pdf" download>Download PDF ↓</a></div>
-            </article><article class="sampleCard" data-sample-verdict="viable">
-              <div class="sampleMetaTop">
-                <div class="sampleKicker">United States · Capital markets</div>
-                <span class="sampleVerdict viable">Viable</span>
-              </div>
-              <h3>Tokenized Commercial Paper</h3>
-              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: +7</span><span class="sampleEquation">Plus 14 · Minus 7</span></div>
-              <p class="sampleWhyLabel">Why this case matters</p>
-              <p class="sampleWhy">A conventional capital-markets workflow in which potential value comes from issuance automation, cleaner position records and reduced lifecycle reconciliation — not from higher yield or speculative liquidity.</p>
-              <div class="sampleFacts">
-                <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
-                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Complete</div></div>
-              </div>
-              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are a US-based corporate issuer with an existing, recurring commercial paper (CP) program used for short-term working capital. Today the program relies on multiple intermediaries, manual confirmations, repeated reconciliations between the issuer’s treasury team, issuing/placing agents, custodians, and investors, and a settlement cycle that creates operational friction and occasional settlement fails.
-
-We want to introduce a tokenized CP note format (economically equivalent to our existing CP) for professional and accredited investors only. This is not a retail product and not a public exchange initiative. The scope is deliberately conservative: a single US issuance + distribution perimeter, whitelisted participation, and institutional-grade custody. The primary objective is post-trade efficiency and risk reduction rather than “new liquidity”.
-
-The tokenized format is designed to (1) reduce reconciliation breaks by moving to a single shared position record, (2) automate issuance and lifecycle events (issuance confirmations, coupon/accrual reporting, maturity repayment notices), and (3) tighten settlement controls through delivery-versus-payment (DvP) style workflows. Importantly, we commit to decommissioning duplicated legacy steps for the tokenized tranche (no permanent parallel “double-booking”), so savings are structural rather than cosmetic.
-
-We expect measurable cost savings (reduced agent/custody operations per issuance, fewer manual exceptions) and measurable risk reduction (fewer settlement fails, cleaner audit trail, reduced counterparty/operational exposure). Any secondary transfers, if permitted at all, are tightly controlled and limited to eligible whitelisted holders under standard securities restrictions. The issuer is the primary beneficiary of the operational savings and control improvements under this design.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-tokenized-commercial-paper.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-tokenized-commercial-paper.pdf" download>Download PDF ↓</a></div>
-            </article><article class="sampleCard" data-sample-verdict="conditional">
+            </article>
+            <article class="sampleCard" data-sample-verdict="conditional">
               <div class="sampleMetaTop">
                 <div class="sampleKicker">Switzerland / UAE · Digital lending</div>
                 <span class="sampleVerdict conditional">Conditional Go</span>
@@ -2011,7 +1995,30 @@ Participation would be permissioned and limited to professional or institutional
 
 The economics depend on borrower demand, lender liquidity, collateral performance, protocol integrations and governance decisions that may change after launch. Key risks include legal enforceability of collateral rights, oracle and valuation failures, smart-contract vulnerabilities, liquidation under stress, stablecoin dependency, liquidity concentration, governance changes, provider and bridge dependencies, and the possibility that composability creates risks not visible in a static initial assessment. We have a prototype but no audited production system or committed liquidity.</div></details>
               <div class="sampleActions"><a class="btn btnPrimary" href="samples/permissioned-lending-pool.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/permissioned-lending-pool.pdf" download>Download PDF ↓</a></div>
-            </article><article class="sampleCard" data-sample-verdict="nonviable">
+            </article>
+            <article class="sampleCard" data-sample-verdict="viable">
+              <div class="sampleMetaTop">
+                <div class="sampleKicker">United States · Capital markets</div>
+                <span class="sampleVerdict viable">Viable</span>
+              </div>
+              <h3>Tokenized Commercial Paper</h3>
+              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: +7</span><span class="sampleEquation">Plus 14 · Minus 7</span></div>
+              <p class="sampleWhyLabel">Why this case matters</p>
+              <p class="sampleWhy">A conventional capital-markets workflow in which potential value comes from issuance automation, cleaner position records and reduced lifecycle reconciliation — not from higher yield or speculative liquidity.</p>
+              <div class="sampleFacts">
+                <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
+                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Complete</div></div>
+              </div>
+              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are a US-based corporate issuer with an existing, recurring commercial paper (CP) program used for short-term working capital. Today the program relies on multiple intermediaries, manual confirmations, repeated reconciliations between the issuer’s treasury team, issuing/placing agents, custodians, and investors, and a settlement cycle that creates operational friction and occasional settlement fails.
+
+We want to introduce a tokenized CP note format (economically equivalent to our existing CP) for professional and accredited investors only. This is not a retail product and not a public exchange initiative. The scope is deliberately conservative: a single US issuance + distribution perimeter, whitelisted participation, and institutional-grade custody. The primary objective is post-trade efficiency and risk reduction rather than “new liquidity”.
+
+The tokenized format is designed to (1) reduce reconciliation breaks by moving to a single shared position record, (2) automate issuance and lifecycle events (issuance confirmations, coupon/accrual reporting, maturity repayment notices), and (3) tighten settlement controls through delivery-versus-payment (DvP) style workflows. Importantly, we commit to decommissioning duplicated legacy steps for the tokenized tranche (no permanent parallel “double-booking”), so savings are structural rather than cosmetic.
+
+We expect measurable cost savings (reduced agent/custody operations per issuance, fewer manual exceptions) and measurable risk reduction (fewer settlement fails, cleaner audit trail, reduced counterparty/operational exposure). Any secondary transfers, if permitted at all, are tightly controlled and limited to eligible whitelisted holders under standard securities restrictions. The issuer is the primary beneficiary of the operational savings and control improvements under this design.</div></details>
+              <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-tokenized-commercial-paper.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-tokenized-commercial-paper.pdf" download>Download PDF ↓</a></div>
+            </article>
+            <article class="sampleCard" data-sample-verdict="nonviable">
               <div class="sampleMetaTop">
                 <div class="sampleKicker">Global · Retail asset tokenization</div>
                 <span class="sampleVerdict nonviable">Non-viable</span>
