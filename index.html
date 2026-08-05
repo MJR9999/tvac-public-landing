@@ -1356,6 +1356,23 @@ html, body { overflow-x: hidden; }
         position: relative;
       }
 
+      .brandHome {
+        color: inherit;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .brandHome:hover,
+      .brandHome:focus-visible {
+        text-decoration: none;
+        outline: none;
+      }
+
+      .brandHome:focus-visible {
+        border-radius: 10px;
+        box-shadow: 0 0 0 2px rgba(255,154,60,0.55);
+      }
+
       .navPrimary,
       .navUtilities {
         display: inline-flex;
@@ -1570,44 +1587,93 @@ html, body { overflow-x: hidden; }
       }
 
       @media (max-width: 900px) and (max-height: 450px) {
+        /* Use the same compact two-row navigation in landscape as in portrait.
+           This prevents the logo, fixed links and controls from competing for
+           the same horizontal line on short, wide phone screens. */
         .nav {
-          position: relative;
+          position: sticky;
         }
 
         .navInner {
+          flex-wrap: wrap;
+          align-items: flex-start;
           gap: 8px;
+          padding: 9px 0;
         }
 
         .brand {
-          width: auto;
-          flex: 1 1 250px;
+          width: 100%;
+          flex: 0 0 100%;
+        }
+
+        .brandLogo {
+          font-size: 31px;
+        }
+
+        .brandName {
+          font-size: 12px;
+          white-space: normal;
+        }
+
+        .brandDivider {
+          flex-basis: 86px;
+          width: 86px;
+          transform: translateY(-6px);
         }
 
         .navLinks {
-          width: auto;
-          flex: 1 1 420px;
-          display: flex;
-          justify-content: flex-end;
+          width: 100%;
+          flex: 0 0 100%;
+          display: grid;
+          grid-template-columns: 1fr;
+          align-items: start;
+          gap: 7px;
         }
 
         .navPrimary {
-          display: none;
+          display: inline-flex;
+          width: 100%;
+          justify-content: flex-start;
+          gap: 7px;
+        }
+
+        .navPrimary .pill {
+          padding: 7px 9px;
+          font-size: 12px;
         }
 
         .navUtilities {
-          margin-left: auto;
+          width: 100%;
+          margin-left: 0;
+          justify-content: flex-end;
+          gap: 7px;
+        }
+
+        .languageControl {
+          flex: 1 1 auto;
+          width: auto;
         }
 
         .languageSelect {
-          max-width: 132px;
+          width: 100%;
+          max-width: none;
+        }
+
+        .themeBtn {
+          margin-left: 0;
+          flex: 0 0 40px;
+        }
+
+        .navMenuWrap {
+          flex: 0 0 42px;
         }
 
         .navMenu {
-          position: absolute;
-          left: auto;
-          right: 0;
-          top: calc(100% + 10px);
-          width: min(310px, calc(100vw - 28px));
+          position: fixed;
+          top: auto;
+          left: 14px;
+          right: 14px;
+          width: auto;
         }
       }
 
@@ -1619,7 +1685,7 @@ html, body { overflow-x: hidden; }
     <div class="nav">
       <div class="container">
         <div class="navInner">
-          <div class="brand" aria-label="TVAC logo">
+          <a class="brand brandHome" href="#top" aria-label="TVAC — return to top of page">
             <div class="brandLockup">
               <div class="brandTop">
                 <span class="brandLogo">TVAC</span>
@@ -1627,7 +1693,7 @@ html, body { overflow-x: hidden; }
               </div>
               <span class="brandName">Tokenization Value-Add Calculator</span>
             </div>
-          </div>
+          </a>
 
           <div class="navLinks">
             <div class="navPrimary" aria-label="Primary navigation">
