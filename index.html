@@ -1350,6 +1350,267 @@ html, body { overflow-x: hidden; }
         .sampleCard h3 { font-size:18px; }
       }
 
+
+      /* ---------- COMPACT NAVIGATION + HAMBURGER MENU ---------- */
+      .navLinks {
+        position: relative;
+      }
+
+      .navPrimary,
+      .navUtilities {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .navMenuWrap {
+        position: relative;
+        display: inline-flex;
+      }
+
+      .menuBtn {
+        width: 42px;
+        height: 36px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.03);
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 140ms ease;
+      }
+
+      [data-theme="light"] .menuBtn { background: rgba(0,0,0,0.02); }
+      .menuBtn:hover,
+      .menuBtn:focus-visible {
+        transform: translateY(-1px);
+        border-color: var(--border-2);
+        outline: none;
+      }
+
+      .menuIcon,
+      .menuIcon::before,
+      .menuIcon::after {
+        width: 17px;
+        height: 2px;
+        border-radius: 999px;
+        background: currentColor;
+        display: block;
+        transition: transform 160ms ease, opacity 160ms ease;
+      }
+
+      .menuIcon {
+        position: relative;
+      }
+
+      .menuIcon::before,
+      .menuIcon::after {
+        content: "";
+        position: absolute;
+        left: 0;
+      }
+
+      .menuIcon::before { top: -5px; }
+      .menuIcon::after { top: 5px; }
+
+      .menuBtn[aria-expanded="true"] .menuIcon {
+        background: transparent;
+      }
+      .menuBtn[aria-expanded="true"] .menuIcon::before {
+        top: 0;
+        transform: rotate(45deg);
+      }
+      .menuBtn[aria-expanded="true"] .menuIcon::after {
+        top: 0;
+        transform: rotate(-45deg);
+      }
+
+      .navMenu {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        width: min(310px, calc(100vw - 28px));
+        padding: 10px;
+        border: 1px solid var(--border-2);
+        border-radius: 16px;
+        background: rgba(8,11,19,0.97);
+        box-shadow: 0 24px 70px rgba(0,0,0,0.48);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        display: none;
+        z-index: 100;
+      }
+
+      [data-theme="light"] .navMenu {
+        background: rgba(255,255,255,0.98);
+        box-shadow: 0 22px 60px rgba(0,0,0,0.20);
+      }
+
+      .navMenu.open { display: grid; gap: 6px; }
+
+      .navMenu .menuLink {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 42px;
+        padding: 10px 12px;
+        border-radius: 11px;
+        color: var(--muted);
+        font-size: 13px;
+        text-decoration: none;
+      }
+
+      .navMenu .menuLink:hover,
+      .navMenu .menuLink:focus-visible {
+        background: rgba(255,154,60,0.10);
+        color: var(--text);
+        text-decoration: none;
+        outline: none;
+      }
+
+      .navMenu .menuCta {
+        margin-top: 4px;
+        color: #15110b;
+        background: linear-gradient(90deg, var(--accent-2), var(--accent));
+        font-weight: 700;
+      }
+
+      .navMenu .menuCta:hover,
+      .navMenu .menuCta:focus-visible {
+        background: linear-gradient(90deg, var(--accent-2), var(--accent));
+        color: #15110b;
+      }
+
+      @media (max-width: 980px) {
+        .navInner {
+          flex-wrap: wrap;
+          align-items: flex-start;
+        }
+
+        .brand {
+          width: 100%;
+        }
+
+        .navLinks {
+          width: 100%;
+          justify-content: space-between;
+          align-items: center;
+          gap: 8px;
+        }
+
+        .navPrimary {
+          justify-content: flex-start;
+          flex: 1 1 auto;
+        }
+
+        .navUtilities {
+          flex: 0 0 auto;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .navInner {
+          gap: 10px;
+        }
+
+        .navLinks {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          align-items: start;
+        }
+
+        .navPrimary {
+          grid-column: 1 / -1;
+          width: 100%;
+          gap: 7px;
+        }
+
+        .navPrimary .pill {
+          padding: 8px 10px;
+          font-size: 12px;
+        }
+
+        .navUtilities {
+          grid-column: 1 / -1;
+          width: 100%;
+          justify-content: flex-end;
+          gap: 8px;
+        }
+
+        .languageControl {
+          flex: 1 1 auto;
+          width: auto;
+        }
+
+        .languageSelect {
+          width: 100%;
+          max-width: none;
+        }
+
+        .themeBtn {
+          margin-left: 0;
+          flex: 0 0 40px;
+        }
+
+        .navMenuWrap {
+          flex: 0 0 42px;
+        }
+
+        .navMenu {
+          position: fixed;
+          top: auto;
+          left: 14px;
+          right: 14px;
+          width: auto;
+        }
+      }
+
+      @media (max-width: 900px) and (max-height: 450px) {
+        .nav {
+          position: relative;
+        }
+
+        .navInner {
+          gap: 8px;
+        }
+
+        .brand {
+          width: auto;
+          flex: 1 1 250px;
+        }
+
+        .navLinks {
+          width: auto;
+          flex: 1 1 420px;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        .navPrimary {
+          display: none;
+        }
+
+        .navUtilities {
+          margin-left: auto;
+        }
+
+        .languageSelect {
+          max-width: 132px;
+        }
+
+        .navMenu {
+          position: absolute;
+          left: auto;
+          right: 0;
+          top: calc(100% + 10px);
+          width: min(310px, calc(100vw - 28px));
+        }
+      }
+
 </style>
   </head>
 
@@ -1369,31 +1630,43 @@ html, body { overflow-x: hidden; }
           </div>
 
           <div class="navLinks">
-            <a class="pill" data-nav="methodology" href="#methodology">Methodology</a>
-            <a class="pill" data-nav="model" href="#model">Model</a>
-            <a class="pill" data-nav="cash" href="#cash-leg">Cash leg</a>
-            <a class="pill" data-nav="scenario" href="#scenario-lab">Scenario Lab</a>
-            <a class="pill" data-nav="pricing" href="#pricing">Pricing</a>
-            <a class="pill" data-nav="tour" href="#product-tour">Product Tour</a>
-             <a class="pill" href="#sample-assessments">Sample Reports</a>
-
-            <a class="pill" data-nav="enterprise" href="#enterprise">API &amp; White Label</a>
-            <div class="languageControl">
-              <label class="srOnly" for="languageSelect">Language</label>
-              <select class="languageSelect" id="languageSelect" aria-label="Language selector">
-                <option value="en">English</option>
-                <option value="de">Deutsch</option>
-                <option value="fr">Français</option>
-                <option value="es">Español</option>
-                <option value="zh-Hans">简体中文</option>
-              </select>
+            <div class="navPrimary" aria-label="Primary navigation">
+              <a class="pill" href="#faq">FAQ</a>
+              <a class="pill" data-nav="pricing" href="#pricing">Pricing</a>
+              <a class="pill" href="#sample-assessments">Sample Reports</a>
             </div>
 
-            <button class="themeBtn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
-              <span id="themeIcon" aria-hidden="true">🌙</span>
-            </button>
+            <div class="navUtilities">
+              <div class="languageControl">
+                <label class="srOnly" for="languageSelect">Language</label>
+                <select class="languageSelect" id="languageSelect" aria-label="Language selector">
+                  <option value="en">English</option>
+                  <option value="de">Deutsch</option>
+                  <option value="fr">Français</option>
+                  <option value="es">Español</option>
+                  <option value="zh-Hans">简体中文</option>
+                </select>
+              </div>
 
-            <a class="pill pillStrong" id="navTourCta" data-nav="tourCta" href="#product-tour" onclick="return (window.TVACProductTour&&window.TVACProductTour.open?window.TVACProductTour.open('case-a'):(window.TVAC_START_GUIDED_TOUR?window.TVAC_START_GUIDED_TOUR('case-a'):false));">View Product Tour →</a>
+              <button class="themeBtn" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
+                <span id="themeIcon" aria-hidden="true">🌙</span>
+              </button>
+
+              <div class="navMenuWrap">
+                <button class="menuBtn" id="menuBtn" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navMenu">
+                  <span class="menuIcon" aria-hidden="true"></span>
+                </button>
+
+                <div class="navMenu" id="navMenu" aria-hidden="true">
+                  <a class="menuLink" data-nav="methodology" href="#methodology">Methodology <span aria-hidden="true">→</span></a>
+                  <a class="menuLink" data-nav="model" href="#model">Model <span aria-hidden="true">→</span></a>
+                  <a class="menuLink" data-nav="cash" href="#cash-leg">Cash leg <span aria-hidden="true">→</span></a>
+                  <a class="menuLink" data-nav="scenario" href="#scenario-lab">Scenario Lab <span aria-hidden="true">→</span></a>
+                  <a class="menuLink" data-nav="enterprise" href="#enterprise">API &amp; White Label <span aria-hidden="true">→</span></a>
+                  <a class="menuLink menuCta" id="navTourCta" data-nav="tourCta" href="#product-tour" onclick="return (window.TVACProductTour&&window.TVACProductTour.open?window.TVACProductTour.open('case-a'):(window.TVAC_START_GUIDED_TOUR?window.TVAC_START_GUIDED_TOUR('case-a'):false));">View Product Tour →</a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -3373,6 +3646,51 @@ The business thesis relies on global retail demand, social momentum, and perceiv
         card.hidden = selected !== 'all' && card.getAttribute('data-sample-verdict') !== selected;
       });
     }));
+  })();
+</script>
+
+
+<script>
+  (() => {
+    const button = document.getElementById('menuBtn');
+    const menu = document.getElementById('navMenu');
+    if (!button || !menu) return;
+
+    const closeMenu = () => {
+      button.setAttribute('aria-expanded', 'false');
+      button.setAttribute('aria-label', 'Open navigation menu');
+      menu.classList.remove('open');
+      menu.setAttribute('aria-hidden', 'true');
+    };
+
+    const openMenu = () => {
+      button.setAttribute('aria-expanded', 'true');
+      button.setAttribute('aria-label', 'Close navigation menu');
+      menu.classList.add('open');
+      menu.setAttribute('aria-hidden', 'false');
+    };
+
+    button.addEventListener('click', (event) => {
+      event.stopPropagation();
+      button.getAttribute('aria-expanded') === 'true' ? closeMenu() : openMenu();
+    });
+
+    menu.addEventListener('click', (event) => {
+      if (event.target.closest('a')) closeMenu();
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!menu.contains(event.target) && event.target !== button) closeMenu();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeMenu();
+        button.focus();
+      }
+    });
+
+    window.addEventListener('resize', closeMenu);
   })();
 </script>
 
