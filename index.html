@@ -2429,10 +2429,9 @@ The business thesis relies on global retail demand, social momentum, and perceiv
             <li>The app validates inputs and packages them into a single case payload.</li>
             <li>On “Generate report,” the payload is sent securely to the TVAC backend (API).</li>
             <li>The backend applies TVAC’s fixed methodology: Added Value formula, criteria, and report structure.</li>
-            <li>A tightly structured request (with strict format and evaluation rules) is sent via API to an AI model.</li>
-            <li>The model returns a structured analysis: verdict, rationale, factor breakdown, risks, recommendations.</li>
-            <li>TVAC parses, consolidates, and sanity-checks the output against required sections and consistency rules.</li>
-            <li>Results are normalized into a report-ready structure (chapters, tables, visuals).</li>
+            <li>A tightly structured request, governed by TVAC’s methodology and required analytical format, is sent via API to an AI model.</li>
+            <li>The model returns structured case-specific analytical components within that predefined framework.</li>
+            <li>TVAC validates and consolidates the components, applies its fixed calculation and consistency logic, and produces the final report structure, scores and Tokenization Value Verdict.</li>
             <li>The API returns the full report content/data to your browser.</li>
             <li>The UI renders the final report and supports print-to-PDF.</li>
           </ul>
@@ -2742,6 +2741,15 @@ The business thesis relies on global retail demand, social momentum, and perceiv
           </details>
 
           <details class="faqItem">
+            <summary>How are the individual factor scores determined?</summary>
+            <div class="faqA">
+              <p>Each factor score is determined by applying TVAC’s predefined internal assessment criteria to the specific case and comparing the proposed tokenization design with its credible conventional baseline.</p>
+              <p>The assessment considers the strength and materiality of the claimed effects, the assumptions and dependencies on which they rely, the quality and completeness of the available information, and any costs or risks that may offset the expected benefits.</p>
+              <p>The report explains the case-specific reasons behind each factor score. TVAC’s detailed scoring rubrics, calibration rules, model instructions and implementation logic are proprietary and are not published.</p>
+            </div>
+          </details>
+
+          <details class="faqItem">
             <summary>What does TVAC compare tokenization with — and does it know the value of every conventional alternative?</summary>
             <div class="faqA">
               <p>TVAC normally compares the proposed tokenization design with the current process or structure — the status quo. For a new project without an existing baseline, the comparison is a clearly stated conventional alternative or, where relevant, the option not to proceed.</p>
@@ -2823,11 +2831,13 @@ The business thesis relies on global retail demand, social momentum, and perceiv
           </details>
 
           <details class="faqItem">
-            <summary>Is TVAC based on detailed costings from many completed tokenization projects?</summary>
+            <summary>Is TVAC based on detailed costings and outcome data from completed tokenization projects?</summary>
             <div class="faqA">
-              <p>No—not in the sense of claiming a giant benchmark database built from the full budgets, invoices, and time sheets of a large number of completed projects.</p>
-              <p>TVAC is based on a fixed methodology, explicit scoring criteria, and accumulated domain understanding of how tokenization cases typically create opportunities, generate costs, and introduce new risks across different structures and asset types.</p>
-              <p>The goal is not to pretend that every future project can be priced with accounting-level precision in advance. The goal is to provide a disciplined, transparent, and case-specific feasibility assessment that helps users judge whether a project looks commercially and structurally credible before moving into deeper budgeting and implementation work.</p>
+              <p>Not in the sense of claiming a comprehensive benchmark database containing the full budgets, operating results, invoices and internal performance data of a large number of completed projects.</p>
+              <p>Publicly available tokenization cases are highly heterogeneous and often provide only limited information about total implementation costs, ongoing operating costs, realised benefits, unsuccessful projects and the conventional alternative against which the outcome should be measured. The fact that a tokenized instrument was issued or a pilot was completed does not in itself demonstrate that tokenization created net added value.</p>
+              <p>TVAC therefore begins with the structure of the specific case and a credible conventional baseline. It applies the same fixed Added Value framework and predefined assessment criteria to identify how tokenization changes opportunities, costs and risks in that particular design.</p>
+              <p>Relevant market evidence and comparable cases can support calibration and plausibility checks where reliable information is available. They do not replace the case-specific structural analysis.</p>
+              <p>TVAC does not claim statistical certainty or accounting-level precision. Its purpose is to provide a disciplined, transparent and decision-relevant early assessment before the detailed costs and real-world outcomes of a project are known.</p>
             </div>
           </details>
 
