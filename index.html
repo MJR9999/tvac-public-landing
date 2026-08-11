@@ -1723,7 +1723,6 @@ html, body { overflow-x: hidden; }
                   <option value="de">Deutsch</option>
                   <option value="fr">Français</option>
                   <option value="es">Español</option>
-                  <option value="da">Dansk</option>
                   <option value="zh-Hans">简体中文</option>
                   <option value="pt-BR">Português (Brasil)</option>
                 </select>
@@ -3269,7 +3268,6 @@ The business thesis relies on global retail demand, social momentum, and perceiv
           de: "Deutsch",
           fr: "Français",
           es: "Español",
-          da: "Dansk",
           "zh-Hans": "简体中文",
           "pt-BR": "Português (Brasil)"
         };
@@ -3282,7 +3280,6 @@ The business thesis relies on global retail demand, social momentum, and perceiv
           de: TVAC_LOCALES.de,
           fr: TVAC_LOCALES.fr,
           es: TVAC_LOCALES.es,
-          da: TVAC_LOCALES.da,
           "zh-Hans": TVAC_LOCALES["zh-Hans"],
           "pt-BR": TVAC_LOCALES["pt-BR"]
         };
@@ -3290,6 +3287,7 @@ The business thesis relies on global retail demand, social momentum, and perceiv
         const selector = document.getElementById("languageSelect");
         const content = document.getElementById("tvacContent");
         const navTour = document.getElementById("navTourCta");
+        const canonicalSampleReportsHtml = document.getElementById("sample-assessments")?.outerHTML || "";
         const query = new URLSearchParams(window.location.search);
         const requested = query.get("lang");
         const stored = window.localStorage ? window.localStorage.getItem("tvacLandingLanguage") : null;
@@ -3485,6 +3483,22 @@ The business thesis relies on global retail demand, social momentum, and perceiv
             </div>`;
         }
 
+        function buildLocalizedSampleReports(lang) {
+          if (!canonicalSampleReportsHtml) return "";
+          const notices = {
+            de: "Die sechs vollständigen Musterberichte sind auch auf dieser Sprachversion verfügbar. Die verlinkten Muster-PDFs bleiben vorerst auf Englisch.",
+            fr: "Les six rapports d’exemple complets sont également disponibles dans cette version linguistique. Les PDF d’exemple liés restent pour le moment en anglais.",
+            es: "Los seis informes de muestra completos también están disponibles en esta versión. Por ahora, los PDF de muestra enlazados se mantienen en inglés.",
+            "zh-Hans": "本语言版本同样提供六份完整示例报告。目前链接的示例 PDF 仍为英文版本。",
+            "pt-BR": "Os seis relatórios de amostra completos também estão disponíveis nesta versão. Por enquanto, os PDFs de amostra vinculados permanecem em inglês."
+          };
+          const notice = notices[lang] || "The six full sample reports are available here. The linked sample PDFs are currently in English.";
+          return canonicalSampleReportsHtml.replace(
+            '<div class="frameWrap">',
+            `<div class="frameWrap"><div class="localizedNotice" style="margin:0 0 18px;">${html(notice)}</div>`
+          );
+        }
+
         function buildLocalizedPage(l, lang) {
           const isChinese = lang === "zh-Hans";
           const mailEnterprise = "mailto:support@tvacai.com?subject=TVAC%20Institutional%20API%20and%20White-Label%20Enquiry";
@@ -3637,6 +3651,8 @@ The business thesis relies on global retail demand, social momentum, and perceiv
               </div></div>
             </section>
 
+            ${buildLocalizedSampleReports(lang)}
+
             <section class="padMid" id="pricing">
               <div class="container sectionInner"><div class="frameWrap">
                 <p class="eyebrow">${html(l.pricing_eyebrow)}</p>
@@ -3723,6 +3739,7 @@ The business thesis relies on global retail demand, social momentum, and perceiv
             content.innerHTML = buildLocalizedPage(locale, lang);
             navText(locale);
             bindLocalizedLegalLinks();
+            if (typeof window.TVACBindSampleFilters === "function") window.TVACBindSampleFilters();
           } else {
             // Reload to restore the canonical English source and all interactive English modules.
             if (updateUrl) {
@@ -3764,16 +3781,23 @@ The business thesis relies on global retail demand, social momentum, and perceiv
 
 <script>
   (() => {
-    const filters = document.querySelectorAll('[data-sample-filter]');
-    const cards = document.querySelectorAll('[data-sample-verdict]');
-    if (!filters.length || !cards.length) return;
-    filters.forEach((button) => button.addEventListener('click', () => {
-      const selected = button.getAttribute('data-sample-filter');
-      filters.forEach((item) => item.classList.toggle('active', item === button));
-      cards.forEach((card) => {
-        card.hidden = selected !== 'all' && card.getAttribute('data-sample-verdict') !== selected;
+    window.TVACBindSampleFilters = function () {
+      const filters = document.querySelectorAll('[data-sample-filter]');
+      const cards = document.querySelectorAll('[data-sample-verdict]');
+      if (!filters.length || !cards.length) return;
+      filters.forEach((button) => {
+        if (button.dataset.tvacFilterBound === '1') return;
+        button.dataset.tvacFilterBound = '1';
+        button.addEventListener('click', () => {
+          const selected = button.getAttribute('data-sample-filter');
+          filters.forEach((item) => item.classList.toggle('active', item === button));
+          cards.forEach((card) => {
+            card.hidden = selected !== 'all' && card.getAttribute('data-sample-verdict') !== selected;
+          });
+        });
       });
-    }));
+    };
+    window.TVACBindSampleFilters();
   })();
 </script>
 
