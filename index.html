@@ -29,8 +29,8 @@
         --text: rgba(255, 255, 255, 0.92);
         --muted: rgba(255, 255, 255, 0.68);
         --muted-2: rgba(255, 255, 255, 0.55);
-        --accent: #ff9a3c;
-        --accent-2: #ffb25f;
+        --accent: #39bfd0;
+        --accent-2: #73d7e2;
         --ok: #2ee59d;
         --shadow: 0 20px 70px rgba(0, 0, 0, 0.45);
         --radius: 18px;
@@ -155,7 +155,7 @@
         width: 152px;
         height: 2px;
         border-radius: 999px;
-        background: linear-gradient(90deg, rgba(255,154,60,0.95), rgba(255,154,60,0.44), transparent);
+        background: linear-gradient(90deg, rgba(57,191,208,0.95), rgba(57,191,208,0.44), transparent);
         transform: translateY(-10px);
       }
 
@@ -169,7 +169,7 @@
       }
 
       [data-theme="light"] .brandDivider {
-        background: linear-gradient(90deg, rgba(255,154,60,0.96), rgba(255,154,60,0.34), transparent);
+        background: linear-gradient(90deg, rgba(57,191,208,0.96), rgba(57,191,208,0.34), transparent);
       }
 
       .navLinks {
@@ -198,9 +198,9 @@
       .pill:hover { transform: translateY(-1px); border-color: var(--border-2); text-decoration: none; }
       .pillStrong {
         border: none;
-        color: #15110b;
+        color: #082f49;
         background: linear-gradient(90deg, var(--accent-2), var(--accent));
-        box-shadow: 0 10px 30px rgba(255,154,60,0.18);
+        box-shadow: 0 10px 30px rgba(57,191,208,0.18);
         font-weight: 650;
       }
       .pillStrong:hover { transform: translateY(-1px); }
@@ -240,9 +240,9 @@
         z-index: 0;
         opacity: 0.95;
         background:
-          radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.18), transparent 60%),
-          radial-gradient(900px 420px at 92% 10%, rgba(120,130,255,0.14), transparent 60%),
-          radial-gradient(900px 420px at 55% 22%, rgba(255,154,60,0.10), transparent 62%);
+          radial-gradient(900px 420px at 18% 0%, rgba(57,191,208,0.18), transparent 60%),
+          radial-gradient(900px 420px at 92% 10%, rgba(22,105,139,0.14), transparent 60%),
+          radial-gradient(900px 420px at 55% 22%, rgba(57,191,208,0.10), transparent 62%);
       }
 
       /* ---------- VARIATION WRAPS ---------- */
@@ -266,7 +266,7 @@
         position:absolute;
         top:0; left:0; right:0;
         height:3px;
-        background: linear-gradient(90deg, var(--accent), rgba(255,154,60,0));
+        background: linear-gradient(90deg, var(--accent), rgba(57,191,208,0));
         opacity: 0.92;
         z-index: 0;
       }
@@ -276,8 +276,8 @@
         inset:-140px -80px auto -80px;
         height:260px;
         background:
-          radial-gradient(closest-side, rgba(255,154,60,0.18), transparent 70%),
-          radial-gradient(closest-side, rgba(120,150,255,0.12), transparent 70%);
+          radial-gradient(closest-side, rgba(57,191,208,0.18), transparent 70%),
+          radial-gradient(closest-side, rgba(33,128,158,0.12), transparent 70%);
         filter: blur(10px);
         opacity: 0.55;
         pointer-events:none;
@@ -289,14 +289,14 @@
       }
 /* Model formula card (subtle technical feel) */
       .formulaBox{
-        border: 1px solid rgba(255,154,60,0.35);
+        border: 1px solid rgba(57,191,208,0.35);
         background: rgba(255,255,255,0.03);
         border-radius: var(--radius);
         padding: 18px;
       }
       [data-theme="light"] .formulaBox{
         background: rgba(0,0,0,0.02);
-        border-color: rgba(255,154,60,0.40);
+        border-color: rgba(57,191,208,0.40);
       }
       .formulaKicker{
         font-size: 12px;
@@ -329,8 +329,8 @@
         inset: 0;
         pointer-events:none;
         background:
-          radial-gradient(900px 360px at 18% 0%, rgba(255,154,60,0.15), transparent 60%),
-          radial-gradient(900px 360px at 90% 10%, rgba(120,150,255,0.10), transparent 60%);
+          radial-gradient(900px 360px at 18% 0%, rgba(57,191,208,0.15), transparent 60%),
+          radial-gradient(900px 360px at 90% 10%, rgba(33,128,158,0.10), transparent 60%);
         opacity: 0.75;
         z-index: 0;
       }
@@ -338,9 +338,9 @@
 
       [data-theme="light"] .band::before{
         background:
-          radial-gradient(900px 420px at 18% 0%, rgba(255,154,60,0.18), transparent 60%),
-          radial-gradient(900px 420px at 92% 10%, rgba(80,90,210,0.12), transparent 60%),
-          radial-gradient(900px 420px at 55% 22%, rgba(255,154,60,0.10), transparent 62%);
+          radial-gradient(900px 420px at 18% 0%, rgba(57,191,208,0.18), transparent 60%),
+          radial-gradient(900px 420px at 92% 10%, rgba(22,105,139,0.12), transparent 60%),
+          radial-gradient(900px 420px at 55% 22%, rgba(57,191,208,0.10), transparent 62%);
       }
 
       .sectionInner { position: relative; z-index: 1; }
@@ -534,7 +534,7 @@
       }
       
       .verdictWarn {
-        border: 1px solid rgba(255,178,95,0.45);
+        border: 1px solid rgba(115,215,226,0.45);
         color: var(--accent-2);
       }
       .verdictWarn span:first-child { background: var(--accent-2) !important; }
@@ -870,26 +870,26 @@
 
       .btnPrimary {
         border: none;
-        color: #15110b;
+        color: #082f49;
         background: linear-gradient(90deg, var(--accent-2), var(--accent));
-        box-shadow: 0 10px 30px rgba(255,154,60,0.18);
+        box-shadow: 0 10px 30px rgba(57,191,208,0.18);
       }
       /* Direct checkout buttons: deliberately high-visibility commercial CTAs. */
       /* Direct checkout buttons: must override the more specific light-theme .btn rule. */
       .btn.checkoutCta {
         min-height: 44px;
         padding: 12px 18px;
-        border: 1px solid #f47700 !important;
-        background: #f47700 !important;
+        border: 1px solid #39bfd0 !important;
+        background: #39bfd0 !important;
         color: #ffffff !important;
         font-weight: 780;
         letter-spacing: 0.05px;
-        box-shadow: 0 12px 30px rgba(244,119,0,0.28);
+        box-shadow: 0 12px 30px rgba(57,191,208,0.28);
       }
       .btn.checkoutCta:hover,
       .btn.checkoutCta:focus {
-        background: #d95f00 !important;
-        border-color: #d95f00 !important;
+        background: #2aa6bb !important;
+        border-color: #2aa6bb !important;
         color: #ffffff !important;
         text-decoration: none;
       }
@@ -1169,8 +1169,8 @@ html, body { overflow-x: hidden; }
         margin-top: 14px;
         padding: 12px 14px;
         border-radius: 14px;
-        border: 1px solid rgba(255,154,60,0.35);
-        background: rgba(255,154,60,0.08);
+        border: 1px solid rgba(57,191,208,0.35);
+        background: rgba(57,191,208,0.08);
         color: var(--muted);
         font-size: 13px;
       }
@@ -1245,8 +1245,8 @@ html, body { overflow-x: hidden; }
       .sampleNotice {
         padding: 18px;
         border-radius: var(--radius);
-        border: 1px solid rgba(255,154,60,.34);
-        background: rgba(255,154,60,.075);
+        border: 1px solid rgba(57,191,208,.34);
+        background: rgba(57,191,208,.075);
         color: var(--muted);
         font-size: 13px;
         line-height: 1.55;
@@ -1280,9 +1280,9 @@ html, body { overflow-x: hidden; }
       }
       [data-theme="light"] .sampleFilter { background: rgba(0,0,0,.02); }
       .sampleFilter:hover, .sampleFilter.active {
-        border-color: rgba(255,154,60,.55);
+        border-color: rgba(57,191,208,.55);
         color: var(--text);
-        background: rgba(255,154,60,.10);
+        background: rgba(57,191,208,.10);
       }
       .sampleGrid {
         display:grid;
@@ -1316,7 +1316,7 @@ html, body { overflow-x: hidden; }
         border:1px solid;
       }
       .sampleVerdict.viable { color:#2ee59d; border-color:rgba(46,229,157,.40); background:rgba(46,229,157,.10); }
-      .sampleVerdict.conditional { color:var(--accent-2); border-color:rgba(255,178,95,.46); background:rgba(255,154,60,.09); }
+      .sampleVerdict.conditional { color:var(--accent-2); border-color:rgba(115,215,226,.46); background:rgba(57,191,208,.09); }
       .sampleVerdict.nonviable { color:#ff8d8d; border-color:rgba(255,120,120,.42); background:rgba(255,120,120,.09); }
       .sampleCard h3 { margin:14px 0 8px; font-size:20px; line-height:1.2; }
       .sampleScoreRow { display:flex; align-items:baseline; flex-wrap:wrap; gap:8px 12px; margin:2px 0 12px; }
@@ -1370,7 +1370,7 @@ html, body { overflow-x: hidden; }
 
       .brandHome:focus-visible {
         border-radius: 10px;
-        box-shadow: 0 0 0 2px rgba(255,154,60,0.55);
+        box-shadow: 0 0 0 2px rgba(57,191,208,0.55);
       }
 
       .navPrimary,
@@ -1483,7 +1483,7 @@ html, body { overflow-x: hidden; }
 
       .navMenu .menuLink:hover,
       .navMenu .menuLink:focus-visible {
-        background: rgba(255,154,60,0.10);
+        background: rgba(57,191,208,0.10);
         color: var(--text);
         text-decoration: none;
         outline: none;
@@ -1491,7 +1491,7 @@ html, body { overflow-x: hidden; }
 
       .navMenu .menuCta {
         margin-top: 4px;
-        color: #15110b;
+        color: #082f49;
         background: linear-gradient(90deg, var(--accent-2), var(--accent));
         font-weight: 700;
       }
@@ -1499,7 +1499,7 @@ html, body { overflow-x: hidden; }
       .navMenu .menuCta:hover,
       .navMenu .menuCta:focus-visible {
         background: linear-gradient(90deg, var(--accent-2), var(--accent));
-        color: #15110b;
+        color: #082f49;
       }
 
       @media (max-width: 980px) {
@@ -1688,6 +1688,55 @@ html, body { overflow-x: hidden; }
           right: 14px;
           width: auto;
         }
+      }
+
+
+      /* ---------- FEATURED INTERACTIVE REPORT ---------- */
+      .interactiveReport {
+        margin: 24px 0 26px;
+        padding: 20px;
+        border: 1px solid rgba(57,191,208,.34);
+        border-radius: var(--radius);
+        background: linear-gradient(180deg, rgba(57,191,208,.075), rgba(255,255,255,.018));
+        box-shadow: 0 18px 52px rgba(0,0,0,.22);
+      }
+      [data-theme="light"] .interactiveReport {
+        background: linear-gradient(180deg, rgba(57,191,208,.08), rgba(0,0,0,.012));
+      }
+      .interactiveReportHead {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 18px;
+        margin-bottom: 15px;
+      }
+      .interactiveReportHead .lead {
+        margin-bottom: 0;
+        max-width: 760px;
+      }
+      .interactiveReportFrame {
+        position: relative;
+        padding-top: max(60%, 324px);
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: #0a2f49;
+      }
+      .interactiveReportFrame iframe {
+        position: absolute;
+        border: none;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+      }
+      @media (max-width: 720px) {
+        .interactiveReport { padding: 14px; }
+        .interactiveReportHead { display: block; }
+        .interactiveReportHead .btn { margin-top: 12px; }
+        .interactiveReportFrame { padding-top: 72%; }
       }
 
 </style>
@@ -2235,132 +2284,101 @@ html, body { overflow-x: hidden; }
     <section class="band padMid" id="sample-assessments">
       <div class="container sectionInner">
         <div class="frameWrap">
-          <p class="eyebrow">Full sample assessments</p>
+          <p class="eyebrow">Sample assessments</p>
           <h2>See how TVAC evaluates real-world tokenization decisions</h2>
-          <p class="lead">Explore six full TVAC assessments based on hypothetical but realistic tokenization cases. The selection spans institutional capital markets, agricultural receivables, renewable-energy financing, permissioned digital lending and retail asset tokenization.</p>
-          <p class="lead">The cases include positive, conditional and negative verdicts — because TVAC is designed to assess tokenization critically, not to justify it automatically. Each report begins with a decision-oriented summary and then provides the underlying factor analysis, assumptions, risks, stakeholder implications, decision gates and recommendations.</p>
+          <p class="lead">
+            Start with the interactive Brazil report, then explore four complete PDF assessments using the current TVAC report format.
+            The PDF set contains one Conditional Go, two Viable cases and one Non-viable case — because TVAC is designed to assess
+            tokenization critically, not to justify it automatically.
+          </p>
 
-          <p class="small" style="max-width:900px; margin:4px 0 0; color:var(--muted);"><b style="color:var(--text);">Geography does not determine the verdict.</b> Each result reflects the specific case design, evidence, conventional baseline and implementation assumptions. Country or region is one input among many and does not determine whether a case is assessed as Viable, Conditional Go or Non-viable.</p>
+          <div class="interactiveReport">
+            <div class="interactiveReportHead">
+              <div>
+                <p class="eyebrow" style="margin-bottom:7px;">Featured interactive report</p>
+                <h3 style="font-size:22px; margin-bottom:8px;">Brazilian Agricultural Receivables Financing</h3>
+                <p class="lead" style="font-size:14px;">
+                  Browse a complete TVAC Deep Assessment as an interactive flipbook. This case is shown separately from the four downloadable
+                  PDF samples below.
+                </p>
+              </div>
+              <a class="btn btnPrimary" href="https://online.fliphtml5.com/ecljmo/oqsf/" target="_blank" rel="noopener">Open full-screen ↗</a>
+            </div>
+            <div class="interactiveReportFrame">
+              <iframe
+                src="https://online.fliphtml5.com/ecljmo/oqsf/"
+                title="TVAC sample report — Brazilian Agricultural Receivables Financing"
+                scrolling="no"
+                frameborder="0"
+                allowtransparency="true"
+                allowfullscreen="true">
+              </iframe>
+            </div>
+          </div>
+
+          <p class="small" style="max-width:900px; margin:4px 0 0; color:var(--muted);">
+            <b style="color:var(--text);">Geography does not determine the verdict.</b>
+            Each result reflects the specific case design, evidence, conventional baseline and implementation assumptions.
+            Country or region is one input among many and does not determine whether a case is assessed as Viable, Conditional Go or Non-viable.
+          </p>
 
           <div class="sampleIntroRow">
-            <div class="sampleNotice"><b>About the sample cases.</b> These assessments are based on hypothetical but realistic cases created for testing and demonstration purposes. They do not describe actual clients or projects. The reports demonstrate TVAC’s methodology, analytical depth and output structure; they do not provide legal, regulatory, tax, financial or investment advice concerning any real transaction.</div>
-            <div class="sampleSummary" aria-label="Sample verdict distribution">
+            <div class="sampleNotice">
+              <b>About the sample cases.</b> These assessments are based on hypothetical but realistic cases created for testing and
+              demonstration purposes. They do not describe actual clients or projects. The reports demonstrate TVAC’s methodology,
+              analytical depth and current output structure; they do not provide legal, regulatory, tax, financial or investment advice
+              concerning any real transaction.
+            </div>
+            <div class="sampleSummary" aria-label="PDF sample verdict distribution">
               <div class="sampleSummaryItem"><div class="sampleSummaryValue" style="color:#2ee59d;">2</div><div class="sampleSummaryLabel">Viable</div></div>
-              <div class="sampleSummaryItem"><div class="sampleSummaryValue" style="color:var(--accent-2);">2</div><div class="sampleSummaryLabel">Conditional Go</div></div>
-              <div class="sampleSummaryItem"><div class="sampleSummaryValue" style="color:#ff8d8d;">2</div><div class="sampleSummaryLabel">Non-viable</div></div>
+              <div class="sampleSummaryItem"><div class="sampleSummaryValue" style="color:var(--accent-2);">1</div><div class="sampleSummaryLabel">Conditional Go</div></div>
+              <div class="sampleSummaryItem"><div class="sampleSummaryValue" style="color:#ff8d8d;">1</div><div class="sampleSummaryLabel">Non-viable</div></div>
             </div>
           </div>
 
           <div class="sampleFilters" aria-label="Filter sample reports">
-            <button class="sampleFilter active" type="button" data-sample-filter="all">All 6</button>
+            <button class="sampleFilter active" type="button" data-sample-filter="all">All 4</button>
             <button class="sampleFilter" type="button" data-sample-filter="viable">Viable 2</button>
-            <button class="sampleFilter" type="button" data-sample-filter="conditional">Conditional Go 2</button>
-            <button class="sampleFilter" type="button" data-sample-filter="nonviable">Non-viable 2</button>
+            <button class="sampleFilter" type="button" data-sample-filter="conditional">Conditional Go 1</button>
+            <button class="sampleFilter" type="button" data-sample-filter="nonviable">Non-viable 1</button>
           </div>
 
           <div class="sampleGrid">
             <article class="sampleCard" data-sample-verdict="conditional">
               <div class="sampleMetaTop">
-                <div class="sampleKicker">Brazil · Private credit</div>
+                <div class="sampleKicker">Luxembourg / Germany · Real estate</div>
                 <span class="sampleVerdict conditional">Conditional Go</span>
               </div>
-              <h3>Agricultural Receivables Financing</h3>
-              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: 0</span><span class="sampleEquation">Plus 10 · Minus 10</span></div>
+              <h3>Residential Real Estate SPV Notes</h3>
+              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: −3</span><span class="sampleEquation">Plus 8 · Minus 11</span></div>
               <p class="sampleWhyLabel">Why this case matters</p>
-              <p class="sampleWhy">A realistic early-stage receivables case with fragmented originator data, unresolved vehicle design and no confirmed investor demand. TVAC identifies meaningful potential but concludes that the available evidence does not yet establish net added value.</p>
+              <p class="sampleWhy">A cross-border real-estate capital-formation case where tokenization may improve professional-investor access, transparency and administration, but only if the Luxembourg wrapper, distribution perimeter, servicing economics and quarterly-liquidity design remain disciplined.</p>
               <div class="sampleFacts">
                 <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
-                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Partial</div></div>
+                <div class="sampleFact"><div class="sampleFactLabel">Investor scope</div><div class="sampleFactValue">Professional / accredited</div></div>
               </div>
-              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are a Brazilian agricultural finance company working with midsized grain and input distributors. We purchase short-dated receivables arising from sales to farms and cooperatives, and we currently finance the portfolio through bank facilities and a small number of private investors. The portfolio has historical payment data, but the data is held across several originators and has not yet been standardized for external investors.
+              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are a privately owned real estate holding company owning three stabilized residential assets in Berlin and Hamburg through German GmbHs. The properties generate steady rental income but require energy upgrades, façade improvements, and selected tenant-area refurbishments to remain competitive and compliant with evolving ESG standards.
 
-We are considering a tokenized note or participation structure linked to a diversified pool of receivables. The objective is to broaden access to professional investors, improve reporting on collections and concentration limits, and reduce some of the manual administration between originators, servicers and investors. We have not decided whether the issuance should sit in a dedicated securitization vehicle, another SPV structure, or an existing fund arrangement.
+We intend to raise EUR 15–20 million to finance renovations, partially refinance bank debt, and strengthen liquidity buffers. Instead of raising additional traditional mezzanine capital, we are evaluating tokenization through a Luxembourg SPV issuing profit-participating notes linked to net rental cash flow after operating costs and senior debt service.
 
-The initial idea is a Brazil-only professional-investor offering with whitelist-based onboarding. We do not need continuous trading, and a buy-and-hold structure may be sufficient. We have spoken informally with technology and custody providers, but we do not yet have binding quotations, a final registry model or a confirmed approach to secondary transfers.
+The tokens would represent clear contractual economic rights, including profit participation and principal repayment, but no operational control over the properties. We would target professional and accredited investors in Germany and the Netherlands only, using a whitelist-based onboarding process with full KYC/AML.
 
-The key unresolved questions are the legal and operational link between the token and the receivables, assignment and servicing continuity, data quality across originators, cash-flow controls, tax treatment and whether investors will value tokenization enough to offset the additional structuring and provider costs. No legal opinion or investor commitment has been obtained yet.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/brazil-agricultural-receivables.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/brazil-agricultural-receivables.pdf" download>Download PDF ↓</a></div>
+We plan a 12-month lock-up followed by structured quarterly liquidity windows on a regulated venue. Custody would be provided by a regulated custodian. Settlement follows T+1/2 standards aligned with existing capital market workflows. Key considerations include cross-border tax treatment, renovation execution risk, valuation stability, and interest-rate sensitivity. The primary rationale for tokenization is improved investor transparency, fractional access for smaller professional tickets, and long-term administrative efficiency.</div></details>
+              <div class="sampleActions"><a class="btn btnPrimary" href="samples/eu-real-estate-spv-notes.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/eu-real-estate-spv-notes.pdf" download>Download PDF ↓</a></div>
             </article>
-            <article class="sampleCard" data-sample-verdict="viable">
-              <div class="sampleMetaTop">
-                <div class="sampleKicker">United States · Institutional market infrastructure</div>
-                <span class="sampleVerdict viable">Viable</span>
-              </div>
-              <h3>Institutional Collateral and Repo Workflow</h3>
-              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: +9</span><span class="sampleEquation">Plus 18 · Minus 9</span></div>
-              <p class="sampleWhyLabel">Why this case matters</p>
-              <p class="sampleWhy">An institutional use case in which tokenization is not expected to create artificial liquidity or improve the underlying asset. Its potential value lies in reducing collateral-movement friction, settlement failures and operational risk within an existing high-volume workflow.</p>
-              <div class="sampleFacts">
-                <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
-                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Complete</div></div>
-              </div>
-              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are an institutional market participant running a high-volume collateral and secured financing (repo-style) workflow in US government securities. The underlying instruments are already liquid; the value-add of tokenization is not “creating liquidity”, but reducing post-trade friction, settlement fails, and operational risk in collateral movements.
 
-We want to run a permissioned tokenized collateral rail where eligible participants (professional institutions only) can move tokenized collateral positions under strict eligibility controls, with regulated custody and clear operational governance. The design is single-jurisdiction (US) and deliberately avoids retail access, public DeFi venues, and open-ended secondary trading.
-
-Crucially, this is not a greenfield build: the custody and tri-party / agent workflows already exist, and the token layer is implemented as an incremental module on top of existing collateral eligibility rules, margining processes, and reporting. Participants are whitelisted, controls are institutional- grade, and operational responsibilities are clearly assigned. The Asset Owner / initiating participant is the primary beneficiary of the operational savings and risk reduction (not external vendors).
-
-The tokenization layer is used to implement (1) near-instant, controlled delivery-versus-payment (DvP) settlement to reduce counterparty exposure during settlement windows, (2) cleaner intraday collateral mobility (substitution, margining, and return flows) with fewer manual breaks, and (3) an auditable, tamper-evident event trail that reduces disputes and accelerates reconciliation between counterparties and custodians. We explicitly decommission duplicated reconciliation steps for the tokenized lane (no permanent parallel “double-booking”), so savings are structural.
-
-Expected benefits are measurable at scale: fewer fails, fewer exception tickets, faster dispute resolution, tighter control over collateral release, and reduced reconciliation time per movement. Costs and risks remain real (legal/compliance scoping, integration, governance), but the scope is bounded: permissioned participants, regulated custody, conservative US-only perimeter, and no reliance on stablecoins or permissionless liquidity.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-repo-collateral-workflow.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-repo-collateral-workflow.pdf" download>Download PDF ↓</a></div>
-            </article>
-            <article class="sampleCard" data-sample-verdict="nonviable">
-              <div class="sampleMetaTop">
-                <div class="sampleKicker">Chile · Renewable-energy financing</div>
-                <span class="sampleVerdict nonviable">Non-viable</span>
-              </div>
-              <h3>Solar-Project Revenue Participation</h3>
-              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: −4</span><span class="sampleEquation">Plus 9 · Minus 13</span></div>
-              <p class="sampleWhyLabel">Why this case matters</p>
-              <p class="sampleWhy">A seemingly attractive renewable-energy financing opportunity in which tokenization-specific value remains unproven. The report shows why a strong underlying asset story does not by itself justify a tokenized structure.</p>
-              <div class="sampleFacts">
-                <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
-                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Partial</div></div>
-              </div>
-              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are a Chilean renewable-energy developer with several operating solar assets and a pipeline of smaller projects. We are considering raising capital against a defined share of future project revenues, potentially including energy-sale income and environmental attributes where those rights can be clearly identified and transferred. The objective is to fund new construction without selling full ownership of the operating companies.
-
-One option is a tokenized participation note issued through a dedicated vehicle. Investors would receive contractual economic rights, but not control of the projects. We expect to target professional investors in Chile and possibly a limited number of investors elsewhere in the region. We have not decided whether environmental attributes should be included in the instrument, kept separate, or excluded until their registry and verification treatment is clearer.
-
-We do not currently assume continuous trading. Periodic transfers or redemptions might be useful, but no venue or liquidity provider has been selected. Custody, the authoritative investor register and the payment process are also open, and we have not decided which party would operate those functions. We have engineering and production data for the operating assets, but no independent assessment of the proposed token rights, projected investor demand or the incremental cost of tokenization.
-
-The main uncertainties are rights mapping, project and vehicle cash-flow waterfalls, measurement and verification of environmental attributes, changes in registry treatment, construction risk for new assets, cross-border distribution, tax, and whether investors would prefer a conventional private placement.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/chile-solar-revenue-participation.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/chile-solar-revenue-participation.pdf" download>Download PDF ↓</a></div>
-            </article>
-            <article class="sampleCard" data-sample-verdict="conditional">
-              <div class="sampleMetaTop">
-                <div class="sampleKicker">Switzerland / UAE · Digital lending</div>
-                <span class="sampleVerdict conditional">Conditional Go</span>
-              </div>
-              <h3>Permissioned Lending Pool with Tokenized Collateral</h3>
-              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: −2</span><span class="sampleEquation">Plus 12 · Minus 14</span></div>
-              <p class="sampleWhyLabel">Why this case matters</p>
-              <p class="sampleWhy">A technically ambitious early-stage case involving tokenized collateral, digital cash, oracle dependencies, liquidation mechanics and protocol governance. TVAC identifies genuine potential, but only if legal rights, stress recovery and operational controls are resolved.</p>
-              <div class="sampleFacts">
-                <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Early exploration</div></div>
-                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Partial</div></div>
-              </div>
-              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are developing a permissioned lending pool intended for professional participants. Borrowers would post tokenized short-term trade-finance or receivables positions as collateral and draw a stablecoin or other digital cash asset. Lenders would receive pool tokens representing their economic interest in the lending strategy.
-
-The proposed value comes from programmable collateral controls, faster funding and the possibility of integrating the pool with other approved on-chain applications. However, the design is still early. We have not finalized the legal entity, governing law, treatment of pool tokens, collateral SPVs, custody model, oracle providers, liquidation process or whether participants may use the positions outside the pool.
-
-Participation would be permissioned and limited to professional or institutional users, but the potential jurisdictions are not yet fixed. We are considering an operating entity in Switzerland or the UAE and investors from several markets. No final distribution analysis has been completed. The cash leg is currently assumed to be a stablecoin, although bank-backed tokenized deposits could be considered later.
-
-The economics depend on borrower demand, lender liquidity, collateral performance, protocol integrations and governance decisions that may change after launch. Key risks include legal enforceability of collateral rights, oracle and valuation failures, smart-contract vulnerabilities, liquidation under stress, stablecoin dependency, liquidity concentration, governance changes, provider and bridge dependencies, and the possibility that composability creates risks not visible in a static initial assessment. We have a prototype but no audited production system or committed liquidity.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/permissioned-lending-pool.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/permissioned-lending-pool.pdf" download>Download PDF ↓</a></div>
-            </article>
             <article class="sampleCard" data-sample-verdict="viable">
               <div class="sampleMetaTop">
                 <div class="sampleKicker">United States · Capital markets</div>
                 <span class="sampleVerdict viable">Viable</span>
               </div>
               <h3>Tokenized Commercial Paper</h3>
-              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: +7</span><span class="sampleEquation">Plus 14 · Minus 7</span></div>
+              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: +8</span><span class="sampleEquation">Plus 15 · Minus 7</span></div>
               <p class="sampleWhyLabel">Why this case matters</p>
-              <p class="sampleWhy">A conventional capital-markets workflow in which potential value comes from issuance automation, cleaner position records and reduced lifecycle reconciliation — not from higher yield or speculative liquidity.</p>
+              <p class="sampleWhy">An established recurring commercial-paper programme where tokenization is assessed as issuance-and-lifecycle optimisation: allocation, settlement, authoritative position records and servicing — not speculative liquidity or a new-capital-access story.</p>
               <div class="sampleFacts">
                 <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
-                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Complete</div></div>
+                <div class="sampleFact"><div class="sampleFactLabel">Value focus</div><div class="sampleFactValue">Workflow efficiency</div></div>
               </div>
               <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are a US-based corporate issuer with an existing, recurring commercial paper (CP) program used for short-term working capital. Today the program relies on multiple intermediaries, manual confirmations, repeated reconciliations between the issuer’s treasury team, issuing/placing agents, custodians, and investors, and a settlement cycle that creates operational friction and occasional settlement fails.
 
@@ -2371,18 +2389,44 @@ The tokenized format is designed to (1) reduce reconciliation breaks by moving t
 We expect measurable cost savings (reduced agent/custody operations per issuance, fewer manual exceptions) and measurable risk reduction (fewer settlement fails, cleaner audit trail, reduced counterparty/operational exposure). Any secondary transfers, if permitted at all, are tightly controlled and limited to eligible whitelisted holders under standard securities restrictions. The issuer is the primary beneficiary of the operational savings and control improvements under this design.</div></details>
               <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-tokenized-commercial-paper.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-tokenized-commercial-paper.pdf" download>Download PDF ↓</a></div>
             </article>
+
+            <article class="sampleCard" data-sample-verdict="viable">
+              <div class="sampleMetaTop">
+                <div class="sampleKicker">United States · Institutional market infrastructure</div>
+                <span class="sampleVerdict viable">Viable</span>
+              </div>
+              <h3>Institutional Collateral and Repo Workflow</h3>
+              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: +9</span><span class="sampleEquation">Plus 16 · Minus 7</span></div>
+              <p class="sampleWhyLabel">Why this case matters</p>
+              <p class="sampleWhy">A tightly permissioned institutional workflow where the value thesis is measurable improvement in settlement control, collateral mobility, reconciliation and operational resilience — not new investor distribution or artificial asset liquidity.</p>
+              <div class="sampleFacts">
+                <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
+                <div class="sampleFact"><div class="sampleFactLabel">Value focus</div><div class="sampleFactValue">Post-trade workflow</div></div>
+              </div>
+              <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We are an institutional market participant running a high-volume collateral and secured financing (repo-style) workflow in US government securities. The underlying instruments are already liquid; the value-add of tokenization is not “creating liquidity”, but reducing post-trade friction, settlement fails, and operational risk in collateral movements.
+
+We want to run a permissioned tokenized collateral rail where eligible participants (professional institutions only) can move tokenized collateral positions under strict eligibility controls, with regulated custody and clear operational governance. The design is single-jurisdiction (US) and deliberately avoids retail access, public DeFi venues, and open-ended secondary trading.
+
+Crucially, this is not a greenfield build: the custody and tri-party / agent workflows already exist, and the token layer is implemented as an incremental module on top of existing collateral eligibility rules, margining processes, and reporting. Participants are whitelisted, controls are institutional-grade, and operational responsibilities are clearly assigned. The Asset Owner / initiating participant is the primary beneficiary of the operational savings and risk reduction (not external vendors).
+
+The tokenization layer is used to implement (1) near-instant, controlled delivery-versus-payment (DvP) settlement to reduce counterparty exposure during settlement windows, (2) cleaner intraday collateral mobility (substitution, margining, and return flows) with fewer manual breaks, and (3) an auditable, tamper-evident event trail that reduces disputes and accelerates reconciliation between counterparties and custodians. We explicitly decommission duplicated reconciliation steps for the tokenized lane (no permanent parallel “double-booking”), so savings are structural.
+
+Expected benefits are measurable at scale: fewer fails, fewer exception tickets, faster dispute resolution, tighter control over collateral release, and reduced reconciliation time per movement. Costs and risks remain real (legal/compliance scoping, integration, governance), but the scope is bounded: permissioned participants, regulated custody, conservative US-only perimeter, and no reliance on stablecoins or permissionless liquidity.</div></details>
+              <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-repo-collateral-workflow.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-repo-collateral-workflow.pdf" download>Download PDF ↓</a></div>
+            </article>
+
             <article class="sampleCard" data-sample-verdict="nonviable">
               <div class="sampleMetaTop">
                 <div class="sampleKicker">Global · Retail asset tokenization</div>
                 <span class="sampleVerdict nonviable">Non-viable</span>
               </div>
               <h3>Fractional Fine-Art NFTs</h3>
-              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: −16</span><span class="sampleEquation">Plus 4 · Minus 20</span></div>
+              <div class="sampleScoreRow"><span class="sampleScore">Net Added Value: −14</span><span class="sampleEquation">Plus 4 · Minus 18</span></div>
               <p class="sampleWhyLabel">Why this case matters</p>
-              <p class="sampleWhy">A deliberately challenging case combining global retail distribution, unclear ownership rights, self-custody and assumed DEX liquidity. TVAC concludes that the proposed structure creates substantially more risk and complexity than value.</p>
+              <p class="sampleWhy">A deliberately difficult retail case combining ambiguous token-holder rights, unrestricted cross-border distribution, self-custody and continuous DEX trading. The current design adds materially more risk and complexity than demonstrated value.</p>
               <div class="sampleFacts">
                 <div class="sampleFact"><div class="sampleFactLabel">Case maturity</div><div class="sampleFactValue">Structured concept</div></div>
-                <div class="sampleFact"><div class="sampleFactLabel">Input quality</div><div class="sampleFactValue">Mostly complete</div></div>
+                <div class="sampleFact"><div class="sampleFactLabel">Primary friction</div><div class="sampleFactValue">Rights + retail distribution</div></div>
               </div>
               <details class="sampleInput"><summary>View original case input</summary><div class="sampleInputText">We plan to acquire a portfolio of fine art pieces and offer fractional ownership to a global retail audience through NFTs. Marketing would be conducted via social media campaigns, and participation would be open to anyone able to connect a self-custody wallet.
 
@@ -2404,7 +2448,7 @@ The business thesis relies on global retail demand, social momentum, and perceiv
           <div class="cardPlain sampleCta">
             <p class="eyebrow">Your case</p>
             <h2>Ready to assess your own tokenization structure?</h2>
-            <p class="lead">A sample report can demonstrate TVAC’s depth and methodology, but your verdict depends on your specific asset, investor scope, operational model, jurisdictional setup and implementation assumptions.</p>
+            <p class="lead">Sample reports demonstrate TVAC’s depth and methodology, but your verdict depends on your specific asset, investor scope, operating model, jurisdictional setup and implementation assumptions.</p>
             <div class="btnRow" style="justify-content:center;"><a class="btn btnPrimary checkoutCta" href="#pricing">Order your Deep Assessment — €495 →</a><a class="btn" href="#product-tour">Take the Product Tour</a><a class="btn" href="#methodology">Review the Methodology</a></div>
           </div>
         </div>
@@ -2576,7 +2620,7 @@ The business thesis relies on global retail demand, social momentum, and perceiv
             </div>
           </div>
 
-          <div class="cardPlain cardPadLg" style="border-color: rgba(255,154,60,0.35); box-shadow: 0 16px 46px rgba(255,154,60,0.10);">
+          <div class="cardPlain cardPadLg" style="border-color: rgba(57,191,208,0.35); box-shadow: 0 16px 46px rgba(57,191,208,0.10);">
             <p class="eyebrow" style="margin-bottom:10px;">Scenario Lab add-on</p>
 
             <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;">
