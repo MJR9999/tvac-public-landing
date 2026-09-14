@@ -1945,6 +1945,222 @@ html, body { overflow-x: hidden; }
         }
       }
 
+
+
+      /* ---------- FINAL DESKTOP REFINEMENT: COOLER / MORE INSTITUTIONAL ---------- */
+      @media (min-width: 981px) {
+        /* Slightly lighter, more neutral slate-navy background */
+        :root,
+        [data-theme="dark"] {
+          --bg: #1d2a38;
+          --text: rgba(248, 250, 252, 0.91);
+          --muted: rgba(226, 232, 240, 0.70);
+          --muted-2: rgba(203, 213, 225, 0.58);
+        }
+
+        /* Keep the top bar distinctly darker, but not pitch-black */
+        .nav {
+          background: rgba(10, 16, 24, 0.96);
+          border-bottom-color: rgba(255,255,255,0.055);
+          box-shadow: 0 1px 0 rgba(255,255,255,0.015);
+        }
+        [data-theme="light"] .nav {
+          background: rgba(255,255,255,0.94);
+          border-bottom-color: rgba(0,0,0,0.055);
+          box-shadow: 0 1px 0 rgba(0,0,0,0.015);
+        }
+
+        /* Slightly narrower reading measure for a calmer institutional feel */
+        .nav .container,
+        main > section:not(#sample-assessments) .container,
+        footer .container {
+          max-width: 990px;
+        }
+
+        /* Logo: smaller and a touch crisper in dark mode */
+        .brand {
+          min-width: 270px;
+        }
+        .brandMark {
+          width: 172px;
+        }
+        .brandMarkDark {
+          filter: brightness(1.08) contrast(1.10);
+        }
+        [data-theme="light"] .brandMarkLight {
+          filter: contrast(1.05);
+        }
+
+        /* Navigation controls: smaller, quieter */
+        .navInner {
+          padding: 8px 0;
+        }
+        .pill {
+          padding: 6px 9px;
+          font-size: 11.5px;
+        }
+        .languageSelect {
+          height: 32px;
+          max-width: 126px;
+          font-size: 11.5px;
+        }
+        .themeBtn,
+        .menuBtn {
+          height: 32px;
+        }
+        .themeBtn { width: 34px; }
+        .menuBtn { width: 36px; }
+
+        /* One more small step down in type scale outside the sample-report area */
+        main > section:not(#sample-assessments) {
+          --h1: 42px;
+          --h2: 26px;
+          --h3: 15px;
+          --lead: 14px;
+          --body: 12.75px;
+        }
+
+        main > section:not(#sample-assessments).padTop {
+          padding: 32px 0;
+        }
+        main > section:not(#sample-assessments).padMid {
+          padding: 29px 0;
+        }
+        main > section:not(#sample-assessments).padTight {
+          padding: 24px 0;
+        }
+
+        main > section:not(#sample-assessments) .eyebrow {
+          font-size: 10px;
+          letter-spacing: 1.7px;
+          margin-bottom: 7px;
+        }
+
+        main > section:not(#sample-assessments) h1 {
+          margin-bottom: 10px;
+          letter-spacing: -0.45px;
+        }
+        main > section:not(#sample-assessments) h2 {
+          margin-bottom: 9px;
+        }
+        main > section:not(#sample-assessments) h3 {
+          margin-bottom: 7px;
+        }
+
+        main > section:not(#sample-assessments) .lead {
+          max-width: 590px;
+          margin-bottom: 10px;
+        }
+
+        main > section:not(#sample-assessments) .frameWrap {
+          padding: 24px 21px;
+          border-radius: 16px;
+        }
+
+        main > section:not(#sample-assessments) .grid2 {
+          gap: 16px;
+        }
+        main > section:not(#sample-assessments) .grid3,
+        main > section:not(#sample-assessments) .grid4,
+        main > section:not(#sample-assessments) .splitCard {
+          gap: 11px;
+        }
+
+        main > section:not(#sample-assessments) .cardPad {
+          padding: 13px;
+        }
+        main > section:not(#sample-assessments) .cardPadLg {
+          padding: 15px;
+        }
+        main > section:not(#sample-assessments) .formulaBox {
+          padding: 13px;
+        }
+
+        main > section:not(#sample-assessments) .btn {
+          padding: 7px 11px;
+          font-size: 11.5px;
+        }
+        main > section:not(#sample-assessments) .btn.checkoutCta {
+          min-height: 38px;
+          padding: 9px 14px;
+        }
+
+        /* Hero snapshot: keep informative, reduce visual dominance */
+        #top .snapshot {
+          padding: 13px;
+        }
+        #top .snapScore > div:first-child {
+          font-size: 27px !important;
+        }
+        #top .bars {
+          padding: 9px;
+        }
+        #top .barRow {
+          grid-template-columns: 1fr 134px 34px;
+          gap: 7px;
+          margin: 6px 0;
+          font-size: 11px;
+        }
+        #top .formula {
+          font-size: 10.5px;
+        }
+        #top .miniBadge {
+          font-size: 10px;
+          padding: 5px 8px;
+        }
+        #top .ctaRow {
+          margin-top: 13px;
+        }
+
+        /* Quieter cards and section chrome in dark mode */
+        [data-theme="dark"] .frameWrap {
+          background: linear-gradient(180deg, rgba(255,255,255,0.032), rgba(255,255,255,0.018));
+          border-color: rgba(255,255,255,0.085);
+          box-shadow: 0 16px 48px rgba(0,0,0,0.26);
+        }
+        [data-theme="dark"] .card,
+        [data-theme="dark"] .cardPlain {
+          border-color: rgba(255,255,255,0.085);
+        }
+
+        /* Reduce the hero glow slightly; keep the cyan signature without the "neon" feel */
+        [data-theme="dark"] .band::before {
+          opacity: 0.72;
+          background:
+            radial-gradient(900px 420px at 18% 0%, rgba(57,191,208,0.13), transparent 60%),
+            radial-gradient(900px 420px at 92% 10%, rgba(22,105,139,0.10), transparent 60%),
+            radial-gradient(900px 420px at 55% 22%, rgba(57,191,208,0.07), transparent 62%);
+        }
+
+        /* FAQ / pricing / footer: one last density pass */
+        #faq details.faqItem {
+          padding: 10px 11px;
+        }
+        #faq details summary {
+          font-size: 12.5px;
+        }
+        #faq .faqA {
+          font-size: 12px;
+        }
+        #pricing .proPriceValue {
+          font-size: 23px;
+        }
+        footer {
+          margin-top: 16px;
+          padding: 18px 0 20px;
+        }
+        .footLine {
+          font-size: 12px;
+        }
+        .footDisc,
+        .legalLinks {
+          font-size: 11px;
+        }
+        .copyright {
+          font-size: 10.5px;
+        }
+      }
+
 </style>
   </head>
 
