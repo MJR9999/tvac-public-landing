@@ -1950,12 +1950,28 @@ html, body { overflow-x: hidden; }
       /* ---------- FINAL DESKTOP REFINEMENT: COOLER / MORE INSTITUTIONAL ---------- */
       @media (min-width: 981px) {
         /* Slightly lighter, more neutral slate-navy background */
-        :root,
         [data-theme="dark"] {
-          --bg: #1d2a38;
-          --text: rgba(248, 250, 252, 0.91);
-          --muted: rgba(226, 232, 240, 0.70);
-          --muted-2: rgba(203, 213, 225, 0.58);
+          --bg: #243446;
+          --text: rgba(248, 250, 252, 0.92);
+          --muted: rgba(226, 232, 240, 0.72);
+          --muted-2: rgba(203, 213, 225, 0.60);
+          --panel: rgba(255, 255, 255, 0.045);
+          --panel-2: rgba(255, 255, 255, 0.065);
+          --border: rgba(255, 255, 255, 0.105);
+          --border-2: rgba(255, 255, 255, 0.145);
+          --shadow: 0 18px 52px rgba(0, 0, 0, 0.30);
+        }
+
+        [data-theme="light"] {
+          --bg: #f7f7fb;
+          --panel: rgba(0, 0, 0, 0.04);
+          --panel-2: rgba(0, 0, 0, 0.06);
+          --border: rgba(0, 0, 0, 0.10);
+          --border-2: rgba(0, 0, 0, 0.14);
+          --text: rgba(10, 12, 18, 0.92);
+          --muted: rgba(10, 12, 18, 0.70);
+          --muted-2: rgba(10, 12, 18, 0.58);
+          --shadow: 0 16px 48px rgba(0, 0, 0, 0.14);
         }
 
         /* Keep the top bar distinctly darker, but not pitch-black */
@@ -2159,6 +2175,70 @@ html, body { overflow-x: hidden; }
         .copyright {
           font-size: 10.5px;
         }
+      }
+
+
+      /* ---------- THEME INTEGRITY FIX ---------- */
+      /* Keep light mode genuinely light and preserve primary CTA styling. */
+      [data-theme="light"] body {
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      [data-theme="light"] .btn.btnPrimary,
+      [data-theme="light"] a.btn.btnPrimary {
+        border: none;
+        color: #082f49;
+        background: linear-gradient(90deg, var(--accent-2), var(--accent));
+        box-shadow: 0 10px 30px rgba(57,191,208,0.16);
+      }
+
+      [data-theme="light"] .btn.btnPrimary:hover,
+      [data-theme="light"] a.btn.btnPrimary:hover {
+        color: #082f49;
+        background: linear-gradient(90deg, #80dce6, #39bfd0);
+      }
+
+      [data-theme="light"] .pill,
+      [data-theme="light"] .languageSelect,
+      [data-theme="light"] .themeBtn,
+      [data-theme="light"] .menuBtn {
+        color: var(--muted);
+        background: rgba(255,255,255,0.72);
+        border-color: rgba(10,12,18,0.12);
+      }
+
+      [data-theme="light"] .menuBtn {
+        color: var(--text);
+      }
+
+      [data-theme="light"] .snapshot {
+        background: linear-gradient(180deg, rgba(255,255,255,0.80), rgba(255,255,255,0.56));
+        border-color: rgba(10,12,18,0.10);
+      }
+
+      [data-theme="light"] .frameWrap {
+        background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.44));
+        border-color: rgba(10,12,18,0.09);
+        box-shadow: 0 14px 40px rgba(15,23,42,0.08);
+      }
+
+      [data-theme="light"] .cardPlain {
+        background: rgba(255,255,255,0.58);
+        border-color: rgba(10,12,18,0.08);
+      }
+
+      /* Dark mode: clearly lighter than the previous navy, while retaining a financial/institutional tone. */
+      [data-theme="dark"] body {
+        background: #243446;
+      }
+
+      [data-theme="dark"] .nav {
+        background: rgba(9, 15, 23, 0.97);
+      }
+
+      [data-theme="dark"] .frameWrap {
+        background: linear-gradient(180deg, rgba(255,255,255,0.040), rgba(255,255,255,0.022));
       }
 
 </style>
