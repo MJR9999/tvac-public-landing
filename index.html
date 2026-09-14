@@ -1741,8 +1741,24 @@ html, body { overflow-x: hidden; }
 
 
       /* ---------- MODEL INTRO: READABLE TWO-COLUMN TEXT ---------- */
+      .modelIntroGrid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 28px;
+        margin: 4px 0 0;
+      }
+      .modelIntroGrid p {
+        margin: 0;
+        color: var(--muted);
+        font-size: var(--lead);
+        line-height: 1.58;
+      }
+      .modelIntroGrid p + p {
+        padding-left: 28px;
+        border-left: 1px solid var(--border);
+      }
       .modelIntroCopy {
-        margin: 2px 0 0;
+        margin: 4px 0 0;
         max-width: none;
         color: var(--muted);
         font-size: var(--lead);
@@ -1752,15 +1768,21 @@ html, body { overflow-x: hidden; }
       }
       .modelIntroCopy p {
         margin: 0;
-        break-inside: avoid;
       }
       @media (max-width: 820px) {
+        .modelIntroGrid {
+          grid-template-columns: 1fr;
+          gap: 14px;
+        }
+        .modelIntroGrid p + p {
+          padding-left: 0;
+          border-left: 0;
+        }
         .modelIntroCopy {
           column-count: 1;
           column-rule: 0;
         }
       }
-
 </style>
   </head>
 
@@ -2017,16 +2039,19 @@ html, body { overflow-x: hidden; }
           <p class="eyebrow">The model</p>
           <h2>TVAC is built on a fixed added value formula</h2>
 
-          <div class="modelIntroCopy">
+          <div class="modelIntroGrid">
             <p>
               TVAC is built from the formula outward. Because asset tokenization is still a young, fragmented and often overhyped market,
               TVAC does not treat available market data, vendor experience or anecdotal industry patterns as sufficient proof of viability.
               Instead, every assessment starts with a fixed added-value formula and asks whether tokenization creates genuine net benefit
-              compared with conventional alternatives. The assessment is anchored in structured input parameters such as jurisdictions,
-              investor scope, disclosure, custody, payment/cash-leg model, settlement, venue and transfer restrictions — so results do not
-              depend on ad hoc judgment, but on a consistent method where you can see exactly which design choices drive the outcome.
-              AI is used as a controlled analytic component within that framework: it is not asked to define the criteria, create its own
-              decision logic, or give a free-form opinion on whether tokenization is “good” or “bad”.
+              compared with conventional alternatives.
+            </p>
+            <p>
+              The assessment is anchored in structured input parameters such as jurisdictions, investor scope, disclosure, custody,
+              payment/cash-leg model, settlement, venue and transfer restrictions — so results do not depend on ad hoc judgment, but on
+              a consistent method where you can see exactly which design choices drive the outcome. AI is used as a controlled analytic
+              component within that framework: it is not asked to define the criteria, create its own decision logic, or give a free-form
+              opinion on whether tokenization is “good” or “bad”.
             </p>
           </div>
 
@@ -2356,7 +2381,7 @@ We intend to raise EUR 15–20 million to finance renovations, partially refinan
 The tokens would represent clear contractual economic rights, including profit participation and principal repayment, but no operational control over the properties. We would target professional and accredited investors in Germany and the Netherlands only, using a whitelist-based onboarding process with full KYC/AML.
 
 We plan a 12-month lock-up followed by structured quarterly liquidity windows on a regulated venue. Custody would be provided by a regulated custodian. Settlement follows T+1/2 standards aligned with existing capital market workflows. Key considerations include cross-border tax treatment, renovation execution risk, valuation stability, and interest-rate sensitivity. The primary rationale for tokenization is improved investor transparency, fractional access for smaller professional tickets, and long-term administrative efficiency.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/eu-real-estate-spv-notes.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/eu-real-estate-spv-notes.pdf" download>Download PDF ↓</a></div>
+              <div class="sampleActions"><a class="btn btnPrimary" href="samples/eu-real-estate-spv-notes-2026-09-13.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/eu-real-estate-spv-notes-2026-09-13.pdf" download>Download PDF ↓</a></div>
             </article>
 
             <article class="sampleCard" data-sample-verdict="viable">
@@ -2379,7 +2404,7 @@ We want to introduce a tokenized CP note format (economically equivalent to our 
 The tokenized format is designed to (1) reduce reconciliation breaks by moving to a single shared position record, (2) automate issuance and lifecycle events (issuance confirmations, coupon/accrual reporting, maturity repayment notices), and (3) tighten settlement controls through delivery-versus-payment (DvP) style workflows. Importantly, we commit to decommissioning duplicated legacy steps for the tokenized tranche (no permanent parallel “double-booking”), so savings are structural rather than cosmetic.
 
 We expect measurable cost savings (reduced agent/custody operations per issuance, fewer manual exceptions) and measurable risk reduction (fewer settlement fails, cleaner audit trail, reduced counterparty/operational exposure). Any secondary transfers, if permitted at all, are tightly controlled and limited to eligible whitelisted holders under standard securities restrictions. The issuer is the primary beneficiary of the operational savings and control improvements under this design.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-tokenized-commercial-paper.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-tokenized-commercial-paper.pdf" download>Download PDF ↓</a></div>
+              <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-tokenized-commercial-paper-2026-09-13.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-tokenized-commercial-paper-2026-09-13.pdf" download>Download PDF ↓</a></div>
             </article>
 
             <article class="sampleCard" data-sample-verdict="viable">
@@ -2404,7 +2429,7 @@ Crucially, this is not a greenfield build: the custody and tri-party / agent wor
 The tokenization layer is used to implement (1) near-instant, controlled delivery-versus-payment (DvP) settlement to reduce counterparty exposure during settlement windows, (2) cleaner intraday collateral mobility (substitution, margining, and return flows) with fewer manual breaks, and (3) an auditable, tamper-evident event trail that reduces disputes and accelerates reconciliation between counterparties and custodians. We explicitly decommission duplicated reconciliation steps for the tokenized lane (no permanent parallel “double-booking”), so savings are structural.
 
 Expected benefits are measurable at scale: fewer fails, fewer exception tickets, faster dispute resolution, tighter control over collateral release, and reduced reconciliation time per movement. Costs and risks remain real (legal/compliance scoping, integration, governance), but the scope is bounded: permissioned participants, regulated custody, conservative US-only perimeter, and no reliance on stablecoins or permissionless liquidity.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-repo-collateral-workflow.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-repo-collateral-workflow.pdf" download>Download PDF ↓</a></div>
+              <div class="sampleActions"><a class="btn btnPrimary" href="samples/us-repo-collateral-workflow-2026-09-13.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/us-repo-collateral-workflow-2026-09-13.pdf" download>Download PDF ↓</a></div>
             </article>
 
             <article class="sampleCard" data-sample-verdict="nonviable">
@@ -2427,7 +2452,7 @@ The legal structure is not fully defined. Tokens may represent a mixture of cont
 Tokens would trade continuously on decentralized exchanges with atomic on-chain settlement. Transfers would not be restricted by jurisdiction, and investors would self-custody their tokens.
 
 The business thesis relies on global retail demand, social momentum, and perceived liquidity from DEX trading. However, significant risks include unclear investor protection, cross-border securities law exposure, valuation disputes, provenance challenges, market manipulation, and regulatory enforcement uncertainty. The economic and legal alignment between token holders and the underlying artwork ownership remains structurally ambiguous.</div></details>
-              <div class="sampleActions"><a class="btn btnPrimary" href="samples/global-fine-art-nfts.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/global-fine-art-nfts.pdf" download>Download PDF ↓</a></div>
+              <div class="sampleActions"><a class="btn btnPrimary" href="samples/global-fine-art-nfts-2026-09-13.pdf" target="_blank" rel="noopener">View full sample report →</a><a class="btn" href="samples/global-fine-art-nfts-2026-09-13.pdf" download>Download PDF ↓</a></div>
             </article>
           </div>
 
