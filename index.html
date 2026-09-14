@@ -115,62 +115,23 @@
 
       .brandLockup {
         display: inline-flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 6px;
+        align-items: center;
         min-width: 0;
         padding: 1px 0;
       }
 
-      .brandTop {
-        display: inline-flex;
-        align-items: flex-end;
-        gap: 12px;
-        min-width: 0;
-      }
-
-      .brandLogo {
+      .brandMark {
         display: block;
-        font-size: 48px;
-        line-height: 0.9;
-        font-weight: 520;
-        letter-spacing: 0.02em;
-        color: rgba(255,255,255,0.98);
-        text-shadow: 0 6px 24px rgba(0,0,0,0.16);
-        white-space: nowrap;
+        width: 230px;
+        max-width: 100%;
+        height: auto;
       }
 
-      .brandName {
-        display: block;
-        font-size: 15px;
-        line-height: 1.1;
-        font-weight: 400;
-        color: rgba(255,255,255,0.84);
-        letter-spacing: -0.15px;
-        white-space: nowrap;
-      }
+      .brandMarkLight { display: none; }
+      .brandMarkDark { display: block; }
 
-      .brandDivider {
-        flex: 0 0 152px;
-        width: 152px;
-        height: 2px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, rgba(57,191,208,0.95), rgba(57,191,208,0.44), transparent);
-        transform: translateY(-10px);
-      }
-
-      [data-theme="light"] .brandLogo {
-        color: rgba(10,12,18,0.94);
-        text-shadow: none;
-      }
-
-      [data-theme="light"] .brandName {
-        color: rgba(10,12,18,0.74);
-      }
-
-      [data-theme="light"] .brandDivider {
-        background: linear-gradient(90deg, rgba(57,191,208,0.96), rgba(57,191,208,0.34), transparent);
-      }
+      [data-theme="light"] .brandMarkLight { display: block; }
+      [data-theme="light"] .brandMarkDark { display: none; }
 
       .navLinks {
         display: flex;
@@ -420,20 +381,8 @@
           min-width: 0;
           gap: 12px;
         }
-        .brandTop {
-          gap: 12px;
-        }
-        .brandLogo {
-          font-size: 40px;
-          letter-spacing: 0.02em;
-        }
-        .brandName {
-          font-size: 13.5px;
-        }
-        .brandDivider {
-          flex-basis: 122px;
-          width: 122px;
-          transform: translateY(-8px);
+        .brandMark {
+          width: 205px;
         }
       }
 
@@ -922,23 +871,10 @@
           width: 100%;
         }
         .brandLockup{
-          width: 100%;
+          width: auto;
         }
-        .brandTop{
-          gap: 10px;
-        }
-        .brandLogo{
-          font-size: 34px;
-          letter-spacing: 0.02em;
-        }
-        .brandName{
-          font-size: 12.5px;
-          white-space: normal;
-        }
-        .brandDivider{
-          flex-basis: 96px;
-          width: 96px;
-          transform: translateY(-6px);
+        .brandMark{
+          width: 188px;
         }
         .navLinks{
           width: 100%;
@@ -964,10 +900,7 @@
       @media (max-width: 900px) and (max-height: 450px){
         .navInner{ padding: 10px 0; }
         .pill{ padding: 8px 10px; font-size: 12.5px; }
-        .brandTop{ gap: 9px; }
-        .brandLogo{ font-size: 31px; letter-spacing: 0.02em; }
-        .brandName{ font-size: 12px; }
-        .brandDivider{ flex-basis: 86px; width: 86px; transform: translateY(-6px); }
+        .brandMark{ width: 174px; }
       }
 
 /* ---------- Responsive refinements (mobile-only) ---------- */
@@ -1793,11 +1726,8 @@ html, body { overflow-x: hidden; }
         <div class="navInner">
           <a class="brand brandHome" href="#top" aria-label="TVAC — return to top of page">
             <div class="brandLockup">
-              <div class="brandTop">
-                <span class="brandLogo">TVAC</span>
-                <span class="brandDivider" aria-hidden="true"></span>
-              </div>
-              <span class="brandName">Tokenization Value-Add Calculator</span>
+              <img class="brandMark brandMarkDark" src="tvac-publication-wordmark-dark.png" alt="TVAC — Tokenization Value-Add Calculator" />
+              <img class="brandMark brandMarkLight" src="tvac-publication-wordmark.png" alt="" aria-hidden="true" />
             </div>
           </a>
 
@@ -1814,6 +1744,7 @@ html, body { overflow-x: hidden; }
                 <select class="languageSelect" id="languageSelect" aria-label="Language selector">
                   <option value="en">English</option>
                   <option value="de">Deutsch</option>
+                  <option value="da">Dansk</option>
                   <option value="fr">Français</option>
                   <option value="es">Español</option>
                   <option value="zh-Hans">简体中文</option>
