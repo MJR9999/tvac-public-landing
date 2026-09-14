@@ -1720,6 +1720,231 @@ html, body { overflow-x: hidden; }
           column-rule: 0;
         }
       }
+
+
+      /* ---------- DESKTOP COMPACT / INSTITUTIONAL SCALE ---------- */
+      /* Keeps the interactive flipbook + four sample-report cards unchanged. */
+      @media (min-width: 981px) {
+        /* Navigation: quieter, more compact */
+        .nav .container {
+          max-width: 1040px;
+        }
+        .navInner {
+          padding: 10px 0;
+          gap: 12px;
+        }
+        .brand {
+          min-width: 300px;
+          gap: 14px;
+        }
+        .brandMark {
+          width: 190px;
+        }
+        .navPrimary,
+        .navUtilities {
+          gap: 7px;
+        }
+        .pill {
+          padding: 7px 10px;
+          font-size: 12px;
+        }
+        .languageSelect {
+          height: 34px;
+          max-width: 132px;
+          font-size: 12px;
+        }
+        .themeBtn {
+          width: 36px;
+          height: 34px;
+        }
+        .menuBtn {
+          width: 38px;
+          height: 34px;
+        }
+
+        /* All main sections except Sample Reports */
+        main > section:not(#sample-assessments) {
+          --h1: 46px;
+          --h2: 29px;
+          --h3: 16px;
+          --lead: 15px;
+          --body: 13.5px;
+          --radius: 16px;
+          --radius-sm: 12px;
+        }
+
+        main > section:not(#sample-assessments) .container {
+          max-width: 1040px;
+        }
+
+        main > section:not(#sample-assessments).padTop {
+          padding: 38px 0;
+        }
+        main > section:not(#sample-assessments).padMid {
+          padding: 34px 0;
+        }
+        main > section:not(#sample-assessments).padTight {
+          padding: 28px 0;
+        }
+
+        main > section:not(#sample-assessments) .eyebrow {
+          font-size: 10.5px;
+          letter-spacing: 1.9px;
+          margin-bottom: 8px;
+        }
+
+        main > section:not(#sample-assessments) h1 {
+          margin-bottom: 12px;
+        }
+        main > section:not(#sample-assessments) h2 {
+          margin-bottom: 10px;
+        }
+        main > section:not(#sample-assessments) h3 {
+          margin-bottom: 8px;
+        }
+
+        main > section:not(#sample-assessments) .lead {
+          max-width: 610px;
+          margin-bottom: 12px;
+        }
+
+        main > section:not(#sample-assessments) .frameWrap {
+          border-radius: 18px;
+          padding: 28px 24px;
+        }
+
+        main > section:not(#sample-assessments) .grid2 {
+          gap: 18px;
+        }
+        main > section:not(#sample-assessments) .grid3,
+        main > section:not(#sample-assessments) .grid4 {
+          gap: 13px;
+        }
+        main > section:not(#sample-assessments) .splitCard {
+          gap: 13px;
+        }
+
+        main > section:not(#sample-assessments) .cardPad {
+          padding: 15px;
+        }
+        main > section:not(#sample-assessments) .cardPadLg {
+          padding: 17px;
+        }
+        main > section:not(#sample-assessments) .formulaBox {
+          padding: 15px;
+        }
+        main > section:not(#sample-assessments) .formulaKicker {
+          font-size: 10.5px;
+          letter-spacing: 1.7px;
+          margin-bottom: 8px;
+        }
+        main > section:not(#sample-assessments) .monoFormula {
+          font-size: 12.5px;
+        }
+
+        /* Hero: preserve hierarchy, remove the oversized "marketing page" feel */
+        #top .snapshot {
+          padding: 15px;
+        }
+        #top .snapScore > div:first-child {
+          font-size: 30px !important;
+        }
+        #top .bars {
+          padding: 10px;
+        }
+        #top .barRow {
+          grid-template-columns: 1fr 145px 36px;
+          gap: 8px;
+          margin: 7px 0;
+          font-size: 11.5px;
+        }
+        #top .formula {
+          font-size: 11px;
+        }
+        #top .miniBadges {
+          gap: 7px;
+          margin-top: 10px;
+        }
+        #top .miniBadge {
+          font-size: 10.5px;
+          padding: 6px 9px;
+        }
+        #top .ctaRow {
+          gap: 8px;
+          margin-top: 15px;
+        }
+
+        /* Buttons across non-sample sections */
+        main > section:not(#sample-assessments) .btn {
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+        main > section:not(#sample-assessments) .btn.checkoutCta {
+          min-height: 40px;
+          padding: 10px 15px;
+        }
+        main > section:not(#sample-assessments) .btnRow {
+          gap: 8px;
+          margin-top: 12px;
+        }
+
+        /* Supporting text/list rhythm */
+        main > section:not(#sample-assessments) .mutedList {
+          margin-top: 8px;
+          padding-left: 17px;
+        }
+        main > section:not(#sample-assessments) .mutedList li {
+          margin: 5px 0;
+        }
+        main > section:not(#sample-assessments) .tagline {
+          margin-top: 8px;
+          font-size: 11.5px;
+        }
+
+        /* FAQ and pricing are intentionally denser on desktop */
+        #faq .faqGrid {
+          gap: 11px;
+        }
+        #faq details.faqItem {
+          padding: 11px 12px;
+        }
+        #faq details summary {
+          font-size: 13px;
+        }
+        #faq .faqA {
+          font-size: 12.5px;
+        }
+
+        #pricing .proPriceValue {
+          font-size: 25px;
+        }
+        #pricing .proPriceOption {
+          padding: 10px;
+        }
+
+        /* Footer: visually quieter */
+        footer .container {
+          max-width: 1040px;
+        }
+        footer {
+          margin-top: 20px;
+          padding: 20px 0 22px;
+        }
+        .footLine {
+          font-size: 12.5px;
+        }
+        .footDisc {
+          max-width: 800px;
+          font-size: 11.5px;
+        }
+        .legalLinks {
+          font-size: 11.5px;
+        }
+        .copyright {
+          font-size: 11px;
+        }
+      }
+
 </style>
   </head>
 
