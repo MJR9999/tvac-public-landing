@@ -3995,9 +3995,17 @@ The business thesis relies on global retail demand, social momentum, and perceiv
           const pro6Link = "https://buy.stripe.com/cNieVd1YJ4fwgvW9182ZO0a";
           const pro12Link = "https://buy.stripe.com/3cIdR932NcM24Nefpw2ZO0b";
           const pricingCards = l.prices.map((p, idx) => {
-            if (idx === 2) {
-              const proOptions = Array.isArray(l.pricing_pro_options) ? l.pricing_pro_options : [];
-              return `
+            const url = idx === 0 ? deepLink : idx === 2 ? pro12Link : '#scenario-lab';
+            const cta = idx === 0 ? l.cta_order : idx === 2 ? (l.pricing_pro_cta_12 || l.cta_order) : (l.pricing_scenario_cta || l.pricing_scenario_question || 'Scenario Lab');
+            const pro6 = idx === 2 ? `<p class="small"><a href="${pro6Link}" target="_blank" rel="noreferrer">${html(l.pricing_pro_cta_6 || '6 months')}</a></p>` : '';
+            return `<div class="cardPlain cardPadLg">
+              <h3>${html(p[0])}</h3><div class="price">${html(p[1])}</div>
+              <p class="small">${html(p[2])}</p><p class="small">${html(p[3])}</p>
+              <div class="btnRow"><a class="btn btnPrimary" href="${url}" ${idx === 1 ? '' : 'target="_blank" rel="noreferrer"'}>${html(cta)}</a></div>${pro6}
+            </div>`;
+          }).join('');
+          const faqs = l.faqs.map(([question, answer]) => `<details class="faqItem"><summary>${html(question)}</summary><div class="faqA">${answer}</div></details>`).join('');
+          return `
             <section class="band padTop" id="top">
               <div class="container sectionInner">
                 <div class="grid2">
