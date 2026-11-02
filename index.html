@@ -3081,6 +3081,14 @@ The business thesis relies on global retail demand, social momentum, and perceiv
 </p>
           </div>
         </div>
+                <div class="cardPlain cardPadLg assistedAssessmentOffer" style="margin-top:16px;border-color:rgba(57,191,208,0.35);" aria-label="TVAC Assisted Assessment">
+  <p class="eyebrow" style="margin-bottom:8px;">TVAC Assisted Assessment</p>
+  <h3>Prefer a fully assisted assessment?</h3>
+  <p class="small">Send up to three project documents (maximum 30 pages in total), notes or bullet points. Astoval prepares a draft project description and proposes the standard TVAC inputs. You review and approve all inputs before we run the assessment and deliver your PDF report.</p>
+  <p class="small"><b>Introductory price: €495 excl. VAT — the same as self-service. One consolidated revision round included.</b></p>
+  <p class="small">Please do not send confidential documents or personal data by email. Contact us first to agree on suitable handling.</p>
+  <div class="btnRow"><a class="btn btnPrimary" href="mailto:support@tvacai.com?subject=TVAC%20Assisted%20Assessment%20enquiry">Request Assisted Assessment →</a></div>
+</div>
                 <div class="cardPlain cardPadLg" style="margin-top:16px;">
           <h3>Trust & confidentiality</h3>
           <p class="small" style="margin-top:0;">
@@ -4005,6 +4013,19 @@ The business thesis relies on global retail demand, social momentum, and perceiv
           );
         }
 
+
+        function assistedOfferLocalized(lang) {
+          const offers = {'en': ['Prefer a fully assisted assessment?', 'Send up to three project documents (maximum 30 pages in total), notes or bullet points. Astoval prepares a draft project description and proposes the standard TVAC inputs. You review and approve all inputs before we run the assessment and deliver your PDF report.', 'Introductory price: €495 excl. VAT — the same as self-service. One consolidated revision round included.', 'Please do not send confidential documents or personal data by email. Contact us first to agree on suitable handling.', 'Request Assisted Assessment →'], 'de': ['Sie bevorzugen eine betreute Bewertung?', 'Senden Sie bis zu drei Projektdokumente (insgesamt maximal 30 Seiten), Notizen oder Stichpunkte. Astoval erstellt einen Entwurf der Projektbeschreibung und schlägt die standardisierten TVAC-Eingaben vor. Sie prüfen und genehmigen alle Eingaben, bevor wir die Bewertung durchführen und den PDF-Bericht liefern.', 'Einführungspreis: 495 € zzgl. MwSt. – wie bei der Selbstbedienung. Eine gebündelte Korrekturrunde ist enthalten.', 'Bitte senden Sie keine vertraulichen Dokumente oder personenbezogenen Daten per E-Mail. Kontaktieren Sie uns zuerst, um eine geeignete Übermittlung zu vereinbaren.', 'Betreute Bewertung anfragen →'], 'fr': ['Vous préférez une évaluation accompagnée ?', 'Envoyez jusqu’à trois documents de projet (30 pages au total au maximum), des notes ou des points clés. Astoval prépare une description du projet et propose les réponses aux champs standards de TVAC. Vous examinez et approuvez toutes les données avant l’analyse et la livraison du rapport PDF.', 'Prix de lancement : 495 € HT, identique au libre-service. Un cycle de corrections groupées est inclus.', 'N’envoyez pas de documents confidentiels ni de données personnelles par e-mail. Contactez-nous d’abord pour convenir d’un mode de transmission adapté.', 'Demander une évaluation accompagnée →'], 'es': ['¿Prefiere una evaluación asistida?', 'Envíe hasta tres documentos del proyecto (máximo 30 páginas en total), notas o puntos clave. Astoval preparará un borrador de la descripción del proyecto y propondrá las respuestas a los campos estándar de TVAC. Usted revisará y aprobará todos los datos antes de realizar el análisis y entregar el informe PDF.', 'Precio introductorio: 495 € sin IVA, igual que el autoservicio. Se incluye una ronda de correcciones consolidadas.', 'No envíe documentos confidenciales ni datos personales por correo electrónico. Contáctenos primero para acordar un método de envío adecuado.', 'Solicitar evaluación asistida →'], 'zh-Hans': ['希望由我们协助完成评估？', '您可以提供最多三份项目文件（总计不超过30页）、笔记或要点。Astoval 将准备项目描述草稿和 TVAC 标准输入建议。您审核并批准全部输入后，我们才会运行评估并交付 PDF 报告。', '试行价格：495 欧元（不含增值税），与自助服务相同。包含一轮集中修改。', '请勿直接通过电子邮件发送机密文件或个人数据。请先联系我们商定适当的传输方式。', '咨询协助评估 →'], 'pt-BR': ['Prefere uma avaliação com assistência?', 'Envie até três documentos do projeto (no máximo 30 páginas no total), anotações ou tópicos. A Astoval preparará uma descrição preliminar do projeto e sugerirá as respostas aos campos padrão do TVAC. Você revisará e aprovará todos os dados antes da avaliação e da entrega do relatório em PDF.', 'Preço introdutório: €495 sem IVA, o mesmo do autosserviço. Inclui uma rodada consolidada de revisão.', 'Não envie documentos confidenciais nem dados pessoais por e-mail. Entre em contato primeiro para combinar uma forma adequada de envio.', 'Solicitar avaliação assistida →'], 'da': ['Foretrækker du en assisteret vurdering?', 'Send op til tre projektdokumenter (højst 30 sider i alt), noter eller stikord. Astoval udarbejder et udkast til projektbeskrivelse og foreslår svar på TVAC’s faste inputspørgsmål. Du gennemgår og godkender alle input, før vi kører analysen og leverer PDF-rapporten.', 'Introduktionspris: €495 ekskl. moms – samme pris som selvbetjening. Én samlet korrekturrunde er inkluderet.', 'Send ikke fortrolige dokumenter eller personoplysninger via e-mail. Kontakt os først for at aftale en passende overførselsmetode.', 'Forespørg om assisteret vurdering →']};
+          const [heading, description, price, caution, button] = offers[lang] || offers.en;
+          const email = "mailto:support@tvacai.com?subject=TVAC%20Assisted%20Assessment%20enquiry";
+          return `<div class="cardPlain cardPadLg assistedAssessmentOffer" style="margin-top:16px;border-color:rgba(57,191,208,0.35);" aria-label="TVAC Assisted Assessment">
+            <p class="eyebrow" style="margin-bottom:8px;">TVAC Assisted Assessment</p>
+            <h3>${html(heading)}</h3><p class="small">${html(description)}</p>
+            <p class="small"><b>${html(price)}</b></p><p class="small">${html(caution)}</p>
+            <div class="btnRow"><a class="btn btnPrimary" href="${email}">${html(button)}</a></div>
+          </div>`;
+        }
+
         function buildLocalizedPage(l, lang) {
           const isChinese = lang === "zh-Hans";
           const sampleReportsCta = ({
@@ -4109,6 +4130,7 @@ The business thesis relies on global retail demand, social momentum, and perceiv
                 <p class="lead">${html(l.pricing_lead)}</p>
                 <p class="small">${html(l.pricing_note)}</p>
                 <div class="grid3" style="margin-top:16px;">${pricingCards}</div>
+                ${assistedOfferLocalized(lang)}
                 <div class="enterpriseStatus">${html(l.pricing_detail)}</div>
               </div></div>
             </section>
